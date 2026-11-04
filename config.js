@@ -1,8 +1,8 @@
 // MeuFluxo Phase 4 — configuração única. Editar SOMENTE aqui.
 // Após qualquer mudança: abrir index.html, carta.html e obrigado.html no celular e no desktop antes de publicar.
 window.MF_CONFIG = {
-  revisao: true,        // true = mostra avisos internos e campos [a confirmar]; false = versão para clientes
-  fechamento: null,     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
+  revisao: false,        // true = mostra avisos internos e campos [a confirmar]; false = versão para clientes
+  fechamento: 'B',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
   checkoutUrl: '',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
