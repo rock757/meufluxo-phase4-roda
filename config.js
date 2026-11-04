@@ -8,21 +8,22 @@ window.MF_CONFIG = {
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
 
+  // Fatos comerciais CONFIRMADOS por Rock 2026-11-04 ~20:50 BRT: A = Ilimitado Black November R$997 / 5 anos; B (downsell) = 8 programas R$697 / 1 ano; ambos garantia 7 dias. Parcelas: 12x 'um pouco mais' — total exato só no checkout (Évila). Suporte/entrega ainda vazios.
   // Fatos comerciais. Vazio = a frase correspondente NÃO aparece para o cliente (em revisão aparece "[a confirmar]").
   oferta: {
-    A: { nome: 'MeuFluxo Ilimitado — 5 anos',
-         preco: '',                 // ex.: 'R$997 à vista'
-         parcelas: '',              // ex.: 'ou 12x de R$97,00 (total R$1.164,00)'  — só se confirmado, com total
-         acessoPrazo: '',           // ex.: 'por cinco anos, contados da confirmação do pagamento'
-         garantia: '',              // ex.: 'Garantia de 7 dias: peça o reembolso pelo suporte e devolvemos o valor.'
-         inclusoes: '',             // ex.: 'todos os programas atuais do MeuFluxo Ilimitado' (+ novos lançamentos SÓ se confirmado)
+    A: { nome: 'MeuFluxo Ilimitado — Versão Black November (5 anos)',
+         preco: 'R$997 à vista',
+         parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
+         acessoPrazo: 'por cinco anos, contados da confirmação do pagamento',
+         garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
+         inclusoes: 'todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma',
          suporte: '',               // ex.: 'suporte@meufluxo.com'
          entrega: '' },             // ex.: 'o acesso é liberado em até 24h após a aprovação do pagamento, pelo e-mail da compra'
-    B: { nome: 'Jornada Completa MeuFluxo — 8 Passos',
-         preco: '',                 // ex.: 'R$779 à vista'
-         parcelas: '',
-         acessoPrazo: '',           // ex.: 'por 12 meses' / 'vitalício' — CONFIRMAR com Gabi
-         garantia: '',
+    B: { nome: 'Jornada MeuFluxo — 8 Programas (1 ano)',
+         preco: 'R$697 à vista',
+         parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
+         acessoPrazo: 'por 12 meses, contados da confirmação do pagamento',
+         garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
          inclusoes: '',
          suporte: '',
          entrega: '' }
