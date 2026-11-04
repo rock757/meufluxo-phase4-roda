@@ -8,3 +8,5 @@ ol.trilha{counter-reset:p;list-style:none;padding:0;margin:14px 0 6px}
 ol.trilha li{counter-increment:p;position:relative;padding:10px 0 10px 44px;border-bottom:1px solid #ece8f1;line-height:1.45}
 ol.trilha li::before{content:counter(p);position:absolute;left:0;top:9px;width:30px;height:30px;border-radius:50%;background:#8050c9;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
 .falta{background:#fff3cd;color:#6b4d00;padding:2px 6px;border-radius:4px;font-size:.9em}
+ol.trilha li.semente{counter-increment:none;background:#f4f0fa;border-radius:8px;padding-left:14px}ol.trilha li.semente::before{content:'✦';background:none;color:#8050c9;position:static;display:inline;margin-right:8px;font-size:16px}
+.extras{margin:8px 0 0;font-size:13px;color:#726d7e}.extras button{font-size:13px;margin:6px 6px 0 0;padding:6px 10px;border:1px solid #ded8e7;border-radius:99px;background:#fff;color:#262234}.extras button[aria-pressed=true]{background:#eee8f7;border-color:#8050c9}

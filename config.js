@@ -2,7 +2,7 @@
 // Após qualquer mudança: abrir index.html, carta.html e obrigado.html no celular e no desktop antes de publicar.
 window.MF_CONFIG = {
   revisao: false,        // true = mostra avisos internos e campos [a confirmar]; false = versão para clientes
-  fechamento: 'B',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
+  fechamento: 'A',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
   checkoutUrl: '',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
@@ -28,16 +28,18 @@ window.MF_CONFIG = {
          entrega: '' }
   },
 
-  // Plano B — um programa por área da roda. Ordem = ordem canônica da roda. Slugs batem com app.js.
-  // 'alternativa' é só registro interno para decisão; não aparece para o cliente.
+  // Oito áreas na ordem da espiral (CONFIRMADO por Rock, 2026-11-04). Propósito (Nico) é a semente: incluído em qualquer compra, nunca vendido aqui.
+  // 'variantes' escolhe o programa pela resposta opcional (gênero em Movimento; filhos em Relacionamentos). Padrões = programas-vitrine dos especialistas.
   programas: [
-    { slug:'proposito',      area:'Realização e propósito',            programa:'Desperte Seu Destino',      especialista:'Fernando Felix',    alternativa:'A Jornada MeuFluxo (Nicolas Toigo) — confirmar se é produto pago ou teaser gratuito' },
-    { slug:'alimentacao',    area:'Alimentação e disposição',          programa:'Emagrecer Sem Restrições',  especialista:'Jaqueline Brihy',   alternativa:'Dieta das 3 Fases 2.0 (Eduardo Claas) — alto risco de o cliente já possuir' },
-    { slug:'movimento',      area:'Movimento e cuidado com o corpo',   programa:'Meu Shape Ideal',           especialista:'Mateus Cecconello', alternativa:'Costas Sem Dores (Peterson Menezes)' },
-    { slug:'aprendizado',    area:'Aprendizado e clareza para decidir',programa:'15 Ferramentas da Alta Performance', especialista:'Dr. Marcelo Roxo', alternativa:'Ultra Inteligência (Marcelo Roxo) — alto risco de o cliente já possuir' },
-    { slug:'financas',       area:'Organização e segurança financeira',programa:'Matriz da Abundância',      especialista:'Lucia Lux Tellaris',alternativa:'Bioenergia do Dinheiro (Zaika Capita)' },
-    { slug:'relacoes',       area:'Relações e convivência',            programa:'4 Códigos do Amor',         especialista:'Gabriela Barea',    alternativa:'Filhos Sem Conflitos (Eddy Giordani)' },
-    { slug:'crescimento',    area:'Autoestima e crescimento pessoal',  programa:'Restart Mental',            especialista:'Nereu Araldi',      alternativa:'Novo Profissional 3R (Roberta Desnos)' },
-    { slug:'espiritualidade',area:'Vida interior e espiritualidade',   programa:'Estado Delta',              especialista:'Ariosto Mello',     alternativa:'Frequências da Vida (Zaika Capita)' }
+    { slug:'proposito',       area:'Propósito',                              programa:'A Jornada MeuFluxo',       especialista:'Nicolas Toigo',     incluido:true },
+    { slug:'alimentacao',     area:'Alimentação e metabolismo',              programa:'Dieta das 3 Fases 2.0',    especialista:'Eduardo Claas' },
+    { slug:'movimento',       area:'Movimento, estrutura e dores',           programa:'Costas Sem Dores',         especialista:'Peterson Menezes',
+      variantes:{ mulher:{programa:'Projeto Mulher 40+',especialista:'Suéllen Lopes'}, homem:{programa:'Meu Shape Ideal',especialista:'Mateus Cecconello'} } },
+    { slug:'memoria',         area:'Memória, foco e inteligência',           programa:'Ultra Inteligência',       especialista:'Dr. Marcelo Roxo' },
+    { slug:'financas',        area:'Segurança e prosperidade financeira',    programa:'Matriz da Abundância',     especialista:'Lucia Lux Tellaris' },
+    { slug:'relacoes',        area:'Relacionamentos sociais e familiares',   programa:'4 Códigos do Amor',        especialista:'Gabriela Barea',
+      variantes:{ filhos:{programa:'Filhos Sem Conflitos',especialista:'Eddy Giordani'} } },
+    { slug:'crescimento',     area:'Autoestima e crescimento pessoal',       programa:'Restart Mental',           especialista:'Nereu Araldi' },
+    { slug:'transcendencia',  area:'Auto-transcendência: energia e espiritualidade', programa:'Frequências da Vida', especialista:'Zaika Capita' }
   ]
 };

@@ -5,7 +5,7 @@
   const params=new URLSearchParams();
   Object.keys(stored).forEach(k=>params.set(k,stored[k]));
   const q=new URLSearchParams(location.search);
-  q.forEach((v,k)=>{if(keys.includes(k)||k==='prioridade'||k==='ordem')params.set(k,v)});
+  q.forEach((v,k)=>{if(keys.includes(k)||k==='prioridade'||k==='ordem'||k==='g'||k==='r')params.set(k,v)});
   const F=cfg.fechamento||null;
   // closings
   document.querySelectorAll('[data-closing]').forEach(sec=>{if(F&&sec.dataset.closing!==F)sec.hidden=true});
@@ -22,13 +22,13 @@
   document.querySelectorAll('[data-requires]').forEach(el=>{if(!val(el.dataset.requires))el.hidden=true});
   if(cfg.textoClienteAtual)document.querySelectorAll('[data-owner-text]').forEach(el=>el.textContent=cfg.textoClienteAtual.replace(/\.$/,''));
   // trilha (Plano B)
-  const T=window.MF_TRILHA, box=document.getElementById('trilha');
-  if(T&&box){
+  const T=window.MF_TRILHA;
+  document.querySelectorAll('[data-trilha]').forEach(box=>{if(!T)return;
     let o=T.decode(q.get('ordem'));
-    const aviso=document.getElementById('trilha-aviso');
-    if(!o){o=[0,1,2,3,4,5,6,7];if(aviso)aviso.textContent='Ordem da roda. Faça a sua Roda da Vida para receber uma sequência baseada nas suas respostas.'}
-    box.innerHTML=T.render(o);
-  }
+    const aviso=box.previousElementSibling&&box.previousElementSibling.id==='trilha-aviso'?box.previousElementSibling:null;
+    if(!o){o=[0,1,2,3,4,5,6,7];document.querySelectorAll('.trilha-aviso').forEach(a=>a.textContent='Ordem da espiral. Faça a sua Roda da Vida para começar pela sua necessidade.')}
+    box.innerHTML=T.render(o,{g:q.get('g'),r:q.get('r')});
+  });
   // CTA
   if(cfg.checkoutUrl){
     document.querySelectorAll('[data-cta]').forEach(block=>{
