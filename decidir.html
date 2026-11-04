@@ -1,0 +1,106 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Decisões da Oferta · MeuFluxo Fase 4</title><link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="trilha.js"></script>
+<style>
+.dec{max-width:980px;margin:0 auto;padding:0 18px 60px}
+.dec h1{font-size:1.7rem}.dec h2{margin-top:30px;font-size:1.2rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;align-items:start}
+@media(max-width:720px){.row{grid-template-columns:1fr}}
+label.f{display:block;font-size:.9rem;font-weight:600;margin:12px 0 4px}
+input[type=text],input[type=number],select,textarea{width:100%;padding:9px 10px;border:1px solid #cfc8da;border-radius:8px;font:inherit;background:#fff}
+textarea{min-height:60px}
+.prog{border:1px solid #e3ddec;border-radius:10px;padding:12px 14px;margin:8px 0;background:#fff}
+.prog .area{font-weight:700}.prog .opt{display:flex;gap:10px;align-items:center;margin:5px 0;font-size:.95rem}
+.hint{color:#6e6880;font-size:.85rem}
+.total{font-weight:700;color:#5a3aa0}
+.bar{position:sticky;top:0;background:#faf8fc;border-bottom:1px solid #e3ddec;padding:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;z-index:2}
+.bar .btn{padding:8px 14px;font-size:.9rem}
+.lang{margin-left:auto}.lang button{padding:6px 10px;border:1px solid #cfc8da;background:#fff;border-radius:6px;cursor:pointer}.lang button.on{background:#8050c9;color:#fff;border-color:#8050c9}
+pre.code{background:#1e1b26;color:#eae6f2;padding:14px;border-radius:10px;font-size:.78rem;overflow:auto;max-height:340px}
+.preview{border:1px solid #e3ddec;border-radius:12px;padding:16px 18px;background:#fff}
+.ok{color:#2a7d3f}.warn{color:#9a6b00}
+.status{font-size:.85rem}
+</style></head><body><header><a href="index.html" class="brand">meu<span>fluxo</span><small>Uma pausa para olhar para você.</small></a><span class="tag" data-t="tag">FASE 4 · DECISÕES DA OFERTA</span></header>
+<main class="dec">
+<div class="bar"><button class="btn" id="copy" data-t="copy">Copiar config.js</button><button class="btn secondary" id="download" data-t="download">Baixar config.js</button><button class="btn secondary" id="reset" data-t="reset">Limpar</button><span class="status" id="status"></span><span class="lang"><button data-lang="pt" class="on">PT</button> <button data-lang="en">EN</button></span></div>
+<h1 data-t="h1">Decisões da oferta — para teste e aprovação</h1>
+<p class="hint" data-t="intro">Tudo o que você marcar aqui vira um <code>config.js</code> pronto. Nada é enviado a lugar nenhum: fica salvo só neste navegador. Preencha, veja a prévia, copie o arquivo e mande para quem publica. Rótulos marcados PROPOSTO são sugestões, não decisões.</p>
+
+<h2 data-t="h_offer">1. Qual oferta?</h2>
+<div class="row">
+<div><label class="f"><input type="radio" name="fech" value="B" checked> <span data-t="offB">B — Jornada Completa MeuFluxo, 8 passos (um programa por área da roda)</span></label>
+<label class="f"><input type="radio" name="fech" value="A"> <span data-t="offA">A — MeuFluxo Ilimitado por 5 anos (fallback fácil)</span></label></div>
+<div><label class="f" data-t="l_nome">Nome da oferta (como aparece para o cliente)</label><input type="text" id="nome"></div>
+</div>
+
+<h2 id="h_prog" data-t="h_prog">2. Os oito programas (B) — sim ou troca</h2>
+<p class="hint" data-t="prog_hint">Padrão PROPOSTO: evita Dieta das 3 Fases, Ultra Inteligência e Jejum 2.0, porque boa parte do público já tem. Marque "trocar" para usar a alternativa ou escreva outro nome.</p>
+<div id="progs"></div>
+
+<h2 data-t="h_price">3. Preço e parcelas</h2>
+<div class="row">
+<div><label class="f" data-t="l_preco">Preço à vista (R$)</label><input type="number" id="preco" min="0" step="1" placeholder="779"></div>
+<div><label class="f" data-t="l_parc">Parcelas</label><div class="row"><input type="number" id="nparc" min="1" max="24" step="1" placeholder="12"><input type="number" id="vparc" min="0" step="0.01" placeholder="77,90"></div><div class="hint"><span data-t="l_total">Total parcelado</span>: <span class="total" id="total">—</span> <span id="juros" class="hint"></span></div></div>
+</div>
+
+<h2 data-t="h_terms">4. Acesso, garantia, suporte, entrega</h2>
+<div class="row">
+<div><label class="f" data-t="l_prazo">Prazo de acesso</label><select id="prazo"><option value="">—</option><option value="por 12 meses, contados da confirmação do pagamento">12 meses</option><option value="por 24 meses, contados da confirmação do pagamento">24 meses</option><option value="por cinco anos, contados da confirmação do pagamento">5 anos</option><option value="vitalício">Vitalício (só se confirmado)</option><option value="custom">Outro…</option></select><input type="text" id="prazo_custom" placeholder="texto exato para o cliente" style="display:none;margin-top:6px"></div>
+<div><label class="f" data-t="l_gar">Garantia (dias)</label><input type="number" id="gar" min="0" step="1" placeholder="7"><div class="hint" data-t="gar_hint">7 dias é o mínimo legal para compra online no Brasil (CDC art. 49). Texto gerado automaticamente.</div></div>
+<div><label class="f" data-t="l_sup">Suporte (e-mail ou WhatsApp)</label><input type="text" id="sup" placeholder="suporte@meufluxo.com"></div>
+<div><label class="f" data-t="l_ent">Entrega do acesso</label><select id="ent"><option value="">—</option><option value="liberado em até 24 horas após a aprovação do pagamento, no e-mail usado na compra">até 24h após aprovação</option><option value="liberado imediatamente após a aprovação do pagamento, no e-mail usado na compra">imediato após aprovação</option><option value="custom">Outro…</option></select><input type="text" id="ent_custom" style="display:none;margin-top:6px"></div>
+</div>
+
+<h2 data-t="h_owner">5. Quem já tem um dos programas</h2>
+<label class="f"><input type="radio" name="owner" value="a" checked> <span data-t="own_a">(a) Nada extra — FAQ diz "fale com o suporte antes de comprar" (PROPOSTO para quinta)</span></label>
+<label class="f"><input type="radio" name="owner" value="b"> <span data-t="own_b">(b) Troca por um programa equivalente (suporte faz a troca)</span></label>
+<label class="f"><input type="radio" name="owner" value="c"> <span data-t="own_c">(c) Crédito/desconto tratado pelo suporte</span></label>
+
+<h2 data-t="h_check">6. Checkout e modo</h2>
+<div class="row">
+<div><label class="f" data-t="l_url">URL do checkout aprovado (Payt)</label><input type="text" id="url" placeholder="https://checkout.payt.com.br/…"></div>
+<div><label class="f"><input type="checkbox" id="rev" checked> <span data-t="l_rev">Modo revisão (mostra avisos internos). Desmarque só para a versão do cliente.</span></label></div>
+</div>
+
+<h2 data-t="h_prev">7. Prévia do que o cliente lê</h2>
+<div class="preview" id="preview"></div>
+
+<h2 data-t="h_code">8. config.js gerado</h2>
+<pre class="code" id="code"></pre>
+<p class="hint" data-t="code_hint">Como usar: substitua o arquivo <code>config.js</code> ao lado de index.html / carta.html por este. Abra as três páginas no celular e no desktop antes de publicar.</p>
+</main><footer data-t="foot">Ferramenta interna. Nenhum dado sai deste navegador.</footer>
+<script>
+const T={pt:{tag:'FASE 4 · DECISÕES DA OFERTA',copy:'Copiar config.js',download:'Baixar config.js',reset:'Limpar',h1:'Decisões da oferta — para teste e aprovação',intro:'Tudo o que você marcar aqui vira um config.js pronto. Nada é enviado a lugar nenhum: fica salvo só neste navegador. Preencha, veja a prévia, copie o arquivo e mande para quem publica. Rótulos marcados PROPOSTO são sugestões, não decisões.',h_offer:'1. Qual oferta?',offB:'B — Jornada Completa MeuFluxo, 8 passos (um programa por área da roda)',offA:'A — MeuFluxo Ilimitado por 5 anos (fallback fácil)',l_nome:'Nome da oferta (como aparece para o cliente)',h_prog:'2. Os oito programas (B) — sim ou troca',prog_hint:'Padrão PROPOSTO: evita Dieta das 3 Fases, Ultra Inteligência e Jejum 2.0, porque boa parte do público já tem. Marque "trocar" para usar a alternativa ou escreva outro nome.',h_price:'3. Preço e parcelas',l_preco:'Preço à vista (R$)',l_parc:'Parcelas (quantidade × valor)',l_total:'Total parcelado',h_terms:'4. Acesso, garantia, suporte, entrega',l_prazo:'Prazo de acesso',l_gar:'Garantia (dias)',gar_hint:'7 dias é o mínimo legal para compra online no Brasil (CDC art. 49). Texto gerado automaticamente.',l_sup:'Suporte (e-mail ou WhatsApp)',l_ent:'Entrega do acesso',h_owner:'5. Quem já tem um dos programas',own_a:'(a) Nada extra — FAQ diz "fale com o suporte antes de comprar" (PROPOSTO para quinta)',own_b:'(b) Troca por um programa equivalente (suporte faz a troca)',own_c:'(c) Crédito/desconto tratado pelo suporte',h_check:'6. Checkout e modo',l_url:'URL do checkout aprovado (Payt)',l_rev:'Modo revisão (mostra avisos internos). Desmarque só para a versão do cliente.',h_prev:'7. Prévia do que o cliente lê',h_code:'8. config.js gerado',code_hint:'Como usar: substitua o arquivo config.js ao lado de index.html / carta.html por este. Abra as três páginas no celular e no desktop antes de publicar.',foot:'Ferramenta interna. Nenhum dado sai deste navegador.',keep:'manter',swap:'trocar pela alternativa',other:'outro:',copied:'Copiado.',saved:'Salvo neste navegador.',interest:'(juros embutidos: R$ {x})',nointerest:'(sem juros)',missing:'Faltam: ',ok:'Tudo preenchido para a versão do cliente.'},
+en:{tag:'PHASE 4 · OFFER DECISIONS',copy:'Copy config.js',download:'Download config.js',reset:'Clear',h1:'Offer decisions — for testing and approval',intro:'Everything you set here becomes a ready config.js. Nothing is sent anywhere: it is saved only in this browser. Fill in, check the preview, copy the file and send it to whoever publishes. Items marked PROPOSTO are suggestions, not decisions.',h_offer:'1. Which offer?',offB:'B — Jornada Completa MeuFluxo, 8 steps (one program per wheel area)',offA:'A — MeuFluxo Ilimitado for 5 years (easy fallback)',l_nome:'Offer name (as the customer sees it, pt-BR)',h_prog:'2. The eight programs (B) — yes or swap',prog_hint:'PROPOSED default avoids Dieta das 3 Fases, Ultra Inteligência and Jejum 2.0 because much of the audience already owns them. Tick "swap" to use the alternative or type another name.',h_price:'3. Price and installments',l_preco:'Price, one payment (R$)',l_parc:'Installments (count × amount)',l_total:'Installment total',h_terms:'4. Access, guarantee, support, delivery',l_prazo:'Access term',l_gar:'Guarantee (days)',gar_hint:'7 days is the legal minimum for online purchases in Brazil (CDC art. 49). Customer text is generated automatically in pt-BR.',l_sup:'Support (email or WhatsApp)',l_ent:'Access delivery',h_owner:'5. Buyers who already own one of the programs',own_a:'(a) Nothing extra — FAQ says "talk to support before buying" (PROPOSED for Thursday)',own_b:'(b) Swap for an equivalent program (support handles it)',own_c:'(c) Credit/discount handled by support',h_check:'6. Checkout and mode',l_url:'Approved checkout URL (Payt)',l_rev:'Review mode (shows internal notes). Untick only for the customer version.',h_prev:'7. Preview of what the customer reads (pt-BR)',h_code:'8. Generated config.js',code_hint:'How to use: replace the config.js file next to index.html / carta.html with this one. Open all three pages on a phone and desktop before publishing.',foot:'Internal tool. No data leaves this browser.',keep:'keep',swap:'swap for alternative',other:'other:',copied:'Copied.',saved:'Saved in this browser.',interest:'(embedded interest: R$ {x})',nointerest:'(no interest)',missing:'Missing: ',ok:'Everything filled for the customer version.'}};
+let L='pt';const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const P=(window.MF_CONFIG||{}).programas||[];
+const fmt=n=>'R$'+n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+function tr(){document.documentElement.lang=L==='pt'?'pt-BR':'en';$$('[data-t]').forEach(e=>{const v=T[L][e.dataset.t];if(v)e.textContent=v});$$('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===L));$$('.kp').forEach(e=>e.textContent=T[L].keep);$$('.sw').forEach(e=>e.textContent=T[L].swap);$$('.ot').forEach(e=>e.textContent=T[L].other)}
+function buildProgs(){$('#progs').innerHTML=P.map((p,i)=>{const alt=(p.alternativa||'').split(' — ')[0];return `<div class="prog"><div class="area">${i+1}. ${p.area}</div>
+<label class="opt"><input type="radio" name="p${i}" value="keep" checked> <span class="kp">manter</span>: <strong>${p.programa}</strong> · ${p.especialista}</label>
+<label class="opt"><input type="radio" name="p${i}" value="alt"> <span class="sw">trocar pela alternativa</span>: ${alt}</label>
+<label class="opt"><input type="radio" name="p${i}" value="other"> <span class="ot">outro:</span> <input type="text" id="po${i}" placeholder="Programa · Especialista" style="max-width:360px"></label></div>`}).join('')}
+function state(){const s={fech:$('input[name=fech]:checked').value,nome:$('#nome').value,preco:$('#preco').value,nparc:$('#nparc').value,vparc:$('#vparc').value,prazo:$('#prazo').value,prazo_custom:$('#prazo_custom').value,gar:$('#gar').value,sup:$('#sup').value,ent:$('#ent').value,ent_custom:$('#ent_custom').value,owner:$('input[name=owner]:checked').value,url:$('#url').value,rev:$('#rev').checked,progs:P.map((_,i)=>({c:$(`input[name=p${i}]:checked`).value,o:$(`#po${i}`).value}))};return s}
+function programs(s){return P.map((p,i)=>{const c=s.progs[i];if(c.c==='keep')return{...p};if(c.c==='alt'){const [prog,esp]=(p.alternativa||'').split(' — ')[0].split(' (');return{...p,programa:prog.trim(),especialista:(esp||'').replace(')','').trim()}}const [prog,esp]=(c.o||'').split('·');return{...p,programa:(prog||'').trim()||'[programa a definir]',especialista:(esp||'').trim()}})}
+function derived(s){const preco=parseFloat(s.preco)||0,n=parseInt(s.nparc)||0,v=parseFloat(s.vparc)||0,total=n*v;const o={};o.preco=preco?fmt(preco)+' à vista':'';o.parcelas=(n&&v)?`ou ${n}x de ${fmt(v)} (total ${fmt(total)})`:'';o.juros=(n&&v&&preco)?(total-preco):null;o.acessoPrazo=s.prazo==='custom'?s.prazo_custom:s.prazo;o.garantia=s.gar?`Garantia de ${s.gar} dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.`:'';o.suporte=s.sup;o.entrega=s.ent==='custom'?s.ent_custom:s.ent;o.nome=s.nome||(s.fech==='B'?'Jornada Completa MeuFluxo — 8 Passos':'MeuFluxo Ilimitado — 5 anos');return o}
+const ownerText={a:'Se você já tem um dos programas incluídos, fale com o suporte antes de comprar.',b:'Se você já tem um dos programas incluídos, o suporte troca esse passo por um programa equivalente.',c:'Se você já tem um dos programas incluídos, fale com o suporte: há uma condição específica para você.'};
+function genConfig(s){const d=derived(s),pr=programs(s);const of={nome:d.nome,preco:d.preco,parcelas:d.parcelas,acessoPrazo:d.acessoPrazo,garantia:d.garantia,inclusoes:s.fech==='A'?'':'',suporte:d.suporte,entrega:d.entrega};const base=JSON.parse(JSON.stringify(window.MF_CONFIG||{}));base.revisao=!!s.rev;base.fechamento=s.fech;base.checkoutUrl=s.url;base.oferta=base.oferta||{};base.oferta[s.fech]=of;base.regraClienteAtual=s.owner;base.textoClienteAtual=ownerText[s.owner];base.programas=pr.map(p=>({slug:p.slug,area:p.area,programa:p.programa,especialista:p.especialista}));return `// MeuFluxo Fase 4 — gerado por decidir.html em ${new Date().toISOString().slice(0,16).replace('T',' ')} UTC. Editar aqui ou regenerar.\nwindow.MF_CONFIG = ${JSON.stringify(base,null,2)};\n`}
+function render(){const s=state();localStorage.setItem('mf_decidir',JSON.stringify(s));const d=derived(s),pr=programs(s);$('#h_prog').style.opacity=s.fech==='B'?1:.4;$('#progs').style.opacity=s.fech==='B'?1:.4;
+$('#total').textContent=d.parcelas?d.parcelas.replace(/.*total /,'').replace(')',''):'—';$('#juros').textContent=d.juros===null?'':(d.juros>0.005?T[L].interest.replace('{x}',fmt(d.juros).slice(2)):T[L].nointerest);
+$('#prazo_custom').style.display=s.prazo==='custom'?'block':'none';$('#ent_custom').style.display=s.ent==='custom'?'block':'none';
+const miss=[];if(!d.preco)miss.push('preço');if(!d.acessoPrazo)miss.push('prazo');if(!d.garantia)miss.push('garantia');if(!d.suporte)miss.push('suporte');if(!d.entrega)miss.push('entrega');if(!s.url)miss.push('checkout');
+$('#status').innerHTML=miss.length?`<span class="warn">${T[L].missing}${miss.join(', ')}</span>`:`<span class="ok">${T[L].ok}</span>`;
+let h=`<h3>${d.nome}</h3>`;
+if(s.fech==='B'){h+=`<p><strong>O que está incluído</strong></p><ol class="trilha">${pr.map(p=>`<li><strong>${p.area}</strong><br>${p.programa}${p.especialista?' · com '+p.especialista:''}</li>`).join('')}</ol><p class="hint">A ordem real segue as respostas da roda de cada cliente (prioridade → menos dias → "não sei").</p>`}
+else{h+=`<p>Acesso aos programas incluídos no MeuFluxo Ilimitado${d.acessoPrazo?', '+d.acessoPrazo:''}.</p>`}
+h+=`<p><strong>Seu investimento</strong><br>${d.preco||'<span class="falta">[a confirmar: preço]</span>'} ${d.parcelas}</p>`;
+if(d.acessoPrazo&&s.fech==='B')h+=`<p>Acesso aos oito programas ${d.acessoPrazo}.</p>`;
+if(d.garantia)h+=`<p>${d.garantia}</p>`;if(d.entrega)h+=`<p>Acesso ${d.entrega}.</p>`;if(d.suporte)h+=`<p>Dúvidas: ${d.suporte}.</p>`;
+h+=`<p class="hint">${ownerText[s.owner]}</p>`;
+$('#preview').innerHTML=h;$('#code').textContent=genConfig(s)}
+function restore(){try{const s=JSON.parse(localStorage.getItem('mf_decidir')||'null');if(!s)return;$(`input[name=fech][value=${s.fech}]`).checked=true;['nome','preco','nparc','vparc','prazo','prazo_custom','gar','sup','ent','ent_custom','url'].forEach(k=>{$('#'+k).value=s[k]||''});$(`input[name=owner][value=${s.owner}]`).checked=true;$('#rev').checked=!!s.rev;(s.progs||[]).forEach((c,i)=>{const r=$(`input[name=p${i}][value=${c.c}]`);if(r)r.checked=true;$(`#po${i}`).value=c.o||''})}catch(e){}}
+buildProgs();restore();tr();render();
+document.addEventListener('input',render);document.addEventListener('change',render);
+$$('.lang button').forEach(b=>b.onclick=()=>{L=b.dataset.lang;tr();render()});
+$('#copy').onclick=()=>{navigator.clipboard.writeText($('#code').textContent).then(()=>{$('#status').textContent=T[L].copied})};
+$('#download').onclick=()=>{const a=document.createElement('a');a.href='data:text/javascript;charset=utf-8,'+encodeURIComponent($('#code').textContent);a.download='config.js';a.click()};
+$('#reset').onclick=()=>{localStorage.removeItem('mf_decidir');location.reload()};
+</script></body></html>
