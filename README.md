@@ -6,3 +6,5 @@ MeuFluxo Phase 4 (Black November): Roda da Vida quiz → written letter → chec
 - Pages: `index.html` (quiz), `carta.html` (letter), `obrigado.html` (post-purchase), `decidir.html` (PT/EN offer decision tool → generates `config.js`).
 - Edit only `config.js` to flip offer A/B, prices, terms, checkout URL and review mode. Details in `README-v3.md`.
 - No credentials in this repo. No build step; deploy as static files.
+
+Deploy: Vercel project meufluxo-fase-4-roda-da-vida-prototype-v3 (team contato-q620), auto-deploys from main.
