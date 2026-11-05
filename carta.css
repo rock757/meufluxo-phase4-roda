@@ -197,3 +197,50 @@ footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
 .final .ps{font-size:16px;color:rgba(255,255,255,.9);margin:0}
 @media(max-width:900px){.prog,.spec-block{grid-template-columns:1fr}.covers,.spec-block .covers{grid-template-columns:1fr 1fr}.stair3{grid-template-columns:1fr}.stair3 .st{min-height:0}.jump{position:static}}
 @media(max-width:520px){.covers,.spec-block .covers{grid-template-columns:1fr}}
+/* ---- v5: personal letter, urgency bar, big portraits, small covers, offer with team + stories ---- */
+.nav3 .urgbar{flex:1;display:flex;align-items:center;gap:10px;min-width:0;font-size:13px;color:var(--ink-2)}
+.nav3 .urgbar b{background:var(--ink);color:var(--gold-2);border-radius:99px;padding:5px 11px;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap}
+.nav3 .urgbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.eyebrow.urg{color:#9a2d6d;background:#fff0f7;border:1px solid #f3c6de;border-radius:99px;padding:6px 12px;display:inline-block;letter-spacing:1.6px}
+.open .first img.big{width:100%;aspect-ratio:4/5;max-height:520px;height:auto;border-radius:18px;object-fit:cover;flex:none}
+.open .first .meta{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:6px 6px 2px}
+.open .first .meta .cv{width:88px;aspect-ratio:3/2;height:auto;border-radius:8px;object-fit:cover;flex:0 0 88px}
+.nico .who{display:block;background:none;border:0;padding:0;margin:0}
+.nico .who img{width:100%;height:auto;border-radius:var(--radius);border:0;box-shadow:var(--shadow)}
+.nico .text .big{font-size:clamp(20px,2.3vw,24px);line-height:1.5;color:var(--ink)}
+.nico .text p{font-size:18.5px}
+.pick{display:flex;gap:16px;align-items:flex-start;background:rgba(255,255,255,.85);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:18px;padding:16px 18px;margin:6px 0 18px}
+.pick img{width:84px;height:84px;border-radius:50%;object-fit:cover;flex:0 0 84px;border:2px solid var(--lilac);box-shadow:none}
+.pick b{display:block;font-size:19px;line-height:1.15}.pick small{display:block;color:var(--muted);font-size:13.5px;margin:3px 0 8px}
+.pick p{margin:0 0 8px;font-size:16px;line-height:1.5}
+.nico-line{font-style:italic;color:var(--ink-2);font-size:17.5px;border-left:3px solid var(--lilac);padding-left:14px;margin:4px 0 16px}
+.seq{grid-template-columns:repeat(3,1fr)}
+.step em{display:block;font-style:italic;color:var(--ink-2);font-size:12.5px;margin-top:5px;line-height:1.35}
+.step.seed{border-color:var(--gold);background:#fffaf0}
+.spec-block{gap:30px;padding:18px 0 34px}
+.spec-block .portrait{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:18px;box-shadow:var(--shadow)}
+.spec-block .nm{display:block;font-size:clamp(22px,2.4vw,27px);line-height:1.1;letter-spacing:-.01em}
+.spec-block small{display:block;color:var(--muted);font-size:14px;margin:4px 0 12px}
+.spec-block p.nico{font-size:17.5px;line-height:1.55;color:var(--ink);margin:0 0 10px}
+.spec-block p.bio{font-size:14.5px;color:var(--muted);line-height:1.45;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:12px;padding:5px 10px 5px 5px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.chip img{width:54px;height:36px;border-radius:6px;object-fit:cover;flex:0 0 54px}
+.spec-block.guide{background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:10px}
+.spec-block.guide .portrait{aspect-ratio:1/1}
+.offer .team{grid-column:1/-1;margin-top:6px;grid-template-columns:1fr 1fr;gap:26px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px}
+.offer .team img{border-radius:14px;box-shadow:none}
+.summary .deadline{display:block;margin-top:8px;background:#fff0f7;color:#9a2d6d;border:1px solid #f3c6de;border-radius:10px;padding:7px 10px;font-size:13px;font-weight:700}
+.summary .after.lote{color:#9a2d6d;font-weight:700}
+.depos{margin-bottom:20px}
+.escape{margin:26px 0 0;text-align:center;color:var(--muted);font-size:14px}
+.escape a{color:var(--muted)}
+.final .ps{margin-top:10px}
+@media(max-width:900px){
+ .nav3 .urgbar span{display:none}
+ .open .first img.big{max-height:420px}
+ .seq{grid-template-columns:1fr}
+ .spec-block .portrait{max-width:320px}
+ .offer .team{grid-template-columns:1fr}
+ .nico .who img{max-width:320px}
+}

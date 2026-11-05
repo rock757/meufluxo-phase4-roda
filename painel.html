@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>MeuFluxo · Fase 4 · Painel</title>
+<link rel="icon" href="img/brand-badge.svg">
+<style>
+@font-face{font-family:"Google Sans Flex";src:url(img/fonts/google-sans-flex-latin.woff2) format("woff2");font-weight:300 800;font-display:swap}
+:root{--cream:#f7f3ee;--paper:#fffdf9;--ink:#2a2440;--ink-2:#4a4361;--muted:#7b748c;--line:#e6e0d6;--purple:#5a3fb4;--purple-2:#8a6fd3;--lilac:#ebe4f8;--deep:#2d2047;--gold:#c9a24f;--green:#2f7d5b;
+ --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;--sans:"Google Sans Flex",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 var(--sans)}
+.wrap{max-width:1080px;margin:0 auto;padding:26px 24px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:14px}
+h1{font:400 clamp(28px,3.4vw,40px)/1.1 var(--serif);margin:0 0 6px;letter-spacing:-.015em}
+.lead{color:var(--ink-2);margin:0 0 20px;max-width:760px}
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 0}
+.how div{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:13px}
+.how b{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple);margin-bottom:4px}
+code{font-size:12px;background:var(--lilac);border-radius:4px;padding:1px 5px}
+.btn{display:inline-block;border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer}
+@media(max-width:900px){.how{grid-template-columns:1fr 1fr}}
+</style>
+<script src="config.js"></script>
+<script src="track.js"></script>
+</head>
+<body>
+<div class="wrap">
+ <div class="top"><span>MeuFluxo / Fase 4 / Painel</span><span><a class="btn" href="overview.html">visão geral</a> <button class="btn" id="reload">atualizar</button></span></div>
+ <h1>Quem chega, até onde vai, quem clica para comprar.</h1>
+ <p class="lead">Lê a aba <code>eventos</code> da planilha pela função <code>/api/stats</code>. Enquanto a planilha não estiver configurada, os números são de demonstração (marcados DEMO). O bloco "seu rastro" mostra os eventos deste navegador, ao vivo.</p>
+ <div id="painel"></div>
+ <div class="how">
+  <div><b>1 · Captura</b>Cada página carrega <code>track.js</code>: cookie <code>mf_vid</code> (1 ano), <code>mf_sid</code> (30 min), UTMs do convite guardadas 30 dias.</div>
+  <div><b>2 · Eventos</b><code>page_view · quiz_start · answer · quiz_done · priority_pick · cta_letter · letter_view · scroll · offer_view · checkout_click · leave</code></div>
+  <div><b>3 · Destinos</b>dataLayer (GTM), GA4 e Meta Pixel quando os IDs existirem em <code>config.js</code>; planilha pelas funções <code>/api/track</code> e <code>/api/roda</code>.</div>
+  <div><b>4 · Ligar</b>Na Vercel: <code>GOOGLE_SA_EMAIL</code>, <code>GOOGLE_SA_KEY</code>, <code>SHEET_ID</code>. Abas <code>eventos</code> e <code>roda</code> com os cabeçalhos de <code>api/*.js</code>. Sem isso: tudo no-op.</div>
+ </div>
+</div>
+<script src="painel.js"></script>
+<script>
+(async function(){const L=new URLSearchParams(location.search).get('lang')==='en'?'en':'pt';const el=document.getElementById('painel');
+ async function go(){el.innerHTML='<p style="color:var(--muted)">…</p>';const d=await window.MF_PAINEL.load();if(!d.configured)d.demo=true;window.MF_PAINEL.render(el,d,L)}
+ document.getElementById('reload').onclick=go;go()})();
+</script>
+</body>
+</html>

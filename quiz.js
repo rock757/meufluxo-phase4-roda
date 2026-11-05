@@ -2,6 +2,8 @@
 (function(){
 'use strict';
 const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA;
+const track=(ev,p)=>{try{window.MF_TRACK&&window.MF_TRACK(ev,p)}catch(e){}};
+const C=MF.campanha||{};const deadline=C.prazoISO?new Date(C.prazoISO):null;const daysLeft=()=>deadline?Math.max(0,Math.ceil((deadline-Date.now())/86400000)):null;
 const Q=new URLSearchParams(location.search);
 const L=Q.get('lang')==='en'?'en':'pt';
 const t=o=>o[L]||o.pt;
@@ -10,7 +12,7 @@ const t=o=>o[L]||o.pt;
 const S={
  pt:{start:'Fazer minha Roda da Vida',how:'Como funciona',min:'2 minutos · sem cadastro',
   eyebrowHero:'Sua Roda da Vida',h1:'Um olhar para a sua vida, hoje.',lead:'Responda a oito perguntas sobre a sua última semana. Veja como cada área esteve presente e escolha o que você quer cuidar agora.',
-  trust1:'Mais de 15 especialistas',trust2:'Mais de 30 programas',trust3:'Suas respostas ficam com você',
+  trust1:'Mais de 15 especialistas',trust2:'Mais de 30 programas',trust3:'Sem cadastro, sem e-mail',
   qof:(i)=>`Pergunta ${i} de 8`,choose:'Escolha uma opção para continuar.',chosen:(v)=>`Você escolheu: ${v}.`,days:(n)=>n===1?'1 dia':`${n} dias`,unknown:'Não sei dizer',unknownShort:'Não soube dizer',
   back:'Voltar',next:'Continuar',see:'Ver minha Roda da Vida',save:'Salvar alteração',
   weekHint:'Pense nos últimos 7 dias. Cada área tem seu próprio ritmo: sete não é meta.',
@@ -20,7 +22,7 @@ const S={
   revEyebrow:'Sua Roda da Vida',revH:'Um retrato da sua última semana.',revLead:'Veja como cada área esteve presente na sua semana e escolha o que você quer cuidar agora.',
   listH:'Suas respostas',edit:'Rever resposta',unknownNote:'Áreas em “Não sei dizer” ficam vazias no desenho.',
   prioEyebrow:'O próximo passo',prioH:'De qual área você gostaria de cuidar agora?',prioLead:'Escolha uma área à qual você quer dedicar mais atenção ou continuar cuidando.',
-  pathEyebrow:'Sua espiral',pathH:'Comece pela área que você escolheu. Continue no seu ritmo.',pathLead:'A Jornada do Nicolas é o ponto de partida e faz parte do acesso. A sequência começa pela área que você escolheu e segue pelos outros temas. Você decide a ordem.',seed:'Ponto de partida · incluído no acesso',step:(n)=>`Passo ${n}`,
+  pathEyebrow:'Sua espiral',pathH:'Comece pela área que você escolheu. Continue no seu ritmo.',pathLead:'A sua Roda da Vida já está feita: ela é o ponto de partida e vai junto no acesso. A sequência começa pela área que você escolheu e dá a volta pelas outras sete. Você decide a ordem.',seed:'Feita ✓ · incluída',step:(n)=>`Passo ${n}`,
   spEyebrow:'Conheça os temas',spH:'Como as áreas se conectam',spLead:'A roda mostra oito áreas da vida. A espiral reúne essas áreas em seis níveis, do centro para fora. Selecione um nível para conhecer os programas e especialistas.',spOpen:'Conhecer a espiral',
   inThisLevel:'Neste nível',areasIn:'Áreas da roda',
   specEyebrow:'Conheça os especialistas',specH:'Especialistas para cuidar das diferentes áreas da sua vida.',specLead:'Conheça os médicos, nutricionistas, terapeutas e educadores do MeuFluxo. Selecione um nome para saber mais sobre seu trabalho e seus programas.',tapMore:'Toque para ver',
@@ -28,14 +30,14 @@ const S={
   how1h:'Escolha por onde começar',how1:'Conheça um programa da área que você escolheu. Com o acesso, você pode começar pela primeira aula.',
   how2h:'Continue quando fizer sentido',how2:'Volte ao mesmo programa ou explore outro conteúdo incluído no seu acesso. Você escolhe a ordem.',
   how3h:'Aprenda no seu ritmo',how3:'Assista às aulas gravadas no celular ou no computador e reveja os conteúdos durante os seus cinco anos de acesso.',
-  ctaEyebrow:'A proposta',ctaH:'Programas de todos os especialistas, em um só lugar.',ctaP:'Veja a proposta do Nicolas: os programas incluídos, o valor, o tempo de acesso e a garantia.',ctaBtn:'Ver a proposta completa',redo:'Refazer minha roda',
+  ctaEyebrow:'Oferta especial Black November · só para quem fez a Roda',ctaH:'Programas de todos os especialistas, em um só lugar. Por tempo limitado.',ctaP:'O Nicolas escreveu uma carta para você: o seu primeiro passo, o que está incluído, o valor do Black November, o prazo e a garantia.',ctaBtn:'Ler a carta do Nicolas',redo:'Refazer minha roda',
   depoEyebrow:'Quem já está na jornada',depoH:'Histórias de quem já participa',depoLead:'Relatos de alunos do MeuFluxo, com suas próprias palavras. Cada pessoa tem sua experiência, e os resultados podem variar.',depoCheck:'Em verificação · não publicar sem autorização',depoOn:'Depoimento do programa',
   howAlone:'Ver como funciona, sem fazer a roda',
-  foot:'Esta roda é um convite à reflexão pessoal e não substitui uma avaliação clínica. Suas respostas ficam nesta página e são apagadas ao recarregá-la. Para responder, você não precisa se cadastrar nem comprar.',
-  review:'Prévia de conceito · Black November'},
+  foot:'Esta roda é um convite à reflexão pessoal e não substitui uma avaliação clínica. Suas respostas são registradas de forma anônima (sem nome, sem e-mail) para preparar a sua sugestão e melhorar a Roda. Para responder, você não precisa se cadastrar nem comprar.',
+  review:'Prévia de conceito · Black November',bn:(n)=>n===null?'Black November':`Black November · faltam ${n} dias`},
  en:{start:'Build my Wheel of Life',how:'How it works',min:'2 minutes · no sign-up',
   eyebrowHero:'Your Wheel of Life',h1:'A look at your life, today.',lead:'Answer eight questions about your last week. See how present each area was and choose what you want to take care of now.',
-  trust1:'15+ specialists',trust2:'30+ programs',trust3:'Your answers stay with you',
+  trust1:'15+ specialists',trust2:'30+ programs',trust3:'No sign-up, no e-mail',
   qof:(i)=>`Question ${i} of 8`,choose:'Pick an option to continue.',chosen:(v)=>`You chose: ${v}.`,days:(n)=>n===1?'1 day':`${n} days`,unknown:"I can't say",unknownShort:"Couldn't say",
   back:'Back',next:'Continue',see:'See my Wheel of Life',save:'Save change',
   weekHint:'Think about the last 7 days. Each area has its own rhythm: seven is not a target.',
@@ -45,7 +47,7 @@ const S={
   revEyebrow:'Your Wheel of Life',revH:'A portrait of your last week.',revLead:"Not a grade. A seven-day portrait. Look where there was room, and where it got small.",
   listH:'Your answers',edit:'Change',unknownNote:'Areas marked “can’t say” stay empty in the drawing.',
   prioEyebrow:'The next step',prioH:'What would you like to take care of now?',prioLead:'Pick one area. It can be the one that got small, or one you want to cultivate. Your call.',
-  pathEyebrow:'Your spiral',pathH:'Start with the area you chose. Continue at your pace.',pathLead:'Purpose is the seed and is already included. Then comes the area you chose, and the others in sequence. A suggestion: the order is yours.',seed:'Starting point · included in access',step:(n)=>`Step ${n}`,
+  pathEyebrow:'Your spiral',pathH:'Start with the area you chose. Continue at your pace.',pathLead:'Your Wheel of Life is already done: it is the starting point and comes with your access. The sequence starts with the area you chose and goes round the other seven. The order is yours.',seed:'Done ✓ · included',step:(n)=>`Step ${n}`,
   spEyebrow:'Meet the themes',spH:'How the areas connect',spLead:'The wheel has eight areas. The spiral groups related areas into six levels, from the centre outward. Tap a level to see who takes care of it.',spOpen:'Explore the spiral',
   inThisLevel:'At this level',areasIn:'Wheel areas',
   specEyebrow:'Who is behind it',specH:'Hand-picked. One for every piece of your life.',specLead:'Doctors, nutritionists, therapists, educators. Tap a specialist to see their method.',tapMore:'Tap to see',
@@ -53,11 +55,11 @@ const S={
   how1h:'Choose where to start',how1:'See a program related to the area you chose and watch the first class.',
   how2h:'Continue when it makes sense',how2:'Go back to the same program or explore other content included in your access. The spiral suggests the order; you decide.',
   how3h:'Learn at your pace',how3:'Classes are recorded. On your phone or computer, come back to the included content throughout your five years of access.',
-  ctaEyebrow:'The proposal',ctaH:'All the specialists. One place. One decision.',ctaP:'Read Nicolas’s letter with the full proposal: what’s included, for how long, and the guarantee.',ctaBtn:'Read the proposal',redo:'Redo my wheel',
+  ctaEyebrow:'Special Black November offer · only for people who did the Wheel',ctaH:'Programs from every specialist, in one place. For a limited time.',ctaP:'Nicolas wrote you a letter: your first step, what is included, the Black November price, the deadline and the guarantee.',ctaBtn:'Read Nicolas’s letter',redo:'Redo my wheel',
   depoEyebrow:'Already on the journey',depoH:'Stories from people already taking part',depoLead:'Personal accounts from MeuFluxo students, translated here for review (originals in Portuguese). Every story is one person’s: results vary.',depoCheck:'Under verification · do not publish without authorization',depoOn:'Program testimonial',
   howAlone:'See how it works, without the wheel',
-  foot:'A personal reflection, not a clinical assessment. Your answers stay on this page only and disappear on reload. No form, sign-up or purchase.',
-  review:'Concept preview · English review copy'}
+  foot:'A personal reflection, not a clinical assessment. Your answers are recorded anonymously (no name, no e-mail) to prepare your suggestion and improve the Wheel. No form, sign-up or purchase.',
+  review:'Concept preview · English review copy',bn:(n)=>n===null?'Black November':`Black November · ${n} days left`}
 }[L];
 
 /* ---------- data (data.js) ---------- */
@@ -122,7 +124,7 @@ function spiral(hi){let h=`<svg viewBox="-20 -20 650 417" aria-hidden="true"><de
 if(!document.getElementById('kf')){const st=document.createElement('style');st.id='kf';st.textContent='@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadein{to{opacity:1}}';document.head.appendChild(st)}
 
 /* ---------- views ---------- */
-function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(S.review)}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
+function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(MF.revisao?S.review:S.bn(daysLeft()))}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
 function footer(){return `<div class="wrap foot">${esc(S.foot)}</div>`}
 
 function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="hero"><div class="copy"><span class="eyebrow">${esc(S.eyebrowHero)}</span><h1>${esc(S.h1)}</h1><p class="lead">${esc(S.lead)}</p>
@@ -130,7 +132,7 @@ function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="he
  <p class="muted" style="font-size:14px">${esc(S.min)}</p>
  <div class="trust"><span class="pill"><i class="dotc" style="background:var(--a8)"></i>${esc(S.trust1)}</span><span class="pill"><i class="dotc" style="background:var(--a5)"></i>${esc(S.trust2)}</span><span class="pill"><i class="dotc" style="background:var(--gold)"></i>${esc(S.trust3)}</span></div></div>
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
- app.querySelector('#start').onclick=()=>go(0);app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
+ app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
 
 function vQuestion(i){const a=AREAS[i];const v=values[i];
  app.innerHTML=header()+`<div class="wrap screen"><div class="q" style="--c:${a.hex}"><section>
@@ -146,11 +148,11 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  <div class="nav"><button class="btn ghost" id="back">${esc(S.back)}</button><button class="btn primary" id="next" ${v===null?'disabled':''}>${editing?esc(S.save):i===7?esc(S.see):esc(S.next)} →</button></div>
  </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}<div class="legend">${esc(S.legend)}</div></div></aside></div></div>`+footer();
  animateWheel(app);
- app.querySelectorAll('.day').forEach(b=>b.onclick=()=>{values[i]=Number(b.dataset.v);vQuestion(i);app.querySelector(`.day[data-v="${values[i]}"]`).focus({preventScroll:true})});
- app.querySelector('#unk').onclick=()=>{values[i]='unknown';vQuestion(i);app.querySelector('#unk').focus({preventScroll:true})};
+ app.querySelectorAll('.day').forEach(b=>b.onclick=()=>{values[i]=Number(b.dataset.v);track('answer',{q:i+1,area:AREAS[i].slug,v:values[i]});vQuestion(i);app.querySelector(`.day[data-v="${values[i]}"]`).focus({preventScroll:true})});
+ app.querySelector('#unk').onclick=()=>{values[i]='unknown';track('answer',{q:i+1,area:AREAS[i].slug,v:'unknown'});vQuestion(i);app.querySelector('#unk').focus({preventScroll:true})};
  app.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{extras[b.dataset.x]=b.dataset.val||null;vQuestion(i)});
  app.querySelector('#back').onclick=()=>{editing=false;go(i-1)};
- app.querySelector('#next').onclick=()=>{if(values[i]===null)return;const tgt=editing?8:i+1;editing=false;go(tgt)};
+ app.querySelector('#next').onclick=()=>{if(values[i]===null)return;const tgt=editing?8:i+1;editing=false;if(tgt===8)track('quiz_done',{vals:values.map(v=>v==='unknown'?'x':v).join('')});go(tgt)};
  bindLang()}
 
 function vReveal(showOnly){
@@ -165,14 +167,14 @@ function vReveal(showOnly){
  app.innerHTML=h; animateWheel(app);
  requestAnimationFrame(()=>app.querySelectorAll('.scores .bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
  app.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{editing=true;go(Number(b.dataset.edit))});
- app.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{priority=Number(b.dataset.p);app.querySelectorAll('[data-p]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderPath();renderExplainer(AREAS[priority].level);document.getElementById('path').scrollIntoView({behavior:'smooth',block:'start'})});
+ app.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{priority=Number(b.dataset.p);track('priority_pick',{area:AREAS[priority].slug,where:'roda'});saveRoda();app.querySelectorAll('[data-p]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderPath();renderExplainer(AREAS[priority].level);document.getElementById('path').scrollIntoView({behavior:'smooth',block:'start'})});
  renderExplainer(showOnly?null:(priority!==null?AREAS[priority].level:null));
  if(!showOnly&&priority!==null)renderPath();
  bindLang()}
 
-function renderPath(){const box=document.getElementById('path');if(!box||!TR||priority===null)return;const order=TR.order(values,priority);let n=0;
- box.innerHTML=`<div class="section" style="padding-bottom:0"><div class="head"><span class="eyebrow">${esc(S.pathEyebrow)}</span><h2>${esc(S.pathH)}</h2><p class="lead">${esc(S.pathLead)}</p></div><div class="path">${order.map((i,k)=>{const p=TR.resolve(i,extras);const sp=byName(p.especialista);const a=AREAS[i];const seed=!!p.incluido;if(!seed)n++;
-  return `<div class="step" style="--c:${a.hex};animation-delay:${k*90}ms"><span class="n${seed?' seed':''}">${seed?esc(S.seed):esc(S.step(n))}</span>${sp?`<img src="${photoSq(sp)}" alt="${esc(sp.name)}">`:`<span class="ico" style="width:54px;height:54px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff">${a.ico}</span>`}<div><b>${esc(lab(i))}</b><small>${esc(p.programa||'')}${p.especialista?' · '+esc(p.especialista):''}</small></div></div>`}).join('')}</div></div>`}
+function renderPath(){const box=document.getElementById('path');if(!box||!TR||priority===null)return;const order=TR.order(values,priority);let n=0;const SE=TR.SEMENTE[L];
+ box.innerHTML=`<div class="section" style="padding-bottom:0"><div class="head"><span class="eyebrow">${esc(S.pathEyebrow)}</span><h2>${esc(S.pathH)}</h2><p class="lead">${esc(S.pathLead)}</p></div><div class="path"><div class="step seed" style="--c:var(--gold)"><span class="n seed">${esc(S.seed)}</span><img src="img/approved/nicolas-toigo-sq.jpg" alt="Nicolas Toigo"><div><b>${esc(SE.titulo)}</b><small>${esc(SE.sub)}</small></div></div>${order.map((i,k)=>{const p=TR.resolve(i,extras);const sp=byName(p.especialista);const a=AREAS[i];n++;
+  return `<div class="step" style="--c:${a.hex};animation-delay:${(k+1)*90}ms"><span class="n">${esc(S.step(n))}</span>${sp?`<img src="${photoSq(sp)}" alt="${esc(sp.name)}">`:`<span class="ico" style="width:54px;height:54px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff">${a.ico}</span>`}<div><b>${esc(lab(i))}</b><small>${esc(p.programa||'')}${p.especialista?' · '+esc(p.especialista):''}</small></div></div>`}).join('')}</div></div>`}
 
 function renderExplainer(hiLevel){const box=document.getElementById('explainer');if(!box)return;const lv=hiLevel==null?2:hiLevel;
  box.innerHTML=`<details class="section optional" id="sp"${hiLevel!=null?' open':''}><summary><span class="eyebrow">${esc(S.spEyebrow)}</span><h2>${esc(S.spH)}</h2><span class="btn ghost">${esc(S.spOpen)}</span></summary><p class="lead" style="margin:0 0 22px">${esc(S.spLead)}</p>
@@ -186,7 +188,7 @@ function renderExplainer(hiLevel){const box=document.getElementById('explainer')
    <div class="card"><span class="big">1</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 1</span><h3>${esc(S.how1h)}</h3><p class="muted">${esc(S.how1)}</p></div>
    <div class="card"><span class="big">2</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 2</span><h3>${esc(S.how2h)}</h3><p class="muted">${esc(S.how2)}</p></div>
    <div class="card"><span class="big">3</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 3</span><h3>${esc(S.how3h)}</h3><p class="muted">${esc(S.how3)}</p></div></div></div>
-  <div class="cta"><div><span class="eyebrow" style="color:#f1dca0">${esc(S.ctaEyebrow)}</span><h2 style="margin:8px 0 12px">${esc(S.ctaH)}</h2><p>${esc(S.ctaP)}</p></div><div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start"><a class="btn" id="cta" href="${cartaHref()}">${esc(S.ctaBtn)} →</a><button class="btn ghost" id="redo" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)">${hiLevel==null&&values.every(v=>v===null)?esc(S.start):esc(S.redo)}</button></div></div>`;
+  <div class="cta"><div><span class="eyebrow" style="color:#f1dca0">${esc(S.ctaEyebrow)}</span><h2 style="margin:8px 0 12px">${esc(S.ctaH)}</h2><p>${esc(S.ctaP)}</p></div><div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start"><a class="btn" id="cta" href="${cartaHref()}" data-track="cta_letter">${esc(S.ctaBtn)} →</a><button class="btn ghost" id="redo" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)">${hiLevel==null&&values.every(v=>v===null)?esc(S.start):esc(S.redo)}</button></div></div>`;
  const panel=()=>{const k=Number(box.querySelector('.lvl-tab[aria-selected=true]').dataset.lv);const l=LEVELS[k];const specs=SPECS.filter(s=>s.level===k);
   box.querySelector('#lvlpanel').innerHTML=`<span class="eyebrow" style="color:${l.deep}">${esc(S.inThisLevel)} · ${l.num}</span><h3 style="margin:6px 0 4px">${esc(t(l.name))}</h3><p class="muted" style="margin:0 0 8px">${esc(t(l.sub))}</p>
    <div class="muted" style="font-size:13px">${esc(S.areasIn)}: ${l.areas.map(i=>`<span class="pill" style="margin:2px 4px 2px 0"><i class="dotc" style="background:${AREAS[i].hex}"></i>${esc(lab(i))}</span>`).join('')}</div>
@@ -197,9 +199,12 @@ function renderExplainer(hiLevel){const box=document.getElementById('explainer')
  box.querySelectorAll('path.arc').forEach(p=>p.onclick=()=>{const k=Number(p.dataset.lv);if(k>0)select(k)});
  box.querySelectorAll('.spec').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
  box.querySelectorAll('.prova').forEach(b=>b.onclick=()=>{const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${b.dataset.img}" alt=""><button aria-label="close">×</button>`;m.onclick=()=>m.remove();document.body.appendChild(m)});
+ box.querySelector('#cta').addEventListener('click',()=>{track('cta_letter',{prioridade:priority!==null?AREAS[priority].slug:''});saveRoda()});
  box.querySelector('#redo').onclick=()=>{values=Array(8).fill(null);priority=null;extras={g:null,r:null};go(-1)};
  panel()}
 
+/* respostas da roda → /api/roda (anônimo: vid/sid do track.js, sem nome, sem e-mail). No-op até configurar a planilha. */
+let rodaSent='';function saveRoda(){try{const ep=(MF.dados||{}).endpoint;if(!ep||!values.every(v=>v!==null))return;const ids=(window.MF_TRACK&&window.MF_TRACK.ids)||{};const rec={ts:Date.now(),vid:ids.vid||'',sid:ids.sid||'',lang:L,vals:values.map(v=>v==='unknown'?'x':v).join(''),prioridade:priority!==null?AREAS[priority].slug:'',ordem:priority!==null&&TR?TR.encode(TR.order(values,priority)):'',g:extras.g||'',r:extras.r||'',...(ids.utm||{}),ref:(ids.first||{}).ref||''};const key=JSON.stringify(rec).replace(/"ts":\d+,/,'');if(key===rodaSent)return;rodaSent=key;const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(ep,new Blob([body],{type:'application/json'}));else fetch(ep,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
 function bindLang(){app.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()})}
 function go(n){step=n;if(n<0)vHero();else if(n<8)vQuestion(n);else vReveal(false);window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1,h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 go(-1);

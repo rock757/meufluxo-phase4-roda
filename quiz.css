@@ -204,3 +204,6 @@ details.optional summary{list-style:none;cursor:pointer;display:flex;flex-wrap:w
 details.optional summary::-webkit-details-marker{display:none}
 details.optional summary h2{flex:1 1 100%;margin:6px 0 0}
 details.optional[open] summary .btn{display:none}
+/* v5: a Roda como semente (3 colunas: 1 semente + 8 passos) */
+.path{grid-template-columns:repeat(3,1fr)}
+.step.seed{border-color:var(--gold);background:#fffaf0}

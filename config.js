@@ -5,6 +5,14 @@ window.MF_CONFIG = {
   fechamento: 'A',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
   checkoutUrl: '',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true SOMENTE após Gabi/Júlia confirmarem texto, programa e autorização (LEIA-ME de 29/10).
+  // Campanha (Rock 2026-11-05: urgência real, datas reais). PROPOSTO até Rock confirmar: prazo = Black Friday 27/11/2026 23:59 BRT. lote.ativo=false até existir um lote real.
+  campanha: { nome:'Black November', prazoTexto:'27 de novembro, Black Friday', prazoTextoEn:'November 27, Black Friday', prazoISO:'2026-11-27T23:59:00-03:00',
+              lote:{ ativo:false, texto:'primeiro lote' },
+              // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
+              numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
+  downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
+  tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
+  dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
@@ -30,10 +38,10 @@ window.MF_CONFIG = {
          entrega: '' }
   },
 
-  // Oito áreas na ordem da espiral (CONFIRMADO por Rock, 2026-11-04). Propósito (Nico) é a semente: incluído em qualquer compra, nunca vendido aqui.
+  // Oito áreas na ordem da espiral (CONFIRMADO por Rock, 2026-11-04). 2026-11-05: a semente é a própria Roda da Vida (autoavaliação com o Nicolas), já feita; o Nicolas não tem programa próprio ainda.
   // 'variantes' escolhe o programa pela resposta opcional (gênero em Movimento; filhos em Relacionamentos). Padrões = programas-vitrine dos especialistas.
   programas: [ // Ordem = espiral (Rock 2026-11-05): 1 Propósito · 2 Saúde · 3 Alimentação · 4 Memória · 5 Prosperidade · 6 Relações · 7 Crescimento · 8 Espiritualidade. slug = id estável.
-    { slug:'proposito',      area:'Propósito',      programa:'A Jornada MeuFluxo',    especialista:'Nicolas Toigo',      incluido:true },
+    { slug:'proposito',      area:'Propósito',      programa:'Desperte Seu Destino',  especialista:'Fernando Felix' }, // 2026-11-05 Rock: a Jornada do Nicolas ainda não existe; a semente é a própria Roda (autoavaliação), ver trilha.js
     { slug:'movimento',      area:'Saúde',          programa:'Costas Sem Dores',      especialista:'Peterson Menezes',
       variantes:{ mulher:{programa:'Projeto Mulher 40+',especialista:'Suéllen Lopes'}, homem:{programa:'Meu Shape Ideal',especialista:'Mateus Cecconello'} } },
     { slug:'alimentacao',    area:'Alimentação',    programa:'Dieta das 3 Fases 2.0', especialista:'Eduardo Claas' },
