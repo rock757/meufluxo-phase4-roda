@@ -1,14 +1,27 @@
 // GET /api/stats  → funil agregado para o painel (painel.html). Lê a aba "eventos" da planilha.
 // Responde {configured:false} enquanto as variáveis não existirem (o painel mostra os dados de demonstração).
 const S = require('./_sheets.js');
+const DB = require('./_db.js');
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   // Privado: exige PAINEL_KEY (Vercel env) igual ao parâmetro k. Sem PAINEL_KEY definida, nunca devolve dados reais.
   const key = process.env.PAINEL_KEY || '';
   const q = new URL(req.url, 'http://x').searchParams;
-  if (!S.configured()) return res.end(JSON.stringify({ configured: false, reason: 'storage-not-configured' }));
+  if (!DB.configured() && !S.configured()) return res.end(JSON.stringify({ configured: false, reason: 'storage-not-configured' }));
   if (!key) return res.end(JSON.stringify({ configured: true, locked: true, reason: 'PAINEL_KEY-not-set' }));
   if (q.get('k') !== key) { res.statusCode = 403; return res.end(JSON.stringify({ configured: true, locked: true, reason: 'bad-key' })); }
+  if (DB.configured()) {
+    try {
+      const [tot] = await DB.sql("SELECT count(*)::int AS rows, count(distinct vid)::int AS visitors, count(distinct sid)::int AS sessions FROM eventos");
+      const ev = {}, unique = {}; (await DB.sql("SELECT ev, count(*)::int AS n, count(distinct vid)::int AS u FROM eventos GROUP BY ev")).forEach(r => { ev[r.ev] = r.n; unique[r.ev] = r.u; });
+      const pages = {}; (await DB.sql("SELECT page, count(*)::int AS n FROM eventos WHERE ev='page_view' GROUP BY page")).forEach(r => pages[r.page || '?'] = r.n);
+      const sources = {}; (await DB.sql("SELECT coalesce(nullif(utm_source,''),'(direto)') AS s, count(*)::int AS n FROM eventos WHERE ev='page_view' GROUP BY 1")).forEach(r => sources[r.s] = r.n);
+      const depth = {}; (await DB.sql("SELECT page, (extra->>'depth') AS d, count(*)::int AS n FROM eventos WHERE ev='scroll' GROUP BY 1,2")).forEach(r => depth[(r.page || '?') + ':' + r.d] = r.n);
+      const days = {}; (await DB.sql("SELECT to_char(ts AT TIME ZONE 'America/Sao_Paulo','YYYY-MM-DD') AS d, count(*)::int AS n FROM eventos WHERE ev='page_view' GROUP BY 1 ORDER BY 1")).forEach(r => days[r.d] = r.n);
+      const [rd] = await DB.sql("SELECT count(*)::int AS n FROM roda"); const [cp] = await DB.sql("SELECT count(*)::int AS n, coalesce(sum(valor),0)::float AS total FROM compras WHERE status='aprovado'");
+      return res.end(JSON.stringify({ configured: true, source: 'neon', visitors: tot.visitors, sessions: tot.sessions, pages, sources, events: ev, unique, depth, days, rows: tot.rows, rodas: rd.n, compras: cp.n, receita: cp.total }));
+    } catch (e) { res.statusCode = 500; return res.end(JSON.stringify({ configured: true, error: e.message })); }
+  }
   try {
     const rows = await S.readTab('eventos', 'A:O');
     const head = rows[0] || []; const ix = n => head.indexOf(n);
