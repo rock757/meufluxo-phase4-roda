@@ -10,3 +10,12 @@ ol.trilha li::before{content:counter(p);position:absolute;left:0;top:9px;width:3
 .falta{background:#fff3cd;color:#6b4d00;padding:2px 6px;border-radius:4px;font-size:.9em}
 ol.trilha li.semente{counter-increment:none;background:#f4f0fa;border-radius:8px;padding-left:14px}ol.trilha li.semente::before{content:'✦';background:none;color:#8050c9;position:static;display:inline;margin-right:8px;font-size:16px}
 .extras{margin:8px 0 0;font-size:13px;color:#726d7e}.extras button{font-size:13px;margin:6px 6px 0 0;padding:6px 10px;border:1px solid #ded8e7;border-radius:99px;background:#fff;color:#262234}.extras button[aria-pressed=true]{background:#eee8f7;border-color:#8050c9}
+
+/* carta longa — especialistas */
+.deck{font-size:19px;color:var(--muted);max-width:640px}.eyebrow-line{color:var(--purple);font-size:14px}
+.nivel{margin:34px 0 10px;padding-top:6px;border-top:1px solid var(--line)}.nivel .eyebrow{display:block;margin-bottom:6px}
+.esp{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}
+.esp img,.esp-ico{width:84px;height:84px;border-radius:50%;object-fit:cover;flex:0 0 84px;border:2px solid var(--pale)}
+.esp-ico{display:flex;align-items:center;justify-content:center;background:var(--purple);color:#fff;font-weight:800;font-size:30px}
+.esp .prog{color:var(--purple);font-weight:650}.esp .muted{font-size:14px}
+@media(max-width:500px){.esp{gap:12px;padding:12px}.esp img,.esp-ico{width:64px;height:64px;flex-basis:64px}}
