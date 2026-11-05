@@ -8,150 +8,134 @@
 <link rel="icon" href="img/brand-badge.svg">
 <style>
 @font-face{font-family:"Google Sans Flex";src:url(img/fonts/google-sans-flex-latin.woff2) format("woff2");font-weight:300 800;font-display:swap}
-:root{--cream:#f7f3ee;--paper:#fffdf9;--ink:#2a2440;--ink-2:#4a4361;--muted:#7b748c;--line:#e6e0d6;
- --purple:#5a3fb4;--purple-2:#8a6fd3;--lilac:#ebe4f8;--lilac-2:#d7cbf2;--deep:#2d2047;--gold:#c9a24f;
+:root{--cream:#f7f3ee;--paper:#fffdf9;--ink:#2a2440;--ink-2:#4a4361;--muted:#7b748c;--line:#e6e0d6;--purple:#5a3fb4;--purple-2:#8a6fd3;--lilac:#ebe4f8;--lilac-2:#d7cbf2;--deep:#2d2047;--gold:#c9a24f;--green:#2f7d5b;
  --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;--sans:"Google Sans Flex",system-ui,-apple-system,"Segoe UI",sans-serif}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
-button{font:inherit;cursor:pointer}
-a{color:var(--purple)}
+*{box-sizing:border-box}html,body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}a{color:var(--purple)}img{max-width:100%}
 .deck{display:flex;align-items:flex-start;overflow:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;height:100vh}
 .deck::-webkit-scrollbar{display:none}
-.page{flex:0 0 100vw;scroll-snap-align:start;min-height:100vh;padding:28px 56px 90px;display:flex;flex-direction:column;position:relative}
+.page{flex:0 0 100vw;scroll-snap-align:start;min-height:100vh;padding:24px 52px 90px;display:flex;flex-direction:column;position:relative}
 .page>*{flex-shrink:0}
-.bar{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:28px}
+.bar{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:18px}
 .bar .lang{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:99px;padding:2px;margin-left:14px;vertical-align:middle;letter-spacing:1px}
 .bar .lang button{border:0;background:transparent;padding:3px 9px;border-radius:99px;color:var(--muted);font-size:11px;letter-spacing:1px}
 .bar .lang button.on{background:var(--ink);color:#fff}
-.statement{font:400 clamp(24px,2.6vw,34px)/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 6px}
-.sub{color:var(--muted);font-size:14px;margin:0 0 34px}
 .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);font-weight:700}
-h2{font:400 clamp(30px,3.6vw,46px)/1.12 var(--serif);letter-spacing:-.015em;margin:10px 0 8px}
-.lead{font-size:clamp(16px,1.5vw,20px);color:var(--ink-2);margin:0 0 34px;max-width:760px}
-.visual{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;align-items:center;position:relative;margin-bottom:34px}
-.visual::before{content:"";position:absolute;left:8%;right:8%;top:50%;border-top:1px solid var(--line);z-index:0}
-.visual>*{position:relative;z-index:1}
-.card{background:var(--lilac);border-radius:14px;padding:26px 28px;min-height:150px;display:flex;flex-direction:column;justify-content:center}
-.card .eyebrow{font-size:10px;margin-bottom:12px}
-.card .big{font:400 clamp(22px,2.2vw,30px)/1.15 var(--serif)}
-.card small{display:block;color:var(--muted);font-size:12px;margin-top:12px}
-.card.dark{background:var(--deep);color:#fff;align-items:center;text-align:center}
-.card.dark .eyebrow{color:#cdbff0}
-.card.dark small{color:#b9afd6}
-.play{width:46px;height:46px;border-radius:50%;background:#7a5fcf;display:grid;place-items:center;margin-bottom:18px}
-.play::after{content:"";border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
-.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;margin-top:auto}
-.steps .eyebrow{font-size:10px}
-.steps h3{font:400 clamp(18px,1.6vw,22px)/1.2 var(--serif);margin:8px 0 8px}
-.steps p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.5}
+h2{font:400 clamp(30px,3.6vw,46px)/1.1 var(--serif);letter-spacing:-.015em;margin:8px 0 6px}
+.lead{font-size:clamp(16px,1.4vw,19px);color:var(--ink-2);margin:0 0 22px;max-width:720px}
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;margin-top:auto;padding-top:26px}
+.steps .eyebrow{font-size:10px}.steps h3{font:400 clamp(18px,1.6vw,22px)/1.2 var(--serif);margin:8px 0 6px}.steps p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.5}
 .nav{position:fixed;bottom:22px;left:0;right:0;display:flex;justify-content:center;gap:10px;align-items:center;z-index:5}
 .nav button{border:1px solid var(--line);background:var(--paper);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);box-shadow:0 8px 20px -12px rgba(42,36,64,.5)}
-.dots{display:flex;gap:6px;padding:0 8px}
-.dots i{width:7px;height:7px;border-radius:50%;background:var(--lilac-2);display:block}
-.dots i.on{background:var(--purple)}
-/* wheel */
-.wheel{width:100%;max-width:240px;margin:0 auto;display:block}
-.wheel polygon{fill:var(--lilac-2);stroke:#fff;stroke-width:2;cursor:pointer;transition:fill .2s}
-.wheel polygon:hover{fill:var(--purple-2)}
-.wheel polygon.on{fill:var(--purple)}
-.wheel text{font:600 10px var(--sans);fill:var(--muted);pointer-events:none}
-/* flow */
-.flow{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:stretch;position:relative;margin-bottom:28px}
-.flow::before{content:"";position:absolute;left:6%;right:6%;top:36px;border-top:1px solid var(--line)}
-.node{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 12px 12px;text-align:left;transition:all .18s;display:flex;flex-direction:column;gap:6px;min-height:120px}
-.node .n{width:30px;height:30px;border-radius:50%;background:var(--lilac);color:var(--purple);display:grid;place-items:center;font-weight:700;font-size:12px;margin:-28px 0 6px}
-.node b{font:400 17px/1.2 var(--serif)}
-.node small{color:var(--muted);font-size:12px;line-height:1.35}
-.node:hover,.node[aria-pressed=true]{border-color:var(--purple);box-shadow:0 14px 30px -22px rgba(90,63,180,.6);transform:translateY(-2px)}
-.node[aria-pressed=true] .n{background:var(--purple);color:#fff}
-.detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:30px}
-.detail b{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:6px}
-.detail p{margin:0;font-size:14.5px;color:var(--ink-2)}
-/* spiral */
-.spiral{display:grid;grid-template-columns:1.15fr 1fr;gap:34px;align-items:center;margin-bottom:28px}
-.spiral svg{width:100%;height:auto}
-.spiral path{fill:none;stroke-width:18;stroke-linecap:butt}
-.order{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.order li{display:flex;gap:10px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:8px 10px;animation:rise .5s both}
-.order img{width:38px;height:38px;border-radius:50%;object-fit:cover}
-.order b{display:block;font-size:13.5px;line-height:1.15}
-.order small{display:block;color:var(--muted);font-size:11.5px}
-.order .k{width:22px;height:22px;border-radius:50%;background:var(--lilac);color:var(--purple);font-size:11px;font-weight:700;display:grid;place-items:center;flex:0 0 22px}
-.order li.seed .k{background:var(--gold);color:#fff}
-@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* offers */
-.offers{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:18px;align-items:stretch;margin-bottom:30px}
-.offer{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px}
-.offer.main{background:var(--deep);color:#fff;border-color:var(--deep);box-shadow:0 30px 60px -40px rgba(45,32,71,.9)}
-.offer .eyebrow{font-size:10px}.offer.main .eyebrow{color:#cdbff0}
-.offer h3{font:400 clamp(20px,1.9vw,26px)/1.15 var(--serif);margin:4px 0 2px}
-.offer .price{font:400 clamp(30px,3vw,42px)/1 var(--serif);margin:10px 0 2px}
-.offer .price small{font:500 13px var(--sans);display:block;margin-top:6px;color:var(--muted)}
-.offer.main .price small{color:#cdbff0}
-.offer ul{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
-.offer li::before{content:"— ";color:var(--purple-2)}
-.offer .tag{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:var(--lilac);color:var(--purple);border-radius:99px;padding:4px 10px;font-weight:700;width:max-content}
-.offer.main .tag{background:#7a5fcf;color:#fff}
-.offer .muted{color:var(--muted);font-size:13px}
-.offer.main .muted{color:#b9afd6}
-.toggle{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:var(--paper);margin-bottom:18px}
-.toggle button{border:0;background:transparent;padding:7px 14px;border-radius:99px;font-size:13px;color:var(--muted)}
+.dots{display:flex;gap:6px;padding:0 8px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--lilac-2);display:block}.dots i.on{background:var(--purple)}
+.label{position:absolute;bottom:22px;right:52px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+/* page 1 */
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:6px 0 16px;position:relative}
+.strip::before{content:"";position:absolute;left:8%;right:8%;top:24px;border-top:1px solid var(--line)}
+.strip button{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 10px 12px;text-align:center;transition:all .18s}
+.strip button .n{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--lilac);color:var(--purple);display:grid;place-items:center;font-weight:700;font-size:12px}
+.strip button b{display:block;font:400 17px/1.15 var(--serif)}
+.strip button[aria-pressed=true]{border-color:var(--purple);box-shadow:0 14px 30px -22px rgba(90,63,180,.6)}
+.strip button[aria-pressed=true] .n{background:var(--purple);color:#fff}
+.shot{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 30px 60px -40px rgba(42,36,64,.5)}
+.shot img{display:block;width:100%}
+.shot .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(42,36,64,.85));color:#fff;padding:26px 18px 14px;display:flex;justify-content:space-between;align-items:end;gap:12px}
+.shot .cap b{font:400 20px/1.2 var(--serif)}.shot .cap a{color:#fff;font-size:13px;white-space:nowrap;background:rgba(255,255,255,.18);padding:6px 12px;border-radius:99px;text-decoration:none}
+/* page 2 */
+.try{display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:center}
+.wheel{width:100%;max-width:360px;margin:0 auto;display:block}
+.wheel polygon{fill:var(--lilac-2);stroke:#fff;stroke-width:2;cursor:pointer;transition:fill .2s}.wheel polygon:hover{fill:var(--purple-2)}.wheel polygon.on{fill:var(--purple)}
+.wheel text{font:700 12px var(--sans);fill:var(--ink);pointer-events:none}
+.result{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(42,36,64,.5)}
+.result img.cv{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.result .body{padding:18px 22px 20px}.result .body .eyebrow{font-size:10px}
+.result h3{font:400 clamp(24px,2.6vw,32px)/1.1 var(--serif);margin:6px 0 6px}
+.result .who{display:flex;gap:10px;align-items:center;margin-top:10px}.result .who img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.result .who small{display:block;color:var(--muted);font-size:12px}
+.seqmini{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:18px}
+.seqmini div{text-align:center;font-size:11px;color:var(--muted);line-height:1.2}
+.seqmini img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:8px;display:block;margin-bottom:5px;border:2px solid transparent}
+.seqmini div.on img{border-color:var(--purple)}.seqmini div.seed img{border-color:var(--gold)}
+/* page 3 */
+.sp{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:start}
+.sp svg{width:100%;height:auto}.sp rect{pointer-events:none}.sp path.arc{fill:none;stroke-width:22;cursor:pointer;transition:opacity .2s}.sp path.arc.dim{opacity:.35}
+.lvls{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.lvls button{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--ink)}
+.lvls button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h3{font:400 clamp(22px,2.4vw,30px)/1.1 var(--serif);margin:4px 0 4px}
+.faces{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.faces button{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px 5px 5px;font-size:13px;font-weight:600}
+.faces img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.faces button[aria-pressed=true]{border-color:var(--purple);background:var(--lilac)}
+.pcs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pcs div{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.pcs img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}.pcs b{display:block;font-size:13px;padding:8px 10px 10px;line-height:1.2}
+/* page 4 */
+.paths{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.path{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:left;display:flex;flex-direction:column;gap:4px;transition:all .18s}
+.path .eb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);font-weight:700}
+.path b{font:400 22px/1.15 var(--serif)}.path .pr{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:6px 0 0}
+.path small{color:var(--muted);font-size:12.5px}
+.path:hover,.path[aria-pressed=true]{border-color:var(--purple);box-shadow:0 14px 30px -22px rgba(90,63,180,.6)}
+.path[aria-pressed=true]{background:var(--lilac)}
+.flow{display:grid;grid-template-columns:1.4fr .9fr;gap:18px;align-items:start}
+.stage{background:var(--deep);color:#fff;border-radius:18px;padding:22px;min-height:300px;display:flex;flex-direction:column;gap:12px}
+.stage .eb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#cdbff0;font-weight:700}
+.stage h3{font:400 clamp(22px,2.6vw,32px)/1.12 var(--serif);margin:0}
+.stage .pr{font-size:40px;font-weight:800;letter-spacing:-.02em}
+.stage p{margin:0;color:#d9d1f0;font-size:15px}
+.stage .acts{display:flex;gap:10px;margin-top:auto;flex-wrap:wrap}
+.stage .acts button{border:0;border-radius:99px;padding:12px 18px;font-weight:700}
+.stage .yes{background:#fff;color:var(--purple)}.stage .no{background:rgba(255,255,255,.14);color:#fff}
+.trail{display:flex;flex-wrap:wrap;gap:6px}
+.trail span{font-size:11px;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.12);border-radius:99px;padding:4px 10px;color:#e6dff5}
+.trail span.ok{background:rgba(47,125,91,.5)}.trail span.no{background:rgba(255,255,255,.08);text-decoration:line-through}
+.side .k{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.side .k b{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:4px}
+.side .k .v{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.side .k small{color:var(--muted);font-size:12.5px;display:block}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:var(--paper);margin:0 0 14px}
+.toggle button{border:0;background:transparent;padding:6px 12px;border-radius:99px;font-size:12.5px;color:var(--muted)}
 .toggle button.on{background:var(--ink);color:#fff}
-.open{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:30px}
-.open div{background:var(--paper);border:1px dashed var(--lilac-2);border-radius:12px;padding:14px;font-size:13.5px}
-.open b{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple);margin-bottom:4px}
-.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:30px}
-.chip{display:flex;gap:10px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.chip img{width:40px;height:40px;border-radius:50%;object-fit:cover}
-.chip b{display:block;font-size:13.5px;line-height:1.15}.chip small{display:block;color:var(--muted);font-size:11.5px}
-.chip .k{width:22px;height:22px;border-radius:50%;background:var(--lilac);color:var(--purple);font-size:11px;font-weight:700;display:grid;place-items:center;flex:0 0 22px}
-.chip.seed .k{background:var(--gold);color:#fff}
-.note{font-size:12.5px;color:var(--muted);border-left:3px solid var(--gold);padding-left:10px;margin:0 0 20px}
-.label{position:absolute;bottom:22px;right:56px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-@media(max-width:900px){
- .deck{display:block;height:auto;overflow:visible}
- .page{flex:none;min-height:0;padding:22px 20px 60px;border-bottom:1px solid var(--line)}
- .visual,.steps,.detail,.spiral,.offers,.open,.flow{grid-template-columns:1fr}
- .visual::before,.flow::before{display:none}
- .flow{gap:16px}.node .n{margin:0}
- .chips{grid-template-columns:1fr 1fr}.order{grid-template-columns:1fr}
- .nav{display:none}.label{position:static;margin-top:20px}
-}
-
-/* value staircase */
-.stair{margin-bottom:22px;background:radial-gradient(900px 420px at 80% -20%,rgba(138,111,211,.45),transparent 60%),radial-gradient(600px 300px at 0% 110%,rgba(201,162,79,.18),transparent 60%),linear-gradient(160deg,#1b1433,#2d2047 70%,#3a2a6a);color:#fff;border-radius:18px;padding:26px 30px 20px;position:relative;overflow:hidden;box-shadow:0 40px 80px -50px rgba(27,20,51,.9)}
-.stair .eyebrow{color:#cdbff0}
-.stair h3{font:400 clamp(26px,3vw,40px)/1.1 var(--serif);margin:6px 0 4px;letter-spacing:-.01em}
-.stair h3 em{font-style:normal;font-family:var(--sans);font-weight:800;background:linear-gradient(90deg,#e9dcff,#b79bf0 60%,#8a6fd3);-webkit-background-clip:text;background-clip:text;color:transparent}
-.stair .sub2{color:#b9afd6;margin:0 0 26px;font-size:15px}
-.steps4{display:grid;grid-template-columns:1fr 1.05fr 1.35fr 1fr;gap:12px;align-items:end;position:relative}
-.steps4::before{content:"";position:absolute;left:4%;right:4%;top:-8px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(201,162,79,.7) 70%,rgba(255,255,255,.1))}
-.st{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 18px 16px;text-align:left;color:#fff;display:flex;flex-direction:column;gap:4px;transition:all .2s;position:relative}
-.st:nth-child(1){min-height:130px}.st:nth-child(2){min-height:165px}.st:nth-child(3){min-height:225px}.st:nth-child(4){min-height:175px}
-.st .eb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#cdbff0;font-weight:700}
-.st .ttl{font:400 18px/1.2 var(--serif);margin-top:4px}
-.st .pr{font:400 clamp(26px,2.6vw,36px)/1 var(--serif);margin:10px 0 2px}
-.st .pr small{display:block;font:500 12px var(--sans);color:#b9afd6;margin-top:6px}
-.st .meta{font-size:12.5px;color:#b9afd6;margin-top:auto;padding-top:10px}
-.st.hero{background:linear-gradient(180deg,rgba(138,111,211,.35),rgba(90,63,180,.25));border-color:rgba(201,162,79,.8);box-shadow:0 0 0 1px rgba(201,162,79,.25),0 30px 60px -30px rgba(138,111,211,.9)}
-.st.hero .pr{font-size:clamp(34px,3.6vw,50px)}
-.st.hero::after{content:"";position:absolute;inset:-1px;border-radius:14px;pointer-events:none;box-shadow:inset 0 0 40px rgba(201,162,79,.12)}
-.st.ghost{opacity:.6;border-style:dashed}
-.st:hover,.st[aria-pressed=true]{transform:translateY(-4px);border-color:#e9dcff}
-.timeline{display:grid;grid-template-columns:1fr 1.05fr 1.35fr 1fr;gap:12px;margin-top:12px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#b9afd6;text-align:center}
-.timeline span{border-top:1px solid rgba(255,255,255,.15);padding-top:8px}
-.anchor{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin-top:22px;align-items:stretch}
-.anchor .box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px 18px;font-size:13.5px;color:#e6dff5}
-.anchor .box b{display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#cdbff0;margin-bottom:6px}
-.anchor .sum{background:#fff;color:var(--ink);border-radius:12px;padding:18px 20px}
-.anchor .sum .eb{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700}
-.anchor .sum .big{font:400 clamp(28px,3vw,40px)/1 var(--serif);margin:8px 0 2px}
-.anchor .sum .ln{border-top:1px solid var(--line);margin:12px 0;padding-top:12px;font-size:14px}
-.anchor .sum .ln b{display:block;margin-bottom:4px}
-.anchor .sum .res{display:block;background:var(--lilac);color:var(--purple);border-radius:8px;padding:10px 12px;text-align:center;font-size:13px;font-weight:600;margin-top:10px}
-.fine{font-size:11.5px;color:#9f95bd;margin:18px 0 0;line-height:1.5}
-@media(max-width:900px){.steps4,.timeline,.anchor{grid-template-columns:1fr}.st{min-height:0!important}.stair{padding:24px 20px}}
-
+/* page 5 calculator */
+.calc{display:grid;grid-template-columns:.95fr 1.25fr;gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card-label{font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.scen{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.scen button{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600}
+.scen button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.scen .hint{font-size:11.5px;color:var(--muted)}
+label.f{display:block;margin-bottom:10px}
+.fh{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;font-weight:600}
+.fh small{font-weight:500;color:var(--muted);font-size:11px}
+.in{display:flex;align-items:center;border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;height:38px;margin-top:4px}
+.in span{padding:0 10px;font-size:12.5px;color:var(--muted);background:#f5f2ee;height:100%;display:flex;align-items:center}
+.in input{border:0;outline:0;width:100%;height:100%;padding:0 10px;font:600 15px var(--sans);color:var(--ink);background:transparent}
+.in input::-webkit-outer-spin-button,.in input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero{background:var(--deep);border-radius:16px;padding:20px;color:#fff}
+.hero .lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#cdbff0;font-weight:700}
+.hero .big{font-size:40px;font-weight:800;letter-spacing:-.03em;color:#f1dca0;line-height:1;margin-top:4px}
+.hero .sub{font-size:12.5px;color:#cdbff0;margin-top:4px}
+.hero .kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+.hero .kpis div{background:rgba(255,255,255,.07);border-radius:12px;padding:12px}
+.hero .kpis .v{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.hero .kpis .l{font-size:11px;color:#cdbff0;letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+.layers{display:flex;height:26px;border-radius:6px;overflow:hidden;margin-top:16px}
+.layers div{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;transition:width .2s}
+.legend{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;font-size:11px;color:#cdbff0}.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.rows .r{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.rows .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.rows .mid{flex:1;min-width:0}.rows .nm{font-size:13.5px;font-weight:600}.rows .ct{font-size:11.5px;color:var(--muted)}
+.rows .rv{text-align:right}.rows .rv b{font-size:14px;display:block}.rows .rv small{font-size:11px;color:var(--muted)}
+.total{display:flex;justify-content:space-between;padding-top:10px;font-weight:800}
+.fine{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.5}
+details.appendix{margin-top:14px;font-size:13px;color:var(--ink-2)}
+details.appendix summary{cursor:pointer;font-weight:600;color:var(--muted)}
+details.appendix ul{margin:8px 0 0;padding-left:18px}
+@media(max-width:900px){.deck{display:block;height:auto;overflow:visible}.page{flex:none;min-height:0;padding:20px 18px 50px;border-bottom:1px solid var(--line)}
+ .strip{grid-template-columns:1fr 1fr 1fr}.strip::before{display:none}.try,.sp,.flow,.calc,.paths,.steps{grid-template-columns:1fr}.seqmini{grid-template-columns:repeat(4,1fr)}.pcs{grid-template-columns:1fr 1fr}.nav{display:none}.label{position:static;margin-top:16px}.hero .kpis{grid-template-columns:1fr}}
 @media print{.nav{display:none}.page{page-break-after:always;min-height:0;height:auto}}
 </style>
 </head>
@@ -164,115 +148,159 @@ h2{font:400 clamp(30px,3.6vw,46px)/1.12 var(--serif);letter-spacing:-.015em;marg
 <script>
 (function(){
 'use strict';
-const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA;
+const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA, D=window.MF_DATA; const {AREAS,LEVELS,SPECS,progOf}=D;
 const Q=new URLSearchParams(location.search); const L=Q.get('lang')==='en'?'en':'pt'; const t=o=>o[L]||o.pt;
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const A=MF.oferta&&MF.oferta.A||{}, B=MF.oferta&&MF.oferta.B||{};
-const AREAS=window.MF_DATA.AREAS;
-const SL={ 'Nicolas Toigo':'nicolas-toigo','Eduardo Claas':'eduardo-claas','Peterson Menezes':'peterson-menezes','Suéllen Lopes':'suellen-lopes','Mateus Cecconello':'mateus-cecconello','Dr. Marcelo Roxo':'marcelo-roxo','Lucia Lux Tellaris':'lucia-lux-tellaris','Gabriela Barea':'gabriela-barea','Eddy Giordani':'eddy-giordani','Nereu Araldi':'nereu-araldi','Zaika Capita':'zaika-capita'};
-const img=n=>SL[n]?`img/approved/${SL[n]}-sq.jpg`:'img/brand-badge.svg';
-let prio=4; // demo priority (Finanças) — click a wedge to change
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const brl=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(v);
+const brl2=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v);
+const num=v=>new Intl.NumberFormat('pt-BR').format(Math.round(v));
+const SL={'Nicolas Toigo':'nicolas-toigo','Eduardo Claas':'eduardo-claas','Peterson Menezes':'peterson-menezes','Suéllen Lopes':'suellen-lopes','Mateus Cecconello':'mateus-cecconello','Dr. Marcelo Roxo':'marcelo-roxo','Lucia Lux Tellaris':'lucia-lux-tellaris','Gabriela Barea':'gabriela-barea','Eddy Giordani':'eddy-giordani','Nereu Araldi':'nereu-araldi','Zaika Capita':'zaika-capita'};
+const face=n=>SL[n]?`img/approved/${SL[n]}-sq.jpg`:'img/brand-badge.svg';
+const cover=title=>{const c=progOf(title);return c?c.cover:''};
+const oneLiner=title=>{const c=progOf(title);return c?c.desc:''};
+let prio=2; // demo: Alimentação
+const P1=197, P8=697, P5=997; // P1 = PROPOSTO (um programa, Black November); P8 = Jornada 8 programas 1 ano; P5 = Ilimitado 5 anos (confirmados por Rock)
 const S={
- pt:{top:'MeuFluxo / Fase 4 / Somente revisão',label:'Visão geral para a reunião · nada aqui é decisão final',
-  p1:{st:'Um caminho, não uma campanha.',sub:'Sete passos, do convite ao acesso. Clique em cada passo.',eb:'Página 1 / O caminho inteiro',h:'Do convite ao primeiro programa, numa olhada.',lead:'A pessoa entra por um link com origem marcada, faz a Roda da Vida, escolhe uma prioridade, vê a espiral, lê a carta do Nicolas e decide. Tudo que ela escolheu viaja com ela até o checkout e até o acesso.',
-   nodes:[['Convite','E-mail, WhatsApp ou link da API, com utm e origem'],['Roda da Vida','8 perguntas sobre a última semana, sem cadastro'],['Prioridade','Uma área, escolhida pela pessoa'],['Espiral','Ordem sugerida: semente + 8 áreas, a partir da prioridade'],['Carta','Nicolas apresenta a proposta: programa a programa'],['Checkout','Payt, com os mesmos parâmetros de origem'],['Acesso','Obrigado + trilha pessoal + plataforma']],
-   det:[
-    ['A pessoa recebe um convite com a origem marcada (utm_source, campanha, código). Nada muda para ela.','Os parâmetros ficam guardados no navegador e seguem para a roda, a carta e o checkout, sem sobrescrever cupom ou split.','Vini / Hergamenes (links e tracking) · Júlia (mensagens)'],
-    ['Oito perguntas, uma por tela: em quantos dos últimos 7 dias…? A roda se forma ao lado, a cada resposta.','Nada é enviado. As respostas ficam só na página. Não é diagnóstico: é um retrato de sete dias.','Protótipo pronto (v4) · texto em revisão'],
-    ['A pessoa escolhe UMA área para cuidar agora. Pode ser a que ficou pequena ou a que quer cultivar.','A escolha vira o parâmetro prioridade. Movimento varia por gênero; Relações por filhos ou pessoas da mesma idade.','Protótipo pronto · regras confirmadas por Rock'],
-    ['Semente (Jornada do Nicolas, incluída) → a prioridade → as outras sete áreas, em ordem de espiral. Com a foto de quem cuida de cada uma.','A ordem vira o código ordem (16 letras) que segue para a carta e para a página de obrigado.','Protótipo pronto · programas padrão confirmados'],
-    ['Carta escrita, na voz do Nicolas: o que a pessoa vai ganhar, programa a programa, na ordem dela. Preço, prazo e garantia no final.','Mostra só o fechamento aprovado (A). Campos vazios no config não aparecem. Sem botão de compra até o link do Payt existir.','Rock (texto, em reescrita) · Évila (link)'],
-    ['Botão único para o checkout da oferta aprovada. A pessoa vê o total à vista e o das parcelas no próprio Payt.','A URL do checkout recebe prioridade, ordem, origem e cupom sem perder nada. Compra teste obrigatória antes de ligar.','Évila (Payt) · Dani (compras teste)'],
-    ['Página de obrigado com a trilha pessoal da pessoa e o próximo passo. Depois, acesso na plataforma.','Entrega e suporte a confirmar no config (prazo de liberação, e-mail de atendimento).','Gabi (acesso) · atendimento']],
-   steps:[['01 / Entra','Com a origem marcada.','Cada link de convite leva utm e código. A pessoa não vê nada disso: só a roda.'],['02 / Escolhe','Uma prioridade, não oito.','A roda mostra a semana. A pessoa escolhe por onde começar. A espiral sugere o resto.'],['03 / Decide','Lendo, não sendo empurrada.','A carta explica a proposta inteira. Uma decisão, um checkout, uma garantia de 7 dias.']]},
-  p2:{st:'Mostrar o mecanismo, sem fingir que é diagnóstico.',sub:'Uma explicação proposta da jornada, não uma recomendação automática.',eb:'Página 2 / A escolha fica concreta',h:'Da sua roda ao seu primeiro programa.',lead:'Você escolhe uma prioridade. Explora o conteúdo. Decide por onde começar.',c1:'Um interesse escolhido por você',c1s:'Clique numa fatia da roda para trocar.',c2:'O primeiro programa',c2s:'Programa padrão da área · especialista que cuida dela',
-   steps:[['01 / Observe','O que merece espaço agora?','Olhe para as áreas da sua roda. Os números registram sua semana, não o seu valor.'],['02 / Choose'.replace('Choose','Escolha'),'Uma prioridade, não oito.','Escolha um tema que queira conhecer melhor. Sem precisar resolver tudo de uma vez.'],['03 / Explore','Veja antes de decidir.','Conheça a proposta e uma aula do programa. Escolha o primeiro conteúdo que faz sentido para você.']]},
-  p3:{st:'A espiral conecta a necessidade de hoje à jornada inteira.',sub:'Sentido horário, do centro para fora: a vida crescendo.',eb:'Página 3 / Da prioridade à espiral',h:'Comece pela sua necessidade. O resto vem na ordem certa.',lead:'O propósito é a semente e já vem incluído. Depois vem a área que a pessoa escolheu, e cada área leva à seguinte. É uma sugestão, não uma regra.',seed:'Semente · incluída',
-   steps:[['01 / Semente','A Jornada do Nicolas.','Incluída em qualquer compra. Nunca vendida sozinha nesta versão.'],['02 / A necessidade','Entra por onde dói.','O primeiro programa é o da prioridade escolhida. Aula de 20 minutos, no mesmo dia.'],['03 / O resto vem','Uma área leva à outra.','Quando uma melhora, a próxima já está ali, com a pessoa certa. Nada de recomeçar do zero.']]},
-  p4:{st:'A oferta fácil de comparar e difícil de entender errado.',sub:'Fatos confirmados por Rock em 4/11. Conta de valor nas palavras do Nicolas na live. Totais das parcelas só no checkout.',eb:'Página 4 / A oferta principal',h:'MeuFluxo Ilimitado, Versão Black November.',lead:'Muito mais barato que a versão vitalícia. Cinco anos de acesso a todos os programas disponíveis hoje. Garantia de 7 dias. Clique em cada degrau.',
-   big:'A diferença de ter <em>TUDO</em> na sua jornada.',big2:'De um programa à plataforma inteira, numa olhada.',
-   rows:[['Um programa','R$297','1 ano · o ponto de partida','Programa avulso, preço de tabela. Vídeo-aulas + e-book.'],['Os 8 da sua roda','R$697','1 ano · Jornada MeuFluxo','Os oito programas da própria espiral, na ordem da pessoa. (Downsell: só para quem não levou o Ilimitado.)'],['Tudo, por cinco anos','R$997','5 anos · Ilimitado Black November','Todos os programas disponíveis hoje. Mais de 15 especialistas. Jornada do Nicolas incluída. Garantia de 7 dias.'],['Para sempre','Vitalício','referência · não está nesta oferta','A versão vitalícia custa muito mais. A Black November é a porta de entrada: cinco anos, preço de um.']],
-   tl:['1 ano','1 ano','5 anos','para sempre'],
-   anchorT:'A conta simples',anchor:'Um programa avulso custa R$297. Por menos do que custam quatro, a pessoa leva todos (mais de 30), por cinco anos. Sem torres de valor nem totais gigantes: o público é 74% mulheres, 78% com 54+.',
-   sumT:'MeuFluxo / Resumo da oferta',cash:'em pagamento único',inst:'ou em até 12x no cartão: total informado no checkout',r1:'5 anos de acesso',r1s:'contados da confirmação do pagamento',r2:'Garantia de 7 dias',r2s:'reembolso integral pelo suporte dentro do prazo',res:'Reservado ao checkout validado',
-   fine:'Valores: preço de tabela de programa avulso R$297 (catálogo). Não publicar valor de parcela antes de o Payt informar o total. Não prometer lançamentos futuros, suporte 1:1 nem acesso vitalício sem confirmação.',
-   steps:[['01 / Finito é finito','Cinco anos, ditos claramente.','Nada de “nunca mais compre outro curso” ao lado de um acesso de cinco anos.'],['02 / O preço completo','Sem parcela inventada.','O total das 12x aparece no checkout. A carta diz “um pouco mais no cartão” e só.'],['03 / Igual à oferta real','O que está escrito é o que entrega.','Sem lançamentos futuros, suporte individual ou vitalício por baixo dos panos.']]},
-  p5:{st:'Quem não leva tudo, pode levar a própria jornada.',sub:'Mecanismo de oferta a confirmar com Júlia (e-mail / WhatsApp após a carta).',eb:'Página 5 / O downsell',h:'Jornada MeuFluxo: os 8 programas da sua roda, por um ano.',lead:'Para quem leu a carta e não comprou o Ilimitado: os oito programas da própria espiral, na ordem da pessoa, por 12 meses. Mesma garantia de 7 dias.',
-   open:'O que ainda falta para ligar',openItems:[['Link do Payt','Évila · sem ele, nenhum botão de compra aparece'],['Parcelas','Total exato das 12x: só o checkout informa'],['Suporte e entrega','E-mail de atendimento e prazo de liberação, no config'],['Compras teste','Dani · caminho API e caminho e-mail, inclusive no navegador do WhatsApp']],
-   steps:[['01 / Quando','Depois da carta, não antes.','Quem não comprou a principal recebe a Jornada como segunda chance. Nunca as duas ao mesmo tempo.'],['02 / O que','Oito programas, a ordem dela.','Os mesmos oito da roda, começando pela prioridade escolhida. Um ano de acesso.'],['03 / O que falta','Quatro itens, nenhum de texto.','Payt, parcelas, suporte/entrega e compras teste. Depois disso, liga.']]}},
- en:{top:'MeuFluxo / Phase 4 / Review only',label:'Overview for the meeting · nothing here is a final decision',
-  p1:{st:'A path, not a campaign.',sub:'Seven steps, from invitation to access. Click each step.',eb:'Page 1 / The whole path',h:'From invitation to first program, at a glance.',lead:'The person arrives through a link with its origin tagged, builds their Wheel of Life, picks one priority, sees the spiral, reads Nicolas’s letter and decides. Everything they chose travels with them to checkout and to access.',
-   nodes:[['Invitation','Email, WhatsApp or API link, with utm and origin'],['Wheel of Life','8 questions about the last week, no sign-up'],['Priority','One area, chosen by the person'],['Spiral','Suggested order: seed + 8 areas, from the priority'],['Letter','Nicolas presents the proposal, program by program'],['Checkout','Payt, with the same origin parameters'],['Access','Thank-you + personal path + platform']],
-   det:[
-    ['The person gets an invitation with its origin tagged (utm_source, campaign, code). Nothing changes for them.','Parameters are kept in the browser and follow to the wheel, the letter and checkout, never overwriting coupon or split.','Vini / Hergamenes (links, tracking) · Júlia (messages)'],
-    ['Eight questions, one per screen: on how many of the last 7 days…? The wheel forms beside each answer.','Nothing is sent. Answers stay on the page. Not a diagnosis: a seven-day portrait.','Prototype ready (v4) · copy under review'],
-    ['The person picks ONE area to take care of now. The one that got small, or the one they want to cultivate.','The choice becomes the priority parameter. Movement varies by gender; Relationships by kids vs. people their age.','Prototype ready · rules confirmed by Rock'],
-    ['Seed (Nicolas’s Jornada, included) → the priority → the other seven areas in spiral order. With the photo of who takes care of each.','The order becomes the 16-letter ordem code, carried to the letter and the thank-you page.','Prototype ready · default programs confirmed'],
-    ['A written letter in Nicolas’s voice: what the person gains, program by program, in their order. Price, term and guarantee at the end.','Shows only the approved closing (A). Empty config fields don’t appear. No buy button until the Payt link exists.','Rock (copy, being rewritten) · Évila (link)'],
-    ['One button to the approved offer’s checkout. The person sees the cash total and the installment total in Payt itself.','The checkout URL receives priority, order, origin and coupon without losing anything. Test purchase required before go-live.','Évila (Payt) · Dani (test purchases)'],
-    ['Thank-you page with the person’s path and the next step. Then access on the platform.','Delivery and support still to confirm in config (release time, support email).','Gabi (access) · support']],
-   steps:[['01 / Enter','With the origin tagged.','Every invitation link carries utm and code. The person sees none of it: just the wheel.'],['02 / Choose','One priority, not eight.','The wheel shows the week. The person picks where to start. The spiral suggests the rest.'],['03 / Decide','By reading, not by being pushed.','The letter explains the whole proposal. One decision, one checkout, a 7-day guarantee.']]},
-  p2:{st:'Make the mechanism visible, without pretending it is a diagnosis.',sub:'A proposed explanation of the journey, not an automated personalized recommendation.',eb:'Page 2 / The choice becomes concrete',h:'From your wheel to your first program.',lead:'You choose a priority. You explore the content. You decide where to start.',c1:'An interest chosen by you',c1s:'Click a slice of the wheel to change it.',c2:'The first program',c2s:'Default program for the area · the specialist who takes care of it',
-   steps:[['01 / Observe','What deserves room now?','Look at the areas of your wheel. The numbers record your week, not your worth.'],['02 / Choose','One priority, not eight.','Pick a topic you want to know better. No need to solve everything at once.'],['03 / Explore','See before you decide.','Read the proposal and watch a class. Choose the first content that makes sense to you.']]},
-  p3:{st:'The spiral connects today’s need to the whole journey.',sub:'Clockwise, from the centre outward: life growing.',eb:'Page 3 / From priority to spiral',h:'Start with your need. The rest comes in the right order.',lead:'Purpose is the seed and is already included. Then comes the area the person chose, and each area leads to the next. A suggestion, not a rule.',seed:'Seed · included',
-   steps:[['01 / Seed','Nicolas’s Jornada.','Included with any purchase. Never sold alone in this version.'],['02 / The need','Enter where it hurts.','The first program is the chosen priority’s. A 20-minute class, the same day.'],['03 / The rest follows','One area leads to another.','When one improves, the next is already there, with the right person. No starting over.']]},
-  p4:{st:'An offer easy to compare and hard to misunderstand.',sub:'Facts confirmed by Rock on Nov 4. Value math in Nicolas’s own words from the live. Installment totals only at checkout.',eb:'Page 4 / The main offer',h:'MeuFluxo Ilimitado, Black November edition.',lead:'Much cheaper than the lifetime edition. Five years of access to every program available today. 7-day guarantee. Click each step.',
-   big:'The difference of having <em>EVERYTHING</em> on your journey.',big2:'From one program to the whole platform, at a glance.',
-   rows:[['One program','R$297','1 year · the starting point','Single program, list price. Video classes + e-book.'],['The 8 of your wheel','R$697','1 year · Jornada MeuFluxo','The eight programs of the person’s own spiral, in their order. (Downsell: only for those who didn’t take Ilimitado.)'],['Everything, for five years','R$997','5 years · Ilimitado Black November','Every program available today. 15+ specialists. Nicolas’s Jornada included. 7-day guarantee.'],['Forever','Lifetime','reference · not part of this offer','The lifetime edition costs much more. Black November is the doorway: five years, one price.']],
-   tl:['1 year','1 year','5 years','forever'],
-   anchorT:'The simple math',anchor:'A single program costs R$297. For less than four of them, the person gets all of them (30+), for five years. No value towers or giant totals: the audience is 74% women, 78% aged 54+.',
-   sumT:'MeuFluxo / Offer summary',cash:'single payment',inst:'or up to 12 card installments: total shown at checkout',r1:'5 years of access',r1s:'from payment confirmation',r2:'7-day guarantee',r2s:'full refund via support within the term',res:'Reserved for the validated checkout',
-   fine:'Figures: single-program list price R$297 (catalog). Do not publish an installment figure before Payt shows the total. Do not promise future releases, 1:1 support or lifetime access without confirmation.',
-   steps:[['01 / Finite means finite','Five years, said plainly.','No “never buy another course” next to five-year access.'],['02 / The complete price','No invented installment.','The 12x total appears at checkout. The letter says “a bit more on the card” and nothing else.'],['03 / Match the actual offer','What is written is what is delivered.','No future releases, 1:1 support or lifetime quietly added.']]},
-  p5:{st:'Whoever doesn’t take everything can take their own journey.',sub:'Offer mechanism to confirm with Júlia (email / WhatsApp after the letter).',eb:'Page 5 / The downsell',h:'Jornada MeuFluxo: the 8 programs of your wheel, for one year.',lead:'For those who read the letter and didn’t buy Ilimitado: the eight programs of their own spiral, in their order, for 12 months. Same 7-day guarantee.',
-   open:'What is still missing to go live',openItems:[['Payt link','Évila · without it, no buy button appears'],['Installments','Exact 12x total: only checkout shows it'],['Support and delivery','Support email and release time, in config'],['Test purchases','Dani · API path and email path, including the WhatsApp in-app browser']],
-   steps:[['01 / When','After the letter, not before.','Whoever didn’t buy the main offer gets the Jornada as a second chance. Never both at once.'],['02 / What','Eight programs, their order.','The same eight from the wheel, starting with the chosen priority. One year of access.'],['03 / What’s missing','Four items, none of them copy.','Payt, installments, support/delivery and test purchases. Then it goes live.']]}}
+ pt:{top:'MeuFluxo / Fase 4 / Somente revisão',label:'Para a reunião · nada aqui é decisão final',
+  p1:{eb:'1 / 5 · Veja o caminho inteiro',h:'Seis telas. Uma decisão.',lead:'Clique em um passo para ver a tela real.',strip:[['Convite','1-convite','Link com origem marcada'],['Roda','2-roda','8 perguntas, sem cadastro'],['Prioridade','3-prioridade','A pessoa escolhe uma área'],['Sequência','4-espiral','8 programas, a partir da escolha'],['Carta','5-carta','A proposta, na voz do Nicolas'],['Oferta','6-oferta','R$997 · 5 anos · 7 dias']],open:'abrir ao vivo',
+   steps:[['Entra','Com a origem marcada.','utm e código seguem até o checkout.'],['Escolhe','Uma área, não oito.','A sequência nasce da escolha.'],['Decide','Lendo a proposta.','Um checkout. Uma garantia.']]},
+  p2:{eb:'2 / 5 · Experimente a roda',h:'Toque numa fatia. Veja o primeiro programa mudar.',lead:'',res:'Um programa para começar',seq:'A sequência sugerida (8 programas, incluindo a Jornada)',with:'com',
+   steps:[['Observe','O que merece espaço agora?','Os números registram a semana, não o valor da pessoa.'],['Escolha','Uma prioridade.','O programa padrão da área aparece na hora.'],['Explore','Veja antes de decidir.','A carta continua exatamente dessa escolha.']]},
+  p3:{eb:'3 / 5 · Explore a espiral',h:'Toque num nível. Veja quem cuida dele.',lead:'Sentido horário, do centro para fora. Seis níveis reúnem as oito áreas.',areas:'Áreas da roda',specs:'Especialistas',progs:'Programas',
+   steps:[['Centro','Propósito.','A Jornada do Nicolas, incluída.'],['Para fora','Cada nível abre o próximo.','Saúde e alimentação, memória, relações, prosperidade, espiritualidade.'],['Sem obrigação','A ordem é da pessoa.','A espiral sugere; ela decide.']]},
+  p4:{eb:'4 / 5 · Brinque com a oferta',h:'Escolha um caminho. Veja a oferta se desenrolar.',lead:'Três portas de entrada, já construídas. Clique em aceitar ou recusar e acompanhe o que a pessoa paga e recebe.',
+   paths:[['Porta A · proposta','Um programa',P1,'Black November · 1 ano · preço PROPOSTO (hoje o avulso é R$297)'],['Porta B','A Jornada: os 8 da roda',P8,'1 ano · os 8 programas da própria sequência'],['Porta C · direta','Ilimitado · 5 anos',P5,'Todos os programas disponíveis hoje · 5 anos · 7 dias']],
+   credit:['Upgrade abate o que já foi pago','Upgrade cobra o preço cheio'],yes:'Aceita',no:'Recusa',restart:'Recomeçar',end:'Fim do caminho',paid:'Pagou',gets:'Leva',offerNow:'Oferta agora',
+   steps:[['Porta A','Começa pequeno, sobe.','1 programa → Jornada → Ilimitado. Cada degrau só para quem comprou o anterior.'],['Porta B','Metade do caminho.','Jornada primeiro; quem recusa vê o programa avulso.'],['Porta C','Direto ao valor.','Ilimitado primeiro; quem recusa desce para a Jornada e depois para um programa.']]},
+  p5:{eb:'5 / 5 · Veja a oportunidade',h:'Projeção de vendas.',lead:'Pessoas alcançadas → compradores → escolhas → receita. Premissas editáveis. Não é previsão, é conta.',
+   strat:'Caminho',reach:'Pessoas alcançadas',conv:'Compram a primeira oferta',credit:'Upgrade abate o valor pago',scen:['Conservador','Moderado','Otimista'],hint:'atalhos · ajuste qualquer campo',
+   upA:'Compradores de 1 programa que sobem para a Jornada',upB:'Compradores da Jornada que sobem para o Ilimitado',downB:'Quem recusou e aceita a Jornada',downA:'Quem recusou e aceita 1 programa',
+   total:'Receita total',perBuyer:'Receita por comprador',perReach:'Receita por pessoa alcançada',buyers:'Compradores',ilim:'Ilimitados (5 anos)',rows:'Receita por etapa',
+   fine:'Preços: R$197 (um programa, PROPOSTO para a Black November; o avulso atual é R$297), R$697 (Jornada, 1 ano) e R$997 (Ilimitado, 5 anos), confirmados por Rock em 4/11. Cada etapa calcula sobre quem realmente chega nela. Totais das parcelas e taxas não entram. Não é previsão.',
+   appendix:'Apêndice: o que ainda falta para ligar',items:['Link do Payt (Évila) · sem ele, nenhum botão de compra aparece','Total exato das 12x · só a página de pagamento informa','Suporte e entrega · canal, horário e prazo de liberação, no config','Compras teste (Dani) · caminho API e caminho e-mail','Depoimentos · Gabi/Júlia confirmam texto e autorização'],
+   steps:[['Conta simples','Quem chega, quem compra.','Cada ramo usa só as pessoas elegíveis a ele.'],['Mexa nas premissas','Cenários são atalhos.','Mude qualquer campo e veja a receita na hora.'],['Decida junto','Porta A, B ou C.','A conta mostra o que cada escolha muda.']]}},
+ en:{top:'MeuFluxo / Phase 4 / Review only',label:'For the meeting · nothing here is a final decision',
+  p1:{eb:'1 / 5 · See the whole path',h:'Six screens. One decision.',lead:'Click a step to see the real screen.',strip:[['Invitation','1-convite','Link with its origin tagged'],['Wheel','2-roda','8 questions, no sign-up'],['Priority','3-prioridade','The person picks one area'],['Sequence','4-espiral','8 programs, from the choice'],['Letter','5-carta','The proposal, in Nicolas’s voice'],['Offer','6-oferta','R$997 · 5 years · 7 days']],open:'open live',
+   steps:[['Enter','With the origin tagged.','utm and code follow to checkout.'],['Choose','One area, not eight.','The sequence is born from the choice.'],['Decide','By reading the proposal.','One checkout. One guarantee.']]},
+  p2:{eb:'2 / 5 · Try the wheel',h:'Tap a slice. Watch the first program change.',lead:'',res:'A program to start with',seq:'The suggested sequence (8 programs, including the Jornada)',with:'with',
+   steps:[['Observe','What deserves room now?','The numbers record the week, not the person’s worth.'],['Choose','One priority.','The area’s default program appears at once.'],['Explore','See before deciding.','The letter continues from exactly that choice.']]},
+  p3:{eb:'3 / 5 · Explore the spiral',h:'Tap a level. See who takes care of it.',lead:'Clockwise, from the centre outward. Six levels gather the eight areas.',areas:'Wheel areas',specs:'Specialists',progs:'Programs',
+   steps:[['Centre','Purpose.','Nicolas’s Jornada, included.'],['Outward','Each level opens the next.','Health and nutrition, memory, relationships, prosperity, spirituality.'],['No obligation','The order is the person’s.','The spiral suggests; they decide.']]},
+  p4:{eb:'4 / 5 · Play with the offer',h:'Choose a path. Watch the offer unfold.',lead:'Three doors in, already built. Click accept or decline and follow what the person pays and gets.',
+   paths:[['Door A · proposed','One program',P1,'Black November · 1 year · PROPOSED price (today a single program is R$297)'],['Door B','The Jornada: the 8 of the wheel',P8,'1 year · the 8 programs of their own sequence'],['Door C · direct','Ilimitado · 5 years',P5,'Every program available today · 5 years · 7 days']],
+   credit:['Upgrade credits what was paid','Upgrade charges full price'],yes:'Accept',no:'Decline',restart:'Restart',end:'End of path',paid:'Paid',gets:'Gets',offerNow:'Offer now',
+   steps:[['Door A','Start small, climb.','1 program → Jornada → Ilimitado. Each step only for those who bought the previous one.'],['Door B','Halfway in.','Jornada first; those who decline see the single program.'],['Door C','Straight to the value.','Ilimitado first; those who decline step down to the Jornada and then to one program.']]},
+  p5:{eb:'5 / 5 · See the opportunity',h:'Sales projection.',lead:'People reached → buyers → choices → revenue. Editable assumptions. Not a forecast: arithmetic.',
+   strat:'Path',reach:'People reached',conv:'Buy the first offer',credit:'Upgrade credits amount paid',scen:['Conservative','Moderate','Optimistic'],hint:'shortcuts · edit any field',
+   upA:'Single-program buyers who upgrade to the Jornada',upB:'Jornada buyers who upgrade to Ilimitado',downB:'Decliners who accept the Jornada',downA:'Decliners who accept one program',
+   total:'Total revenue',perBuyer:'Revenue per buyer',perReach:'Revenue per person reached',buyers:'Buyers',ilim:'Ilimitados (5 years)',rows:'Revenue by step',
+   fine:'Prices: R$197 (one program, PROPOSED for Black November; today’s single is R$297), R$697 (Jornada, 1 year) and R$997 (Ilimitado, 5 years), confirmed by Rock on Nov 4. Each step computes on the people who actually reach it. Installment totals and fees are not included. Not a forecast.',
+   appendix:'Appendix: what is still missing to go live',items:['Payt link (Évila) · without it, no buy button appears','Exact 12x total · only the payment page shows it','Support and delivery · channel, hours and release time, in config','Test purchases (Dani) · API path and email path','Testimonials · Gabi/Júlia confirm text and authorization'],
+   steps:[['Simple math','Who arrives, who buys.','Each branch uses only the people eligible for it.'],['Change assumptions','Scenarios are shortcuts.','Edit any field and see revenue at once.'],['Decide together','Door A, B or C.','The math shows what each choice changes.']]}}
 }[L];
 const bar=(n)=>`<div class="bar"><span>${esc(S.top)}<span class="lang"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></span></span><span>0${n} / 05</span></div>`;
 const steps=a=>`<div class="steps">${a.map(s=>`<div><span class="eyebrow">${esc(s[0])}</span><h3>${esc(s[1])}</h3><p>${esc(s[2])}</p></div>`).join('')}</div>`;
-const head=(p)=>`<p class="statement">${esc(p.st)}</p><p class="sub">${esc(p.sub)}</p><span class="eyebrow">${esc(p.eb)}</span><h2>${esc(p.h)}</h2><p class="lead">${esc(p.lead)}</p>`;
-function wheel(on){const cx=120,cy=120,R=100;const ang=i=>(-90+i*45)*Math.PI/180;const P=(i,r)=>[cx+Math.cos(ang(i))*r,cy+Math.sin(ang(i))*r];let h=`<svg class="wheel" viewBox="0 0 240 240">`;
+const head=p=>`<span class="eyebrow">${esc(p.eb)}</span><h2>${esc(p.h)}</h2>${p.lead?`<p class="lead">${esc(p.lead)}</p>`:''}`;
+const LIVE='https://meufluxo-phase4-roda.vercel.app/';
+const liveFor=['index.html?utm_source=convite','index.html','index.html','index.html','carta.html?prioridade=alimentacao','carta.html?prioridade=alimentacao#oferta'];
+function wheel(on){const cx=180,cy=180,R=150;const ang=i=>(-90+i*45)*Math.PI/180;const P=(i,r)=>[cx+Math.cos(ang(i))*r,cy+Math.sin(ang(i))*r];let h=`<svg class="wheel" viewBox="0 0 360 360">`;
  AREAS.forEach((a,i)=>{const p1=P(i,R),p2=P(i+1,R);h+=`<polygon class="${i===on?'on':''}" data-i="${i}" points="${cx},${cy} ${p1.join(',')} ${p2.join(',')}"><title>${esc(t(a.n))}</title></polygon>`});
- AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2;h+=`<text x="${cx+Math.cos(m)*(R-30)}" y="${cy+Math.sin(m)*(R-30)}" text-anchor="middle" dominant-baseline="middle">${i+1}</text>`});
- return h+`<circle cx="${cx}" cy="${cy}" r="22" fill="#fff"/></svg>`}
-const ARCS=[[0,'M165,288 A21,21 0 0 1 144,267'],[1,'M144,267 A34,34 0 0 1 178,233'],[2,'M178,233 A55,55 0 0 1 233,288'],[3,'M233,288 A89,89 0 0 1 144,377'],[4,'M144,377 A144,144 0 0 1 0,233'],[5,'M0,233 A233,233 0 0 1 233,0'],[6,'M233,0 A377,377 0 0 1 610,377']];
-const SQ=[[144,267,21],[144,233,34],[178,233,55],[144,288,89],[0,233,144],[0,0,233],[233,0,377]];
-const DEEP=['#c9b6ef','#b9a0e6','#a98cdd','#9478d2','#7f64c6','#6a50b8','#5a3fb4'];
-function spiral(){let h=`<svg viewBox="-16 -16 642 409" aria-hidden="true">`;SQ.forEach((q,k)=>h+=`<rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="${DEEP[k]}" opacity=".18"/><rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="none" stroke="#c9a24f" stroke-width="1" opacity=".6"/>`);
- ARCS.forEach(([k,d])=>h+=`<path d="${d}" stroke="${DEEP[k]}" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s ${k*.2}s ease-out forwards"/>`);
+ AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2;h+=`<text x="${cx+Math.cos(m)*(R-42)}" y="${cy+Math.sin(m)*(R-42)}" text-anchor="middle" dominant-baseline="middle" fill="${i===on?'#fff':'#2a2440'}">${i+1}</text>`});
+ return h+`<circle cx="${cx}" cy="${cy}" r="30" fill="#fff"/></svg>`}
+const ARCS=[[0,[144,267,21],'M165,288 A21,21 0 0 1 144,267'],[1,[144,233,34],'M144,267 A34,34 0 0 1 178,233'],[2,[178,233,55],'M178,233 A55,55 0 0 1 233,288'],[3,[144,288,89],'M233,288 A89,89 0 0 1 144,377'],[4,[0,233,144],'M144,377 A144,144 0 0 1 0,233'],[5,[0,0,233],'M0,233 A233,233 0 0 1 233,0'],[6,[233,0,377],'M233,0 A377,377 0 0 1 610,377']];
+function spiral(hi){let h=`<svg viewBox="-16 -16 642 409" aria-hidden="true">`;ARCS.forEach(([k,q])=>h+=`<rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="${LEVELS[k].mid}" opacity="${k===hi?.45:.14}"/><rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="none" stroke="#c9a24f" stroke-width="1" opacity=".55"/>`);
+ ARCS.forEach(([k,q,d])=>h+=`<path class="arc${hi!=null&&k!==hi?' dim':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
  h+=`<circle cx="165" cy="267" r="5" fill="#c9a24f"><animate attributeName="r" values="4;7;4" dur="2.4s" repeatCount="indefinite"/></circle>`;return h+'</svg>'}
-function pathList(cls){if(!TR)return'';const order=TR.order(Array(8).fill(4),prio);let n=0;return order.map((i,k)=>{const p=TR.resolve(i,{});const seed=!!p.incluido;if(!seed)n++;return `<li class="${seed?'seed':''}" style="animation-delay:${k*70}ms"><span class="k">${seed?'★':n}</span><img src="${img(p.especialista)}" alt=""><span><b>${i+1} — ${esc(t(AREAS[i].n))}</b><small>${esc(p.programa||'')} · ${esc(p.especialista||'')}</small></span></li>`}).join('')}
-function chips(){if(!TR)return'';const order=TR.order(Array(8).fill(4),prio);let n=0;return order.map(i=>{const p=TR.resolve(i,{});const seed=!!p.incluido;if(!seed)n++;return `<div class="chip ${seed?'seed':''}"><span class="k">${seed?'★':n}</span><img src="${img(p.especialista)}" alt=""><span><b>${esc(p.programa||'')}</b><small>${i+1} — ${esc(t(AREAS[i].n))} · ${esc(p.especialista||'')}</small></span></div>`}).join('')}
-function firstProgram(){const p=TR?TR.resolve(prio,{}):{};return p}
+const firstProgram=()=>TR?TR.resolve(prio,{}):{};
+function seqMini(){const o=TR.order(Array(8).fill(4),prio);return o.map(i=>{const p=TR.resolve(i,{});return `<div class="${p.incluido?'seed':(i===prio?'on':'')}"><img src="${cover(p.programa)}" alt=""><span>${i+1} — ${esc(t(AREAS[i].n))}</span></div>`}).join('')}
+/* ---- offer paths engine (page 4) ---- */
+const PATHS={A:{entry:['p1',P1],chain:[['p8',P8,'up'],['p5',P5,'up']]},B:{entry:['p8',P8],chain:[['p5',P5,'up'],['p1',P1,'down']]},C:{entry:['p5',P5],chain:[['p8',P8,'down'],['p1',P1,'down']]}};
+const NAME={p1:{pt:'Um programa (1 ano)',en:'One program (1 year)'},p8:{pt:'Jornada · 8 programas (1 ano)',en:'Jornada · 8 programs (1 year)'},p5:{pt:'Ilimitado · todos os programas (5 anos)',en:'Ilimitado · every program (5 years)'}};
+let path='C', credit=true, st=null;
+function resetPath(){st={step:0,paid:0,owns:null,trail:[],done:false}}
+function offerPrice(id,price){if(!credit||!st.owns)return price;const rank={p1:1,p8:2,p5:3};return rank[id]>rank[st.owns]?Math.max(0,price-st.paid):price}
+function currentOffer(){const P=PATHS[path];if(st.step===0)return {id:P.entry[0],price:P.entry[1],kind:'entry'};const c=P.chain[st.step-1];return c?{id:c[0],price:c[1],kind:c[2]}:null}
+function act(yes){const o=currentOffer();if(!o)return;const price=offerPrice(o.id,o.price);
+ if(yes){st.paid+=price;st.owns=o.id;st.trail.push({id:o.id,ok:true,price})}else st.trail.push({id:o.id,ok:false});
+ // routing: after entry → chain[0]; 'up' offers need a buyer; 'down' offers need a decliner
+ let next=st.step+1;const P=PATHS[path];
+ while(true){const c=P.chain[next-1];if(!c){st.done=true;break}
+  if(c[2]==='up'&&!yes){st.done=true;break} // no upgrade path for a decliner at entry/upsell
+  if(c[2]==='down'&&yes){st.done=true;break} // buyer does not see downsells
+  st.step=next;break}
+ renderStage()}
+function renderStage(){const box=document.getElementById('stage');if(!box)return;const o=st.done?null:currentOffer();const p=S.p4;
+ const trail=st.trail.map(x=>`<span class="${x.ok?'ok':'no'}">${esc(t(NAME[x.id]))}${x.ok?' · '+brl(x.price):''}</span>`).join('');
+ box.innerHTML=o?`<span class="eb">${esc(p.offerNow)}</span><h3>${esc(t(NAME[o.id]))}</h3><div class="pr">${brl(offerPrice(o.id,o.price))}${credit&&st.owns&&offerPrice(o.id,o.price)!==o.price?`<small style="font-size:14px;color:#cdbff0;font-weight:600"> (${brl(o.price)} − ${brl(st.paid)})</small>`:''}</div><p>${o.kind==='entry'?'':(o.kind==='up'?(L==='en'?'Upgrade offered to the buyer':'Upgrade oferecido a quem comprou'):(L==='en'?'Downsell offered to the decliner':'Downsell oferecido a quem recusou'))}</p><div class="trail">${trail}</div><div class="acts"><button class="yes" id="yes">${esc(p.yes)} ✓</button><button class="no" id="no">${esc(p.no)}</button></div>`
+ :`<span class="eb">${esc(p.end)}</span><h3>${st.owns?esc(t(NAME[st.owns])):(L==='en'?'No purchase':'Sem compra')}</h3><div class="pr">${brl(st.paid)}</div><div class="trail">${trail}</div><div class="acts"><button class="yes" id="restart">${esc(p.restart)} ↻</button></div>`;
+ const side=document.getElementById('side');side.innerHTML=`<div class="k"><b>${esc(p.paid)}</b><div class="v">${brl(st.paid)}</div></div><div class="k"><b>${esc(p.gets)}</b><div class="v" style="font-size:18px">${st.owns?esc(t(NAME[st.owns])):'—'}</div><small>${st.owns==='p5'?(L==='en'?'5 years · every program available today · Jornada included':'5 anos · todos os programas disponíveis hoje · Jornada incluída'):st.owns==='p8'?(L==='en'?'1 year · 8 programs of their sequence':'1 ano · os 8 programas da sequência'):st.owns==='p1'?(L==='en'?'1 year · one program':'1 ano · um programa'):''}</small></div>`;
+ const y=document.getElementById('yes'),n=document.getElementById('no'),r=document.getElementById('restart');if(y)y.onclick=()=>act(true);if(n)n.onclick=()=>act(false);if(r)r.onclick=()=>{resetPath();renderStage()}}
+/* ---- calculator (page 5) ---- */
+const SCEN={0:{conv:3,upA:15,upB:12,downB:8,downA:6},1:{conv:5,upA:25,upB:18,downB:12,downA:10},2:{conv:8,upA:35,upB:25,downB:18,downA:15}};
+let cstrat='C', ccredit=true, cscen=1, cv={N:10000,conv:5,upA:25,upB:18,downB:12,downA:10};
+function calc(){const N=cv.N;let rows=[],ilim=0,buyers=0;
+ const price=(id,paid)=>{const p={p1:P1,p8:P8,p5:P5}[id];return ccredit?Math.max(0,p-paid):p};
+ if(cstrat==='C'){const b5=N*cv.conv/100;rows.push(['p5',b5,P5]);ilim+=b5;const dec=N-b5;const b8=dec*cv.downB/100;rows.push(['p8',b8,P8]);const dec2=dec-b8;const b1=dec2*cv.downA/100;rows.push(['p1',b1,P1]);buyers=b5+b8+b1}
+ if(cstrat==='B'){const b8=N*cv.conv/100;rows.push(['p8',b8,P8]);const up5=b8*cv.upB/100;rows.push(['p5↑',up5,price('p5',P8)]);ilim+=up5;const dec=N-b8;const b1=dec*cv.downA/100;rows.push(['p1',b1,P1]);buyers=b8+b1}
+ if(cstrat==='A'){const b1=N*cv.conv/100;rows.push(['p1',b1,P1]);const up8=b1*cv.upA/100;rows.push(['p8↑',up8,price('p8',P1)]);const up5=up8*cv.upB/100;rows.push(['p5↑',up5,price('p5',P1+price('p8',P1))]);ilim+=up5;buyers=b1}
+ const total=rows.reduce((s,r)=>s+r[1]*r[2],0);return {rows,total,buyers,ilim,perBuyer:buyers?total/buyers:0,perReach:N?total/N:0}}
+const RN={p1:{pt:'Um programa',en:'One program'},p8:{pt:'Jornada (8)',en:'Jornada (8)'},p5:{pt:'Ilimitado 5 anos',en:'Ilimitado 5 years'},'p8↑':{pt:'Upgrade → Jornada',en:'Upgrade → Jornada'},'p5↑':{pt:'Upgrade → Ilimitado',en:'Upgrade → Ilimitado'}};
+const RC={p1:'#8a6fd3','p8':'#5a3fb4','p8↑':'#5a3fb4',p5:'#2d2047','p5↑':'#2d2047'};
+function renderCalc(){const r=calc();const p=S.p5;const box=document.getElementById('calcout');if(!box)return;
+ box.innerHTML=`<div class="hero"><span class="lbl">${esc(p.total)}</span><div class="big">${brl(r.total)}</div><div class="sub">${num(cv.N)} ${esc(p.reach).toLowerCase()} · ${esc(S.p4.paths[['A','B','C'].indexOf(cstrat)][1])}</div>
+  <div class="kpis"><div><div class="v">${num(r.buyers)}</div><div class="l">${esc(p.buyers)}</div></div><div><div class="v">${brl(r.perBuyer)}</div><div class="l">${esc(p.perBuyer)}</div></div><div><div class="v">${brl2(r.perReach)}</div><div class="l">${esc(p.perReach)}</div></div></div>
+  <div class="layers">${r.rows.map(x=>{const w=r.total?x[1]*x[2]/r.total*100:0;return `<div style="width:${w}%;background:${RC[x[0]]}" title="${esc(t(RN[x[0]]))}">${w>12?brl(x[1]*x[2]):''}</div>`}).join('')}</div>
+  <div class="legend">${r.rows.map(x=>`<span><i style="background:${RC[x[0]]}"></i>${esc(t(RN[x[0]]))}</span>`).join('')}</div></div>
+  <div class="card" style="margin-top:12px"><div class="card-label">${esc(p.rows)}</div><div class="rows">${r.rows.map(x=>`<div class="r"><span class="dot" style="background:${RC[x[0]]}"></span><div class="mid"><div class="nm">${esc(t(RN[x[0]]))}</div><div class="ct">${num(x[1])} × ${brl(x[2])}</div></div><div class="rv"><b>${brl(x[1]*x[2])}</b><small>${r.total?(x[1]*x[2]/r.total*100).toFixed(1):0}%</small></div></div>`).join('')}</div><div class="total"><span>Total</span><span>${brl(r.total)}</span></div><div class="fine">${esc(p.ilim)}: ${num(r.ilim)}. ${esc(p.fine)}</div></div>`}
+function calcInputs(){const p=S.p5;const f=(id,label,unit,hint,val,step)=>`<label class="f"><div class="fh"><span>${esc(label)}</span>${hint?`<small>${esc(hint)}</small>`:''}</div><div class="in"><input type="number" id="c_${id}" value="${val}" step="${step||1}" min="0"><span>${unit}</span></div></label>`;
+ const byStrat={A:[['upA',p.upA],['upB',p.upB]],B:[['upB',p.upB],['downA',p.downA]],C:[['downB',p.downB],['downA',p.downA]]}[cstrat];
+ return `<div class="card"><div class="card-label">${esc(p.strat)}</div><div class="scen" id="cstrat">${['A','B','C'].map(k=>`<button class="${k===cstrat?'on':''}" data-k="${k}">${esc(S.p4.paths[['A','B','C'].indexOf(k)][1])}</button>`).join('')}</div>
+  <div class="scen" id="cscen">${p.scen.map((s,i)=>`<button class="${i===cscen?'on':''}" data-i="${i}">${esc(s)}</button>`).join('')}<span class="hint">${esc(p.hint)}</span></div>
+  ${f('N',p.reach,L==='en'?'people':'pessoas','',cv.N,500)}${f('conv',p.conv,'%','',cv.conv,.5)}
+  <div class="two">${byStrat.map(([k,l])=>f(k,l,'%','',cv[k],1)).join('')}</div>
+  <label class="f" style="display:flex;gap:8px;align-items:center;margin-top:6px"><input type="checkbox" id="c_credit" ${ccredit?'checked':''}> <span style="font-size:13px">${esc(p.credit)}</span></label></div>`}
+function bindCalc(){const root=document.getElementById('calcin');root.innerHTML=calcInputs();
+ root.querySelectorAll('#cstrat button').forEach(b=>b.onclick=()=>{cstrat=b.dataset.k;bindCalc();renderCalc()});
+ root.querySelectorAll('#cscen button').forEach(b=>b.onclick=()=>{cscen=Number(b.dataset.i);Object.assign(cv,SCEN[cscen]);bindCalc();renderCalc()});
+ ['N','conv','upA','upB','downB','downA'].forEach(k=>{const el=root.querySelector('#c_'+k);if(el)el.oninput=()=>{cv[k]=Math.max(0,Number(el.value)||0);if(k!=='N')cscen=-1;root.querySelectorAll('#cscen button').forEach(b=>b.classList.toggle('on',Number(b.dataset.i)===cscen));renderCalc()}});
+ root.querySelector('#c_credit').onchange=e=>{ccredit=e.target.checked;renderCalc()}}
+/* ---- pages ---- */
 const pages=[
- ()=>{const p=S.p1;return bar(1)+head(p)+`<div class="flow">${p.nodes.map((n,i)=>`<button class="node" data-node="${i}" aria-pressed="${i===0}"><span class="n">${i+1}</span><b>${esc(n[0])}</b><small>${esc(n[1])}</small></button>`).join('')}</div><div class="detail" id="det"></div>`+steps(p.steps)},
- ()=>{const p=S.p2,fp=firstProgram();return bar(2)+head(p)+`<div class="visual"><div id="w2">${wheel(prio)}</div><div class="card"><span class="eyebrow">${esc(p.c1)}</span><div class="big" id="c1">${prio+1} — ${esc(t(AREAS[prio].n))}</div><small>${esc(p.c1s)}</small></div><div class="card dark"><span class="eyebrow">${esc(p.c2)}</span><div class="play"></div><img id="c2img" src="${img(fp.especialista)}" alt="" style="width:54px;height:54px;border-radius:50%;object-fit:cover;margin-bottom:10px"><div class="big" id="c2">${esc(fp.programa||'')}</div><small id="c2s">${esc(fp.especialista||'')} · ${esc(p.c2s)}</small></div></div>`+steps(p.steps)},
- ()=>{const p=S.p3;return bar(3)+head(p)+`<div class="spiral"><div>${spiral()}</div><ol class="order" id="order">${pathList()}</ol></div>`+steps(p.steps)},
- ()=>{const p=S.p4;return bar(4)+`<p class="statement">${esc(p.st)}</p><p class="sub">${esc(p.sub)}</p><span class="eyebrow">${esc(p.eb)}</span>`+`<div class="stair" style="margin-top:12px"><span class="eyebrow">${esc(p.h)}</span><h3>${p.big}</h3><p class="sub2">${esc(p.big2)}</p>
-  <div class="steps4">${p.rows.map((x,i)=>`<button class="st${i===2?' hero':''}${i===3?' ghost':''}" data-st="${i}" aria-pressed="${i===2}"><span class="eb">${esc(x[2])}</span><span class="ttl">${esc(x[0])}</span><span class="pr">${esc(x[1])}</span><span class="meta">${esc(x[3])}</span></button>`).join('')}</div>
-  <div class="timeline">${p.tl.map(x=>`<span>${esc(x)}</span>`).join('')}</div>
-  <div class="anchor"><div class="box"><b>${esc(p.anchorT)}</b>${esc(p.anchor)}</div><div class="sum"><span class="eb">${esc(p.sumT)}</span><div class="big" id="sumPrice">${esc(A.preco||'R$997 à vista').replace(/ à vista$/,'')}</div><div style="color:var(--muted);font-size:14px">${esc(p.cash)}</div><div style="color:var(--muted);font-size:12px;margin-top:4px">${esc(p.inst)}</div><div class="ln"><b>${esc(p.r1)}</b><span style="color:var(--muted);font-size:13px">${esc(p.r1s)}</span></div><div class="ln" style="margin-top:0"><b>${esc(p.r2)}</b><span style="color:var(--muted);font-size:13px">${esc(p.r2s)}</span></div><span class="res">${esc(p.res)}</span></div></div>
-  <p class="fine">${esc(p.fine)}</p></div>`+steps(p.steps)},
- ()=>{const p=S.p5;return bar(5)+head(p)+`<div class="chips">${chips()}</div><span class="eyebrow">${esc(p.open)}</span><div class="open" style="margin-top:10px">${p.openItems.map(o=>`<div><b>${esc(o[0])}</b>${esc(o[1])}</div>`).join('')}</div>`+steps(p.steps)+`<span class="label">${esc(S.label)}</span>`}
+ ()=>{const p=S.p1;return bar(1)+head(p)+`<div class="strip">${p.strip.map((s,i)=>`<button data-shot="${i}" aria-pressed="${i===0}"><span class="n">${i+1}</span><b>${esc(s[0])}</b></button>`).join('')}</div><div class="shot" id="shot"></div>`+steps(p.steps)},
+ ()=>{const p=S.p2;return bar(2)+head(p)+`<div class="try"><div id="w2">${wheel(prio)}</div><div id="res"></div></div><p class="eyebrow" style="margin-top:18px">${esc(p.seq)}</p><div class="seqmini" id="seqmini">${seqMini()}</div>`+steps(p.steps)},
+ ()=>{const p=S.p3;return bar(3)+head(p)+`<div class="sp"><div id="spsvg">${spiral(2)}</div><div><div class="lvls" id="lvls">${LEVELS.map((l,k)=>k===0?'':`<button data-lv="${k}" aria-pressed="${k===2}">${l.num} — ${esc(t(l.name))}</button>`).join('')}</div><div class="panel" id="lvlpanel"></div></div></div>`+steps(p.steps)},
+ ()=>{const p=S.p4;return bar(4)+head(p)+`<div class="paths">${p.paths.map((x,i)=>{const k=['A','B','C'][i];return `<button class="path" data-path="${k}" aria-pressed="${k===path}"><span class="eb">${esc(x[0])}</span><b>${esc(x[1])}</b><span class="pr">${brl(x[2])}</span><small>${esc(x[3])}</small></button>`}).join('')}</div>
+  <div class="toggle" id="credit"><button class="${credit?'on':''}" data-c="1">${esc(p.credit[0])}</button><button class="${credit?'':'on'}" data-c="0">${esc(p.credit[1])}</button></div>
+  <div class="flow"><div class="stage" id="stage"></div><div class="side" id="side"></div></div>`+steps(p.steps)},
+ ()=>{const p=S.p5;return bar(5)+head(p)+`<div class="calc"><div id="calcin"></div><div id="calcout"></div></div><details class="appendix"><summary>${esc(p.appendix)}</summary><ul>${p.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></details>`+steps(p.steps)+`<span class="label">${esc(S.label)}</span>`}
 ];
 const deck=document.getElementById('deck');
 function render(){deck.innerHTML=pages.map((f,i)=>`<section class="page" id="p${i+1}">${f()}</section>`).join('');
  document.getElementById('dots').innerHTML=pages.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('');
- // page 1 detail
- const det=document.getElementById('det');const showDet=i=>{const d=S.p1.det[i];det.innerHTML=`<div><b>${L==='en'?'What the person sees':'O que a pessoa vê'}</b><p>${esc(d[0])}</p></div><div><b>${L==='en'?'What happens behind':'O que acontece por trás'}</b><p>${esc(d[1])}</p></div><div><b>${L==='en'?'Who / status':'Quem / status'}</b><p>${esc(d[2])}</p></div>`;deck.querySelectorAll('.node').forEach(n=>n.setAttribute('aria-pressed',Number(n.dataset.node)===i))};showDet(0);
- deck.querySelectorAll('.node').forEach(n=>n.onclick=()=>showDet(Number(n.dataset.node)));
- // page 2 wheel → priority (carries to pages 3 and 5)
- const bindWheel=()=>deck.querySelectorAll('#w2 polygon').forEach(pg=>pg.onclick=()=>{prio=Number(pg.dataset.i);document.getElementById('w2').innerHTML=wheel(prio);bindWheel();const fp=firstProgram();document.getElementById('c1').textContent=`${prio+1} — ${t(AREAS[prio].n)}`;document.getElementById('c2').textContent=fp.programa||'';document.getElementById('c2s').textContent=`${fp.especialista||''} · ${S.p2.c2s}`;document.getElementById('c2img').src=img(fp.especialista);document.getElementById('order').innerHTML=pathList();deck.querySelector('.chips').innerHTML=chips()});bindWheel();
- deck.querySelectorAll('.st').forEach(b=>b.onclick=()=>deck.querySelectorAll('.st').forEach(x=>x.setAttribute('aria-pressed',x===b)));
- // page 4 toggle
- deck.querySelectorAll('#tg button').forEach(b=>b.onclick=()=>{deck.querySelectorAll('#tg button').forEach(x=>x.classList.toggle('on',x===b));deck.querySelectorAll('.offer .price[data-cash]').forEach(pr=>{const sm=pr.querySelector('small');const v=b.dataset.m==='cash'?pr.dataset.cash:pr.dataset.inst;pr.firstChild.textContent=v;if(b.dataset.m==='inst')sm.textContent=S.p4.instNote;else sm.textContent=pr.closest('.main')?(A.acessoPrazo||''):(B.acessoPrazo||'')})});
+ // p1 screenshots
+ const showShot=i=>{const s=S.p1.strip[i];document.getElementById('shot').innerHTML=`<img src="img/shots/${s[1]}.jpg" alt="${esc(s[0])}"><div class="cap"><b>${i+1}. ${esc(s[0])} — ${esc(s[2])}</b><a href="${LIVE+liveFor[i]}" target="_blank" rel="noopener">${esc(S.p1.open)} ↗</a></div>`;deck.querySelectorAll('[data-shot]').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.shot)===i))};showShot(0);
+ deck.querySelectorAll('[data-shot]').forEach(b=>b.onclick=()=>showShot(Number(b.dataset.shot)));
+ // p2 wheel
+ const res=()=>{const fp=firstProgram();const c=progOf(fp.programa);document.getElementById('res').innerHTML=`<div class="result">${c&&c.cover?`<img class="cv" src="${c.cover}" alt="">`:''}<div class="body"><span class="eyebrow">${esc(S.p2.res)} · ${prio+1} — ${esc(t(AREAS[prio].n))}</span><h3>${esc(fp.programa||'')}</h3><p style="margin:0;color:var(--ink-2);font-size:15px">${esc(oneLiner(fp.programa))}</p><div class="who"><img src="${face(fp.especialista)}" alt=""><div><b>${esc(fp.especialista||'')}</b><small>${esc(S.p2.with)} ${esc(fp.especialista||'')}</small></div></div></div></div>`;document.getElementById('seqmini').innerHTML=seqMini()};
+ const bindWheel=()=>deck.querySelectorAll('#w2 polygon').forEach(pg=>pg.onclick=()=>{prio=Number(pg.dataset.i);document.getElementById('w2').innerHTML=wheel(prio);bindWheel();res()});bindWheel();res();
+ // p3 spiral
+ const selLv=k=>{document.getElementById('spsvg').innerHTML=spiral(k);bindArcs();deck.querySelectorAll('#lvls button').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.lv)===k));const l=LEVELS[k];const specs=SPECS.filter(s=>s.level===k);const progs=[];specs.forEach(s=>s.programs.forEach(p=>progs.push([p,s])));
+  document.getElementById('lvlpanel').innerHTML=`<span class="eyebrow">${l.num}</span><h3>${esc(t(l.name))}</h3><p style="margin:0;color:var(--muted);font-size:14px">${esc(t(l.sub))} · ${esc(S.p3.areas)}: ${l.areas.map(i=>`${i+1} — ${esc(t(AREAS[i].n))}`).join(', ')}</p><div class="faces">${specs.map(s=>`<button data-s="${s.slug}"><img src="img/approved/${s.slug}-sq.jpg" alt="">${esc(s.name)}</button>`).join('')}</div><div class="pcs" id="pcs">${progs.slice(0,6).map(([p,s])=>`<div data-spec="${s.slug}"><img src="${cover(p)}" alt="" loading="lazy"><b>${esc(p)}</b></div>`).join('')}</div>`;
+  document.querySelectorAll('#lvlpanel .faces button').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')==='true';document.querySelectorAll('#lvlpanel .faces button').forEach(x=>x.setAttribute('aria-pressed','false'));const s=specs.find(x=>x.slug===b.dataset.s);const list=on?progs:progs.filter(([p,x])=>x.slug===s.slug);if(!on)b.setAttribute('aria-pressed','true');document.getElementById('pcs').innerHTML=list.slice(0,6).map(([p,x])=>`<div><img src="${cover(p)}" alt="" loading="lazy"><b>${esc(p)}</b></div>`).join('')})};
+ const bindArcs=()=>document.querySelectorAll('#spsvg path.arc').forEach(a=>a.onclick=()=>{const k=Number(a.dataset.lv);if(k>0)selLv(k)});
+ deck.querySelectorAll('#lvls button').forEach(b=>b.onclick=()=>selLv(Number(b.dataset.lv)));selLv(2);
+ // p4 paths
+ resetPath();renderStage();
+ deck.querySelectorAll('.path').forEach(b=>b.onclick=()=>{path=b.dataset.path;deck.querySelectorAll('.path').forEach(x=>x.setAttribute('aria-pressed',x===b));resetPath();renderStage()});
+ deck.querySelectorAll('#credit button').forEach(b=>b.onclick=()=>{credit=b.dataset.c==='1';deck.querySelectorAll('#credit button').forEach(x=>x.classList.toggle('on',x===b));resetPath();renderStage()});
+ // p5 calculator
+ bindCalc();renderCalc();
  deck.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()});
 }
 render();
-const st=document.createElement('style');st.textContent='@keyframes draw{to{stroke-dashoffset:0}}';document.head.appendChild(st);
 let cur=0;const n=pages.length;const goTo=i=>{cur=Math.max(0,Math.min(n-1,i));deck.scrollTo({left:cur*deck.clientWidth,behavior:'smooth'});document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k===cur))};
 document.getElementById('prev').onclick=()=>goTo(cur-1);document.getElementById('next').onclick=()=>goTo(cur+1);
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='PageUp')goTo(cur-1)});
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight'||e.key==='PageDown')goTo(cur+1);if(e.key==='ArrowLeft'||e.key==='PageUp')goTo(cur-1)});
 deck.addEventListener('scroll',()=>{const i=Math.round(deck.scrollLeft/deck.clientWidth);if(i!==cur){cur=i;document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k===cur))}});
 })();
 </script>
