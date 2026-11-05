@@ -1,46 +1,130 @@
+/* MeuFluxo · Fase 4 — carta v3: continua a escolha feita na roda e apresenta a proposta. Vanilla JS; dados em data.js, fatos comerciais em config.js. */
 (function(){
-  const cfg=window.MF_CONFIG||{};
-  const keys=cfg.paramsRepassados||[];
-  let stored={};try{stored=JSON.parse(sessionStorage.getItem('mf_params')||'{}')}catch(e){}
-  const params=new URLSearchParams();
-  Object.keys(stored).forEach(k=>params.set(k,stored[k]));
-  const q=new URLSearchParams(location.search);
-  q.forEach((v,k)=>{if(keys.includes(k)||k==='prioridade'||k==='ordem'||k==='g'||k==='r')params.set(k,v)});
-  const F=cfg.fechamento||null;
-  // closings
-  document.querySelectorAll('[data-closing]').forEach(sec=>{if(F&&sec.dataset.closing!==F)sec.hidden=true});
-  document.querySelectorAll('[data-only]').forEach(el=>{if(F&&el.dataset.only!==F)el.hidden=true; if(!F&&cfg.revisao!==false)el.classList.add('review')});
-  // fields: "A.preco" / "B.preco" / "X.preco" (X = fechamento escolhido, ou A em revisão sem escolha)
-  const of=cfg.oferta||{};
-  const val=ref=>{let [k,f]=ref.split('.');if(k==='X')k=F||'A';return ((of[k]||{})[f]||'').trim()};
-  document.querySelectorAll('[data-field]').forEach(el=>{
-    const v=val(el.dataset.field);
-    if(v){el.textContent=(el.dataset.prefix||'')+v}
-    else if(cfg.revisao!==false){const n=el.dataset.falta||el.dataset.field;el.innerHTML='<span class="falta">[a confirmar: '+n+']</span>'}
-    else{el.textContent=''}
-  });
-  document.querySelectorAll('[data-requires]').forEach(el=>{if(!val(el.dataset.requires))el.hidden=true});
-  if(cfg.textoClienteAtual)document.querySelectorAll('[data-owner-text]').forEach(el=>el.textContent=cfg.textoClienteAtual.replace(/\.$/,''));
-  // trilha (Plano B)
-  const T=window.MF_TRILHA;
-  document.querySelectorAll('[data-trilha]').forEach(box=>{if(!T)return;
-    let o=T.decode(q.get('ordem'));
-    const aviso=box.previousElementSibling&&box.previousElementSibling.id==='trilha-aviso'?box.previousElementSibling:null;
-    if(!o){o=[0,1,2,3,4,5,6,7];document.querySelectorAll('.trilha-aviso').forEach(a=>a.textContent='Ordem da espiral. Faça a sua Roda da Vida para começar pela sua necessidade.')}
-    box.innerHTML=T.render(o,{g:q.get('g'),r:q.get('r')});
-  });
-  // CTA
-  if(cfg.checkoutUrl){
-    document.querySelectorAll('[data-cta]').forEach(block=>{
-      if(F&&block.dataset.cta!==F)return;
-      let url;try{url=new URL(cfg.checkoutUrl,location.href)}catch(e){return}
-      params.forEach((v,k)=>{if(!url.searchParams.has(k))url.searchParams.set(k,v)});
-      const a=document.createElement('a');a.className='btn';a.href=url.toString();a.textContent=block.dataset.label+' →';
-      const wrap=document.createElement('div');wrap.className='actions';wrap.appendChild(a);block.replaceWith(wrap);
-    });
-  }
-  if(cfg.revisao===false){
-    document.querySelectorAll('.review,.tag,footer').forEach(el=>el.hidden=true);
-    document.querySelectorAll('h1,h2,h3,p,li').forEach(el=>{const t=el.textContent.trim();if(/^\[|SOMENTE SE APROVADO|^Encerramento comum$|^Fechamento [AB] \|/.test(t))el.hidden=true});
-  }
+'use strict';
+const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA, D=window.MF_DATA;
+const {AREAS,SPECS,DEPOS,PROGS,PROOFS}=D;
+const Q=new URLSearchParams(location.search);
+const L=Q.get('lang')==='en'?'en':'pt'; const t=o=>(o&&(o[L]||o.pt))||'';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const A=MF.oferta&&MF.oferta.A||{};
+const REV=!!MF.revisao;
+
+/* ---------- params (chain: convite → roda → carta → checkout) ---------- */
+const KEYS=MF.paramsRepassados||[];
+function stored(){try{return JSON.parse(sessionStorage.getItem('mf_params')||'{}')}catch(e){return{}}}
+(function cap(){try{const kept=stored();KEYS.forEach(k=>{if(Q.get(k))kept[k]=Q.get(k)});sessionStorage.setItem('mf_params',JSON.stringify(kept))}catch(e){}})();
+let prio=AREAS.findIndex(a=>a.slug===Q.get('prioridade')); if(prio<0)prio=null;
+let ctx={g:Q.get('g')||null,r:Q.get('r')||null};
+function orderNow(){const o=TR&&TR.decode(Q.get('ordem')||'');if(o&&(prio===null||o[1]===prio))return o;return TR?TR.order(Array(8).fill(null),prio===null?1:prio):[0,1,2,3,4,5,6,7]}
+function checkoutHref(){if(!MF.checkoutUrl)return'';let u;try{u=new URL(MF.checkoutUrl)}catch(e){return''}
+ const p=Object.assign({},stored());if(prio!==null){p.prioridade=AREAS[prio].slug;p.ordem=TR?TR.encode(orderNow()):''}if(ctx.g)p.g=ctx.g;if(ctx.r)p.r=ctx.r;
+ Object.entries(p).forEach(([k,v])=>{if(v&&!u.searchParams.has(k))u.searchParams.set(k,v)});return u.toString()}
+function indexHref(){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');const s=p.toString();return 'index.html'+(s?'?'+s:'')}
+const first=()=>prio===null?null:(TR?TR.resolve(prio,ctx):null);
+const byName=n=>SPECS.find(s=>s.name.replace('Dr. ','')===String(n||'').replace('Dr. ',''))||null;
+const photo=s=>`img/approved/${s.slug}.jpg`, photoSq=s=>`img/approved/${s.slug}-sq.jpg`;
+const lab=i=>`${i+1} — ${t(AREAS[i].n)}`;
+
+/* ---------- strings ---------- */
+const AREA_OF={pt:['do seu propósito','da sua saúde','da sua alimentação','da sua memória','da sua prosperidade','das suas relações','do seu crescimento','da sua espiritualidade'],
+ en:['your purpose','your health','your nutrition','your memory','your prosperity','your relationships','your growth','your spirituality']}[L];
+const S={
+ pt:{chapters:[['comeco','Seu começo'],['nicolas','Nicolas'],['oferta','A proposta'],['como','Como funciona'],['espiral','Sua sequência'],['quem','Quem cuida'],['depoimentos','Quem já fez'],['perguntas','Perguntas']],
+  ctaTop:'Ver a proposta',ctaBuy:'Quero os cinco anos',ctaSoon:'Botão de compra em preparação',ctaProof:'Ver quem já fez',
+  openA_h:(i)=>`Você escolheu cuidar ${AREA_OF[i]}. Vamos começar por aí.`,openA_eb:'Seu começo',
+  openA_sug:'Uma sugestão para o seu primeiro passo',with:'com',
+  openA_p:'Com o MeuFluxo Ilimitado, você tem cinco anos de acesso aos programas incluídos para aprender no seu ritmo e explorar outros temas quando quiser.',
+  openB_h:'Conheça os programas e escolha por onde começar.',openB_p:'O MeuFluxo Ilimitado reúne os programas incluídos nesta oferta em um só acesso, por cinco anos. Veja o que está incluído, as condições do acesso e o conteúdo que você quer conhecer primeiro.',openB_pick:'Se quiser, escolha uma área para ver uma sugestão de primeiro passo:',
+  seeOffer:'Ver a proposta',seeSeq:'Ver minha sequência',redo:'Fazer minha Roda da Vida',change:'Trocar a área',
+  nicoEb:'Uma palavra do Nicolas',nicoH:'Ninguém dá conta de tudo sozinho.',
+  nico:['Oi. Eu sou o Nicolas, fundador do MeuFluxo.','Eu reuni essas pessoas por um motivo simples: ninguém dá conta de tudo sozinho. Alimentação, corpo, memória, dinheiro, relações, espiritualidade. Cada uma dessas áreas tem alguém que estudou a vida inteira para ensinar isso bem.','A Jornada que eu criei é o começo. Ela vem incluída. Depois, você segue pela área que mais pede atenção hoje. Sem pressa. Sem precisar entender tudo de uma vez.','Nesta Black November, a gente abriu o MeuFluxo Ilimitado por cinco anos, por menos do que custam quatro programas avulsos. Está tudo aqui embaixo, preto no branco: o que entra, por quanto tempo, quanto custa e a garantia.','Se fizer sentido para você, a porta está aberta. Se não fizer, você tem sete dias para pedir o dinheiro de volta.'],
+  nicoSig:'Nicolas Toigo',nicoRole:'Fundador do MeuFluxo',
+  offEb:'MeuFluxo Ilimitado · Versão Black November',offH:'Todos os programas. Um lugar só. Cinco anos.',offLead:'Uma decisão hoje. Cinco anos para ir, voltar e explorar, no seu ritmo.',
+  ben:(first)=>[[`<b>Todos os programas disponíveis hoje</b>: mais de 30, de mais de 15 especialistas.`],[`<b>A Jornada do Nicolas</b>, incluída: a semente de tudo.`],first?[`<b>Sua sequência sugerida</b>, começando por ${esc(first.programa)}.`]:[`<b>Uma sequência sugerida</b> a partir da área que você escolher.`],[`<b>Aulas gravadas</b>, no celular ou no computador. Você volta quantas vezes quiser.`],[`<b>Cinco anos de acesso</b>, contados da confirmação do pagamento.`],[`<b>Garantia de 7 dias</b>: se não fizer sentido, devolvemos o valor integral.`]],
+  anchor:'Um programa avulso custa R$297. Aqui, por menos do que custam quatro, você leva todos, por cinco anos.',
+  sumEb:'Resumo da proposta',cash:'em pagamento único',inst:'ou em até 12x no cartão (valor total das parcelas informado no checkout)',term:'5 anos de acesso',termS:'a todos os programas disponíveis hoje',guar:'Garantia de 7 dias',guarS:'reembolso integral, pedido pelo suporte dentro do prazo',after:'Pagamento seguro no checkout. Acesso liberado após a confirmação.',
+  entregaL:'Entrega',suporteL:'Suporte',
+  teamEb:'Gente de verdade',teamH:'Conte com a equipe MeuFluxo.',teamP:(ch)=>`Se precisar de ajuda com o acesso à plataforma, fale com a nossa equipe${ch?' pelo '+ch:' pelo canal de atendimento informado na sua compra'}. Os programas são gravados; o suporte cuida do seu acesso, não substitui consultas.`,
+  howEb:'Como funciona',howH:'Simples de verdade.',
+  how:(first)=>[['Escolha por onde começar.',first?`Abra ${esc(first.programa)} e conheça a primeira aula.`:'Veja um programa relacionado à área que você escolher e conheça a primeira aula.'],['Continue quando fizer sentido.','Você pode voltar ao mesmo programa ou explorar outro conteúdo incluído no seu acesso. A ordem é uma sugestão.'],['Aprenda no seu ritmo.','As aulas são gravadas. Você volta aos conteúdos incluídos durante os seus cinco anos de acesso.']],
+  seqEb:'Sua sequência',seqH:'Uma sugestão de caminho. A ordem é sua.',seqP:'A semente é a Jornada do Nicolas. Depois vem a área que você escolheu, e as outras na sequência. Você pode mudar quando quiser.',seed:'Semente · incluída',step:(n)=>`Passo ${n}`,
+  whoEb:'Quem cuida do seu primeiro passo',whoAll:'Conhecer todos os 16 especialistas',whoH2:'Escolhidos a dedo. Um para cada pedaço da sua vida.',tap:'Toque para ver mais',
+  depoEb:'Quem já fez',depoH:'Pessoas reais. Palavras delas.',depoP:'Relatos pessoais de alunos do MeuFluxo, no texto original. Cada história é de uma pessoa: resultados variam.',depoCheck:'Em verificação · não publicar sem autorização',depoFirst:'Sobre o seu primeiro programa',enlarge:'toque para ampliar',
+  faqEb:'Perguntas',faqH:'O que mais as pessoas perguntam.',
+  faq:[['Por quanto tempo tenho acesso?','Por cinco anos, contados da confirmação do pagamento. Não é um acesso vitalício.'],['O que está incluído?','Todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma, mais a Jornada do Nicolas. Lançamentos futuros não fazem parte desta proposta.'],['Tem consulta, terapia ou acompanhamento individual?','Não. Os programas são gravados pelos especialistas. O suporte da equipe cuida do seu acesso à plataforma.'],['E se eu não gostar?','Você tem 7 dias, a partir da compra, para pedir o reembolso integral pelo suporte. Sem perguntas difíceis.'],['Posso parcelar?','Sim, em até 12x no cartão. O valor total das parcelas aparece no checkout antes de você confirmar.'],['Preciso seguir a ordem sugerida?','Não. A sequência é uma sugestão a partir da área que você escolheu. Você pode começar por qualquer programa e mudar quando quiser.'],['Onde eu assisto?','No celular ou no computador, pela plataforma MeuFluxo, quando quiser.']],
+  finalEb:'Pronta para começar?',finalH:'Comece pelo que mais importa hoje. O resto vem no seu tempo.',finalP:'Cinco anos de acesso. Sete dias de garantia. Uma decisão.',
+  stickyB:'MeuFluxo Ilimitado · 5 anos',stickyS:'R$997 à vista · garantia de 7 dias',
+  foot:'Prévia para revisão interna. Preço, prazo e garantia conforme config.js. Nada aqui é uma compra.',
+  review:'Prévia de conceito · Black November'},
+ en:{chapters:[['comeco','Your start'],['nicolas','Nicolas'],['oferta','The proposal'],['como','How it works'],['espiral','Your sequence'],['quem','Who takes care'],['depoimentos','Who did it'],['perguntas','Questions']],
+  ctaTop:'See the proposal',ctaBuy:'I want the five years',ctaSoon:'Purchase button in preparation',ctaProof:'See who did it',
+  openA_h:(i)=>`You chose to take care of ${AREA_OF[i]}. Let’s start there.`,openA_eb:'Your start',
+  openA_sug:'A suggestion for your first step',with:'with',
+  openA_p:'With MeuFluxo Ilimitado you have five years of access to the included programs, to learn at your pace and explore other themes whenever you like.',
+  openB_h:'Get to know the programs and choose where to start.',openB_p:'MeuFluxo Ilimitado brings the programs included in this offer into one access, for five years. See what is included, the access terms and the content you want to know first.',openB_pick:'If you like, pick an area to see a suggested first step:',
+  seeOffer:'See the proposal',seeSeq:'See my sequence',redo:'Build my Wheel of Life',change:'Change area',
+  nicoEb:'A word from Nicolas',nicoH:'Nobody handles everything alone.',
+  nico:['Hi. I’m Nicolas, founder of MeuFluxo.','I brought these people together for a simple reason: nobody handles everything alone. Food, body, memory, money, relationships, spirituality. Each of these areas has someone who spent a lifetime learning to teach it well.','The Jornada I created is the beginning. It comes included. Then you follow the area that needs attention most today. No rush. No need to understand everything at once.','This Black November we opened MeuFluxo Ilimitado for five years, for less than four single programs cost. It’s all below, in black and white: what’s in, for how long, how much and the guarantee.','If it makes sense for you, the door is open. If it doesn’t, you have seven days to ask for your money back.'],
+  nicoSig:'Nicolas Toigo',nicoRole:'Founder of MeuFluxo',
+  offEb:'MeuFluxo Ilimitado · Black November edition',offH:'All the programs. One place. Five years.',offLead:'One decision today. Five years to go, come back and explore, at your pace.',
+  ben:(first)=>[[`<b>Every program available today</b>: 30+, from 15+ specialists.`],[`<b>Nicolas’s Jornada</b>, included: the seed of everything.`],first?[`<b>Your suggested sequence</b>, starting with ${esc(first.programa)}.`]:[`<b>A suggested sequence</b> from the area you choose.`],[`<b>Recorded classes</b>, on your phone or computer. Come back as often as you like.`],[`<b>Five years of access</b>, from payment confirmation.`],[`<b>7-day guarantee</b>: if it doesn’t make sense, we refund the full amount.`]],
+  anchor:'A single program costs R$297. Here, for less than four of them, you get all of them, for five years.',
+  sumEb:'Offer summary',cash:'single payment',inst:'or up to 12 card installments (installment total shown at checkout)',term:'5 years of access',termS:'to every program available today',guar:'7-day guarantee',guarS:'full refund, requested via support within the term',after:'Secure payment at checkout. Access released after confirmation.',
+  entregaL:'Delivery',suporteL:'Support',
+  teamEb:'Real people',teamH:'Count on the MeuFluxo team.',teamP:(ch)=>`If you need help with platform access, talk to our team${ch?' via '+ch:' through the support channel given with your purchase'}. The programs are recorded; support takes care of your access, it does not replace consultations.`,
+  howEb:'How it works',howH:'Truly simple.',
+  how:(first)=>[['Choose where to start.',first?`Open ${esc(first.programa)} and watch the first class.`:'See a program related to the area you choose and watch the first class.'],['Continue when it makes sense.','Go back to the same program or explore other content included in your access. The order is a suggestion.'],['Learn at your pace.','Classes are recorded. Come back to the included content throughout your five years of access.']],
+  seqEb:'Your sequence',seqH:'A suggested path. The order is yours.',seqP:'The seed is Nicolas’s Jornada. Then comes the area you chose, and the others in sequence. Change it whenever you like.',seed:'Seed · included',step:(n)=>`Step ${n}`,
+  whoEb:'Who takes care of your first step',whoAll:'Meet all 16 specialists',whoH2:'Hand-picked. One for every piece of your life.',tap:'Tap to see more',
+  depoEb:'Who did it',depoH:'Real people. Their words.',depoP:'Personal accounts from MeuFluxo students, translated here for review (originals in Portuguese). Every story is one person’s: results vary.',depoCheck:'Under verification · do not publish without authorization',depoFirst:'About your first program',enlarge:'tap to enlarge',
+  faqEb:'Questions',faqH:'What people ask most.',
+  faq:[['How long do I have access?','Five years, from payment confirmation. It is not lifetime access.'],['What is included?','Every MeuFluxo Ilimitado program available on the platform today, plus Nicolas’s Jornada. Future releases are not part of this proposal.'],['Are there consultations, therapy or individual follow-up?','No. The programs are recorded by the specialists. The team’s support takes care of your platform access.'],['What if I don’t like it?','You have 7 days from purchase to request a full refund via support. No hard questions.'],['Can I pay in installments?','Yes, up to 12 on a card. The installment total appears at checkout before you confirm.'],['Do I have to follow the suggested order?','No. The sequence is a suggestion from the area you chose. Start with any program and change whenever you like.'],['Where do I watch?','On your phone or computer, on the MeuFluxo platform, whenever you like.']],
+  finalEb:'Ready to start?',finalH:'Start with what matters most today. The rest comes in your own time.',finalP:'Five years of access. Seven days of guarantee. One decision.',
+  stickyB:'MeuFluxo Ilimitado · 5 years',stickyS:'R$997 cash · 7-day guarantee',
+  foot:'Internal review preview. Price, term and guarantee per config.js. Nothing here is a purchase.',
+  review:'Concept preview · English review copy'}
+}[L];
+
+/* ---------- pieces ---------- */
+const priceNum=()=>esc((A.preco||'R$997 à vista').replace(/ à vista$/,''));
+function summary(id){const href=checkoutHref();return `<div class="summary"><span class="eb">${esc(S.sumEb)}</span><div class="price">${priceNum()}<small>${esc(S.cash)}</small></div><p class="inst">${esc(A.parcelas||S.inst)}</p>
+ <div class="ln"><b>${esc(S.term)}</b><span>${esc(S.termS)}</span></div><div class="ln"><b>${esc(S.guar)}</b><span>${esc(S.guarS)}</span></div>
+ ${A.entrega?`<div class="ln"><b>${esc(S.entregaL)}</b><span>${esc(A.entrega)}</span></div>`:''}${A.suporte?`<div class="ln"><b>${esc(S.suporteL)}</b><span>${esc(A.suporte)}</span></div>`:''}
+ ${href?`<a class="btn primary" id="${id}" href="${href}">${esc(S.ctaBuy)} →</a><p class="after">${esc(S.after)}</p>`:`<span class="btn placeholder" id="${id}">${esc(S.ctaSoon)}</span>`}</div>`}
+function nav(){return `<div class="nav3"><div class="wrap row"><a href="${indexHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><nav class="chapters" id="chapters">${S.chapters.map(c=>`<a href="#${c[0]}" data-ch="${c[0]}">${esc(c[1])}</a>`).join('')}</nav><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div><a class="btn primary cta-top" href="#oferta">${esc(S.ctaTop)}</a></div><div class="progress" id="prog"></div></div>`}
+function opening(){const f=first();
+ if(f){const sp=byName(f.especialista);const d=PROGS[f.programa];return `<section id="comeco" style="padding-top:28px"><div class="wrap open"><div><span class="eyebrow">${esc(S.openA_eb)}</span><h1 class="rise" style="margin:10px 0 16px">${esc(S.openA_h(prio))}</h1><p class="lead">${esc(S.openA_p)}</p><div class="nav"><a class="btn primary" href="#oferta">${esc(S.seeOffer)} →</a><a class="btn ghost" href="#espiral">${esc(S.seeSeq)}</a></div><p class="small muted" style="margin-top:14px"><a href="${indexHref()}">${esc(S.change)}</a></p></div>
+  <div><span class="eyebrow">${esc(S.openA_sug)}</span><div class="first rise" style="margin-top:12px">${sp?`<img src="${photo(sp)}" alt="${esc(sp.name)}">`:''}<div><b>${esc(f.programa)}</b><small>${esc(S.with)} ${esc(f.especialista||'')}${sp?' · '+esc(t(sp.spec)):''}</small>${d?`<p>${esc(t(d))}</p>`:''}</div></div></div></div></section>`}
+ return `<section id="comeco" style="padding-top:28px"><div class="wrap"><span class="eyebrow">${esc(S.openA_eb)}</span><h1 class="rise" style="margin:10px 0 16px;max-width:860px">${esc(S.openB_h)}</h1><p class="lead">${esc(S.openB_p)}</p><div class="nav" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px"><a class="btn primary" href="#oferta">${esc(S.seeOffer)} →</a><a class="btn ghost" href="${indexHref()}">${esc(S.redo)}</a></div>
+  <p class="muted" style="margin:26px 0 0">${esc(S.openB_pick)}</p><div class="areas">${AREAS.map((a,i)=>`<button data-area="${i}" style="--c:${a.hex}"><span class="ico">${a.ico}</span>${esc(lab(i))}</button>`).join('')}</div></div></section>`}
+function nicolas(){const n=byName('Nicolas Toigo');return `<section id="nicolas"><div class="wrap nico">${n?`<img src="${photo(n)}" alt="Nicolas Toigo">`:''}<div class="text"><span class="eyebrow">${esc(S.nicoEb)}</span><h2 style="margin:8px 0 18px">${esc(S.nicoH)}</h2>${S.nico.map(p=>`<p>${esc(p)}</p>`).join('')}<p class="sig">${esc(S.nicoSig)}<small>${esc(S.nicoRole)}</small></p></div></div></section>`}
+function offer(){const f=first();const ch=A.suporte||'';return `<section id="oferta"><div class="wrap"><div class="offer"><div><span class="eyebrow">${esc(S.offEb)}</span><h2>${esc(S.offH)}</h2><p class="lead">${esc(S.offLead)}</p><ul class="benefits">${S.ben(f).map(b=>`<li><span>${b[0]}</span></li>`).join('')}</ul><p class="anchor">${esc(S.anchor)}</p></div>${summary('cta')}</div>
+ <div class="team"><img src="img/equipe-apoio.jpg" alt="${esc(S.teamH)}"><div><span class="eyebrow">${esc(S.teamEb)}</span><h3 style="margin-top:8px">${esc(S.teamH)}</h3><p class="muted">${esc(S.teamP(ch))}</p></div></div></div></section>`}
+function how(){const f=first();return `<section id="como"><div class="wrap"><div class="head"><span class="eyebrow">${esc(S.howEb)}</span><h2>${esc(S.howH)}</h2></div><div class="how">${S.how(f).map((h,k)=>`<div class="card"><span class="big">${k+1}</span><span class="eyebrow">${k+1}</span><h3>${esc(h[0])}</h3><p class="muted" style="margin:0">${h[1]}</p></div>`).join('')}</div></div></section>`}
+function sequence(){if(!TR)return'';const o=orderNow();let n=0;return `<section id="espiral"><div class="wrap"><div class="head"><span class="eyebrow">${esc(S.seqEb)}</span><h2>${esc(S.seqH)}</h2><p class="lead">${esc(S.seqP)}</p></div><div class="seq">${o.map(i=>{const p=TR.resolve(i,ctx);const sp=byName(p.especialista);const a=AREAS[i];const seed=!!p.incluido;if(!seed)n++;return `<div class="step" style="--c:${a.hex}"><span class="n${seed?' seed':''}">${seed?esc(S.seed):esc(S.step(n))}</span>${sp?`<img src="${photoSq(sp)}" alt="">`:''}<div><b>${esc(lab(i))}</b><small>${esc(p.programa||'')}${p.especialista?' · '+esc(p.especialista):''}</small></div></div>`}).join('')}</div></div></section>`}
+function who(){const f=first();const sp=f?byName(f.especialista):null;const grid=`<div class="grid">${SPECS.map(s=>{const ai=AREAS.findIndex(a=>a.slug===s.area);return `<button class="spec" data-s="${s.slug}" style="--c:${ai>=0?AREAS[ai].hex:'var(--violet)'}"><img src="${photo(s)}" alt="${esc(s.name)}" loading="lazy"><span class="body"><b>${esc(s.name)}</b><small>${esc(t(s.spec))}</small><span class="lv">${ai>=0?esc(lab(ai)):''}</span><span class="more">${esc(t(s.bio))}<br><span style="color:var(--violet);font-weight:600">${s.programs.map(esc).join(' · ')}</span></span></span></button>`}).join('')}</div>`;
+ return `<section id="quem"><div class="wrap">${sp?`<div class="head"><span class="eyebrow">${esc(S.whoEb)}</span></div><div class="spec1"><img src="${photo(sp)}" alt="${esc(sp.name)}"><div><h2 style="margin-bottom:6px">${esc(sp.name)}</h2><p class="muted" style="font-weight:600">${esc(t(sp.spec))}</p><p>${esc(t(sp.bio))}</p><p class="progs">${sp.programs.map(esc).join(' · ')}</p></div></div><details class="more"><summary><span class="btn ghost">${esc(S.whoAll)}</span></summary><div class="head" style="margin-top:20px"><h2>${esc(S.whoH2)}</h2><p class="muted">${esc(S.tap)}</p></div>${grid}</details>`:`<div class="head"><span class="eyebrow">${esc(S.whoEb)}</span><h2>${esc(S.whoH2)}</h2><p class="muted">${esc(S.tap)}</p></div>${grid}`}</div></section>`}
+function depos(){const f=first();const sel=f?DEPOS.filter(d=>d.prog===f.programa||d.prog===(f.programa||'').replace(' 2.0','')):[];const rest=DEPOS.filter(d=>!sel.includes(d));const card=(d,k,firstCls)=>`<figure class="depo${firstCls?' first':''}" style="animation-delay:${k*60}ms"><blockquote>“${esc(t(d.q))}”</blockquote><figcaption>${d.photo?`<img src="${d.photo}" alt="">`:''}<span><b>${esc(d.who)}${d.where?' · '+esc(d.where):''}</b><small>${esc(d.prog)}</small></span></figcaption></figure>`;
+ return `<section id="depoimentos"><div class="wrap"><div class="head"><span class="eyebrow">${esc(S.depoEb)}</span><h2>${esc(S.depoH)}</h2><p class="lead">${esc(S.depoP)}</p>${MF.depoimentosAprovados?'':`<span class="pill check">⚠ ${esc(S.depoCheck)}</span>`}</div>
+ ${sel.length?`<p class="eyebrow" style="margin-bottom:12px">${esc(S.depoFirst)}</p><div class="depos" style="margin-bottom:16px">${sel.map((d,k)=>card(d,k,true)).join('')}</div>`:''}<div class="depos">${rest.map((d,k)=>card(d,k,false)).join('')}</div>
+ <div class="provas">${PROOFS.map(p=>`<button class="prova" data-img="${p.img}"><img src="${p.img}" alt="${esc(t(p.cap))}" loading="lazy"><span>${esc(t(p.cap))} · ${esc(S.enlarge)}</span></button>`).join('')}</div></div></section>`}
+function faq(){return `<section id="perguntas"><div class="wrap"><div class="head"><span class="eyebrow">${esc(S.faqEb)}</span><h2>${esc(S.faqH)}</h2></div><div class="faq">${S.faq.map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('')}</div></div></section>`}
+function final(){return `<section id="acao" style="padding-top:20px"><div class="wrap"><div class="final"><div><span class="eyebrow" style="color:#f1dca0">${esc(S.finalEb)}</span><h2>${esc(S.finalH)}</h2><p>${esc(S.finalP)}</p><p style="margin:0"><a class="btn ghost" href="#depoimentos" style="background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.3)">${esc(S.ctaProof)}</a></p></div>${summary('cta2')}</div></div></section><footer class="wrap">${REV?esc(S.foot):''}</footer>`}
+function sticky(){return `<div class="sticky" id="sticky"><div><b>${esc(S.stickyB)}</b><small>${esc(S.stickyS)}</small></div><a class="btn primary" href="#oferta">${esc(S.ctaTop)}</a><button class="x" aria-label="close">×</button></div>`}
+
+/* ---------- render ---------- */
+function render(){document.getElementById('app').innerHTML=nav()+opening()+nicolas()+offer()+how()+sequence()+who()+depos()+faq()+final()+sticky();
+ document.title=(L==='en'?'MeuFluxo Ilimitado · Black November — proposal':'MeuFluxo Ilimitado · Black November — proposta');
+ document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()});
+ document.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{prio=Number(b.dataset.area);const p=new URLSearchParams(location.search);p.set('prioridade',AREAS[prio].slug);p.delete('ordem');history.replaceState(null,'',location.pathname+'?'+p.toString());render();window.scrollTo({top:0,behavior:'smooth'})});
+ document.querySelectorAll('.spec').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
+ document.querySelectorAll('.prova').forEach(b=>b.onclick=()=>{const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${b.dataset.img}" alt=""><button aria-label="close">×</button>`;m.onclick=()=>m.remove();document.body.appendChild(m)});
+ /* chapters + progress */
+ const links=[...document.querySelectorAll('#chapters a')];const secs=links.map(a=>document.getElementById(a.dataset.ch)).filter(Boolean);
+ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.dataset.ch===e.target.id))}})},{rootMargin:'-40% 0px -55% 0px'});secs.forEach(s=>io.observe(s));
+ const prog=document.getElementById('prog');const onScroll=()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';const st=document.getElementById('sticky');if(st&&!st.dataset.off){const off=document.getElementById('oferta');const r=off.getBoundingClientRect();const show=h.scrollTop>500&&(r.bottom<0||r.top>window.innerHeight);st.classList.toggle('on',show);document.body.classList.toggle('has-sticky',show)}};
+ window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+ document.querySelector('#sticky .x').onclick=()=>{const st=document.getElementById('sticky');st.dataset.off='1';st.classList.remove('on');document.body.classList.remove('has-sticky')};
+}
+render();
 })();

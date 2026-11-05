@@ -32,16 +32,16 @@ window.MF_CONFIG = {
 
   // Oito áreas na ordem da espiral (CONFIRMADO por Rock, 2026-11-04). Propósito (Nico) é a semente: incluído em qualquer compra, nunca vendido aqui.
   // 'variantes' escolhe o programa pela resposta opcional (gênero em Movimento; filhos em Relacionamentos). Padrões = programas-vitrine dos especialistas.
-  programas: [
-    { slug:'proposito',       area:'Propósito',                              programa:'A Jornada MeuFluxo',       especialista:'Nicolas Toigo',     incluido:true },
-    { slug:'alimentacao',     area:'Alimentação e metabolismo',              programa:'Dieta das 3 Fases 2.0',    especialista:'Eduardo Claas' },
-    { slug:'movimento',       area:'Movimento, estrutura e dores',           programa:'Costas Sem Dores',         especialista:'Peterson Menezes',
+  programas: [ // Ordem = espiral (Rock 2026-11-05): 1 Propósito · 2 Saúde · 3 Alimentação · 4 Memória · 5 Prosperidade · 6 Relações · 7 Crescimento · 8 Espiritualidade. slug = id estável.
+    { slug:'proposito',      area:'Propósito',      programa:'A Jornada MeuFluxo',    especialista:'Nicolas Toigo',      incluido:true },
+    { slug:'movimento',      area:'Saúde',          programa:'Costas Sem Dores',      especialista:'Peterson Menezes',
       variantes:{ mulher:{programa:'Projeto Mulher 40+',especialista:'Suéllen Lopes'}, homem:{programa:'Meu Shape Ideal',especialista:'Mateus Cecconello'} } },
-    { slug:'memoria',         area:'Memória, foco e inteligência',           programa:'Ultra Inteligência',       especialista:'Dr. Marcelo Roxo' },
-    { slug:'financas',        area:'Segurança e prosperidade financeira',    programa:'Matriz da Abundância',     especialista:'Lucia Lux Tellaris' },
-    { slug:'relacoes',        area:'Relacionamentos sociais e familiares',   programa:'4 Códigos do Amor',        especialista:'Gabriela Barea',
+    { slug:'alimentacao',    area:'Alimentação',    programa:'Dieta das 3 Fases 2.0', especialista:'Eduardo Claas' },
+    { slug:'memoria',        area:'Memória',        programa:'Ultra Inteligência',    especialista:'Dr. Marcelo Roxo' },
+    { slug:'financas',       area:'Prosperidade',   programa:'Matriz da Abundância',  especialista:'Lucia Lux Tellaris' },
+    { slug:'relacoes',       area:'Relações',       programa:'4 Códigos do Amor',     especialista:'Gabriela Barea',
       variantes:{ filhos:{programa:'Filhos Sem Conflitos',especialista:'Eddy Giordani'} } },
-    { slug:'crescimento',     area:'Autoestima e crescimento pessoal',       programa:'Restart Mental',           especialista:'Nereu Araldi' },
-    { slug:'transcendencia',  area:'Auto-transcendência: energia e espiritualidade', programa:'Frequências da Vida', especialista:'Zaika Capita' }
+    { slug:'crescimento',    area:'Crescimento',    programa:'Restart Mental',        especialista:'Nereu Araldi' },
+    { slug:'transcendencia', area:'Espiritualidade',programa:'Frequências da Vida',   especialista:'Zaika Capita' }
   ]
 };

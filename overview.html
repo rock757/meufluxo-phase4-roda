@@ -159,6 +159,7 @@ h2{font:400 clamp(30px,3.6vw,46px)/1.12 var(--serif);letter-spacing:-.015em;marg
 <div class="deck" id="deck"></div>
 <div class="nav"><button id="prev" aria-label="previous">‹</button><div class="dots" id="dots"></div><button id="next" aria-label="next">›</button></div>
 <script src="config.js"></script>
+<script src="data.js"></script>
 <script src="trilha.js"></script>
 <script>
 (function(){
@@ -167,9 +168,7 @@ const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA;
 const Q=new URLSearchParams(location.search); const L=Q.get('lang')==='en'?'en':'pt'; const t=o=>o[L]||o.pt;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const A=MF.oferta&&MF.oferta.A||{}, B=MF.oferta&&MF.oferta.B||{};
-const AREAS=[
- {slug:'proposito',n:{pt:'Propósito',en:'Purpose'}},{slug:'alimentacao',n:{pt:'Alimentação',en:'Nutrition'}},{slug:'movimento',n:{pt:'Movimento',en:'Movement'}},{slug:'memoria',n:{pt:'Memória',en:'Memory'}},
- {slug:'financas',n:{pt:'Finanças',en:'Finances'}},{slug:'relacoes',n:{pt:'Relações',en:'Relationships'}},{slug:'crescimento',n:{pt:'Crescimento',en:'Growth'}},{slug:'transcendencia',n:{pt:'Transcendência',en:'Transcendence'}}];
+const AREAS=window.MF_DATA.AREAS;
 const SL={ 'Nicolas Toigo':'nicolas-toigo','Eduardo Claas':'eduardo-claas','Peterson Menezes':'peterson-menezes','Suéllen Lopes':'suellen-lopes','Mateus Cecconello':'mateus-cecconello','Dr. Marcelo Roxo':'marcelo-roxo','Lucia Lux Tellaris':'lucia-lux-tellaris','Gabriela Barea':'gabriela-barea','Eddy Giordani':'eddy-giordani','Nereu Araldi':'nereu-araldi','Zaika Capita':'zaika-capita'};
 const img=n=>SL[n]?`img/approved/${SL[n]}-sq.jpg`:'img/brand-badge.svg';
 let prio=4; // demo priority (Finanças) — click a wedge to change
@@ -194,9 +193,9 @@ const S={
    big:'A diferença de ter <em>TUDO</em> na sua jornada.',big2:'De um programa à plataforma inteira, numa olhada.',
    rows:[['Um programa','R$297','1 ano · o ponto de partida','Programa avulso, preço de tabela. Vídeo-aulas + e-book.'],['Os 8 da sua roda','R$697','1 ano · Jornada MeuFluxo','Os oito programas da própria espiral, na ordem da pessoa. (Downsell: só para quem não levou o Ilimitado.)'],['Tudo, por cinco anos','R$997','5 anos · Ilimitado Black November','Todos os programas disponíveis hoje. Mais de 15 especialistas. Jornada do Nicolas incluída. Garantia de 7 dias.'],['Para sempre','Vitalício','referência · não está nesta oferta','A versão vitalícia custa muito mais. A Black November é a porta de entrada: cinco anos, preço de um.']],
    tl:['1 ano','1 ano','5 anos','para sempre'],
-   anchorT:'A conta, nas palavras do Nicolas',anchor:'Média de R$297 por programa. Comprando um a um, mais de 30 programas dariam R$8.910 por ano, ou R$44.550 em cinco anos. Hoje, cinco anos de tudo por R$997.',
+   anchorT:'A conta simples',anchor:'Um programa avulso custa R$297. Por menos do que custam quatro, a pessoa leva todos (mais de 30), por cinco anos. Sem torres de valor nem totais gigantes: o público é 74% mulheres, 78% com 54+.',
    sumT:'MeuFluxo / Resumo da oferta',cash:'em pagamento único',inst:'ou em até 12x no cartão: total informado no checkout',r1:'5 anos de acesso',r1s:'contados da confirmação do pagamento',r2:'Garantia de 7 dias',r2s:'reembolso integral pelo suporte dentro do prazo',res:'Reservado ao checkout validado',
-   fine:'Valores: preço de tabela de programa avulso R$297 (catálogo) e conta de valor da live do Nicolas (média R$297 × mais de 30 programas). Não publicar valor de parcela antes de o Payt informar o total. Não prometer lançamentos futuros, suporte 1:1 nem acesso vitalício sem confirmação.',
+   fine:'Valores: preço de tabela de programa avulso R$297 (catálogo). Não publicar valor de parcela antes de o Payt informar o total. Não prometer lançamentos futuros, suporte 1:1 nem acesso vitalício sem confirmação.',
    steps:[['01 / Finito é finito','Cinco anos, ditos claramente.','Nada de “nunca mais compre outro curso” ao lado de um acesso de cinco anos.'],['02 / O preço completo','Sem parcela inventada.','O total das 12x aparece no checkout. A carta diz “um pouco mais no cartão” e só.'],['03 / Igual à oferta real','O que está escrito é o que entrega.','Sem lançamentos futuros, suporte individual ou vitalício por baixo dos panos.']]},
   p5:{st:'Quem não leva tudo, pode levar a própria jornada.',sub:'Mecanismo de oferta a confirmar com Júlia (e-mail / WhatsApp após a carta).',eb:'Página 5 / O downsell',h:'Jornada MeuFluxo: os 8 programas da sua roda, por um ano.',lead:'Para quem leu a carta e não comprou o Ilimitado: os oito programas da própria espiral, na ordem da pessoa, por 12 meses. Mesma garantia de 7 dias.',
    open:'O que ainda falta para ligar',openItems:[['Link do Payt','Évila · sem ele, nenhum botão de compra aparece'],['Parcelas','Total exato das 12x: só o checkout informa'],['Suporte e entrega','E-mail de atendimento e prazo de liberação, no config'],['Compras teste','Dani · caminho API e caminho e-mail, inclusive no navegador do WhatsApp']],
@@ -221,9 +220,9 @@ const S={
    big:'The difference of having <em>EVERYTHING</em> on your journey.',big2:'From one program to the whole platform, at a glance.',
    rows:[['One program','R$297','1 year · the starting point','Single program, list price. Video classes + e-book.'],['The 8 of your wheel','R$697','1 year · Jornada MeuFluxo','The eight programs of the person’s own spiral, in their order. (Downsell: only for those who didn’t take Ilimitado.)'],['Everything, for five years','R$997','5 years · Ilimitado Black November','Every program available today. 15+ specialists. Nicolas’s Jornada included. 7-day guarantee.'],['Forever','Lifetime','reference · not part of this offer','The lifetime edition costs much more. Black November is the doorway: five years, one price.']],
    tl:['1 year','1 year','5 years','forever'],
-   anchorT:'The math, in Nicolas’s words',anchor:'Average R$297 per program. Bought one by one, 30+ programs would be R$8,910 a year, or R$44,550 over five years. Today, five years of everything for R$997.',
+   anchorT:'The simple math',anchor:'A single program costs R$297. For less than four of them, the person gets all of them (30+), for five years. No value towers or giant totals: the audience is 74% women, 78% aged 54+.',
    sumT:'MeuFluxo / Offer summary',cash:'single payment',inst:'or up to 12 card installments: total shown at checkout',r1:'5 years of access',r1s:'from payment confirmation',r2:'7-day guarantee',r2s:'full refund via support within the term',res:'Reserved for the validated checkout',
-   fine:'Figures: single-program list price R$297 (catalog) and the value math from Nicolas’s live (average R$297 × 30+ programs). Do not publish an installment figure before Payt shows the total. Do not promise future releases, 1:1 support or lifetime access without confirmation.',
+   fine:'Figures: single-program list price R$297 (catalog). Do not publish an installment figure before Payt shows the total. Do not promise future releases, 1:1 support or lifetime access without confirmation.',
    steps:[['01 / Finite means finite','Five years, said plainly.','No “never buy another course” next to five-year access.'],['02 / The complete price','No invented installment.','The 12x total appears at checkout. The letter says “a bit more on the card” and nothing else.'],['03 / Match the actual offer','What is written is what is delivered.','No future releases, 1:1 support or lifetime quietly added.']]},
   p5:{st:'Whoever doesn’t take everything can take their own journey.',sub:'Offer mechanism to confirm with Júlia (email / WhatsApp after the letter).',eb:'Page 5 / The downsell',h:'Jornada MeuFluxo: the 8 programs of your wheel, for one year.',lead:'For those who read the letter and didn’t buy Ilimitado: the eight programs of their own spiral, in their order, for 12 months. Same 7-day guarantee.',
    open:'What is still missing to go live',openItems:[['Payt link','Évila · without it, no buy button appears'],['Installments','Exact 12x total: only checkout shows it'],['Support and delivery','Support email and release time, in config'],['Test purchases','Dani · API path and email path, including the WhatsApp in-app browser']],

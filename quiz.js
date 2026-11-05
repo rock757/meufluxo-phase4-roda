@@ -20,14 +20,14 @@ const S={
   revEyebrow:'Sua Roda da Vida',revH:'Um retrato da sua última semana.',revLead:'Não é uma nota. É um retrato de sete dias. Olha onde teve espaço, e onde ficou pequeno.',
   listH:'Suas respostas',edit:'Alterar',unknownNote:'Áreas em “Não sei dizer” ficam vazias no desenho.',
   prioEyebrow:'O próximo passo',prioH:'O que você gostaria de cuidar agora?',prioLead:'Escolha uma área. Pode ser a que ficou pequena ou a que você quer cultivar. A escolha é sua.',
-  pathEyebrow:'Sua espiral',pathH:'Comece pela sua necessidade. A espiral segue dali.',pathLead:'O propósito é a semente e já vem incluído. Depois, cada área leva à seguinte. É uma sugestão: a ordem é sua.',seed:'Semente · incluído',step:(n)=>`Passo ${n}`,
-  spEyebrow:'Como o MeuFluxo organiza a vida',spH:'Seis níveis. Uma espiral. Tudo ligado.',spLead:'Toque em um nível para ver quem cuida dele. Cada nível se expande a partir do anterior.',
+  pathEyebrow:'Sua espiral',pathH:'Comece pela sua necessidade. A espiral segue dali.',pathLead:'O propósito é a semente e já vem incluído. Depois vem a área que você escolheu, e as outras na sequência. É uma sugestão: a ordem é sua.',seed:'Semente · incluído',step:(n)=>`Passo ${n}`,
+  spEyebrow:'Se quiser ir mais fundo',spH:'Como esses temas se conectam.',spLead:'A roda tem oito áreas. A espiral agrupa áreas parecidas em seis níveis, do centro para fora. Toque em um nível para ver quem cuida dele.',spOpen:'Ver como os temas se conectam (opcional)',
   inThisLevel:'Neste nível',areasIn:'Áreas da roda',
   specEyebrow:'Quem está por trás',specH:'Escolhidos a dedo. Um para cada pedaço da sua vida.',specLead:'Médicos, nutricionistas, terapeutas, educadores. Toque em um especialista para conhecer o método dele.',tapMore:'Toque para ver',
   howEyebrow:'Como funciona',howH:'Simples de verdade.',
-  how1h:'Entre pela sua necessidade',how1:'Você escolhe a área que mais pede atenção hoje. Abre o programa do especialista. Assiste uma aula de 20 minutos.',
-  how2h:'A espiral segue',how2:'Quando essa área melhora, a próxima já está ali, com a pessoa certa. Nada de começar do zero em outro lugar.',
-  how3h:'No seu tempo',how3:'Tudo gravado. No celular, no computador, na TV. Você volta quantas vezes quiser, por anos.',
+  how1h:'Escolha por onde começar',how1:'Veja um programa relacionado à área que você escolheu e conheça a primeira aula.',
+  how2h:'Continue quando fizer sentido',how2:'Você pode voltar ao mesmo programa ou explorar outro conteúdo incluído no seu acesso. A espiral sugere a ordem; você decide.',
+  how3h:'Aprenda no seu ritmo',how3:'As aulas são gravadas. No celular ou no computador, você volta aos conteúdos incluídos durante os seus cinco anos de acesso.',
   ctaEyebrow:'A proposta',ctaH:'Todos os especialistas. Um lugar só. Uma decisão.',ctaP:'Conheça a carta do Nicolas com a proposta completa: o que está incluído, por quanto tempo, e a garantia.',ctaBtn:'Conhecer a proposta',redo:'Refazer minha roda',
   depoEyebrow:'Quem já está na jornada',depoH:'Pessoas reais. Palavras delas.',depoLead:'Relatos pessoais de alunos do MeuFluxo, no texto original. Cada história é de uma pessoa: resultados variam.',depoCheck:'Em verificação · não publicar sem autorização',depoOn:'Depoimento do programa',
   howAlone:'Ver como funciona, sem fazer a roda',
@@ -45,14 +45,14 @@ const S={
   revEyebrow:'Your Wheel of Life',revH:'A portrait of your last week.',revLead:"Not a grade. A seven-day portrait. Look where there was room, and where it got small.",
   listH:'Your answers',edit:'Change',unknownNote:'Areas marked “can’t say” stay empty in the drawing.',
   prioEyebrow:'The next step',prioH:'What would you like to take care of now?',prioLead:'Pick one area. It can be the one that got small, or one you want to cultivate. Your call.',
-  pathEyebrow:'Your spiral',pathH:'Start with your need. The spiral continues from there.',pathLead:'Purpose is the seed and is already included. Then each area leads to the next. A suggestion: the order is yours.',seed:'Seed · included',step:(n)=>`Step ${n}`,
-  spEyebrow:'How MeuFluxo organizes life',spH:'Six levels. One spiral. Everything connected.',spLead:'Tap a level to see who takes care of it. Each level grows out of the previous one.',
+  pathEyebrow:'Your spiral',pathH:'Start with your need. The spiral continues from there.',pathLead:'Purpose is the seed and is already included. Then comes the area you chose, and the others in sequence. A suggestion: the order is yours.',seed:'Seed · included',step:(n)=>`Step ${n}`,
+  spEyebrow:'If you want to go deeper',spH:'How these themes connect.',spLead:'The wheel has eight areas. The spiral groups related areas into six levels, from the centre outward. Tap a level to see who takes care of it.',spOpen:'See how the themes connect (optional)',
   inThisLevel:'At this level',areasIn:'Wheel areas',
   specEyebrow:'Who is behind it',specH:'Hand-picked. One for every piece of your life.',specLead:'Doctors, nutritionists, therapists, educators. Tap a specialist to see their method.',tapMore:'Tap to see',
   howEyebrow:'How it works',howH:'Truly simple.',
-  how1h:'Come in through your need',how1:'You pick the area that needs attention most today. Open the specialist’s program. Watch a 20-minute class.',
-  how2h:'The spiral continues',how2:'When that area improves, the next one is already there, with the right person. No starting from scratch somewhere else.',
-  how3h:'In your own time',how3:'All recorded. On your phone, computer, TV. Come back as often as you like, for years.',
+  how1h:'Choose where to start',how1:'See a program related to the area you chose and watch the first class.',
+  how2h:'Continue when it makes sense',how2:'Go back to the same program or explore other content included in your access. The spiral suggests the order; you decide.',
+  how3h:'Learn at your pace',how3:'Classes are recorded. On your phone or computer, come back to the included content throughout your five years of access.',
   ctaEyebrow:'The proposal',ctaH:'All the specialists. One place. One decision.',ctaP:'Read Nicolas’s letter with the full proposal: what’s included, for how long, and the guarantee.',ctaBtn:'Read the proposal',redo:'Redo my wheel',
   depoEyebrow:'Already on the journey',depoH:'Real people. Their words.',depoLead:'Personal accounts from MeuFluxo students, translated here for review (originals in Portuguese). Every story is one person’s: results vary.',depoCheck:'Under verification · do not publish without authorization',depoOn:'Program testimonial',
   howAlone:'See how it works, without the wheel',
@@ -60,73 +60,12 @@ const S={
   review:'Concept preview · English review copy'}
 }[L];
 
-/* ---------- data ---------- */
-const AREAS=[
- {slug:'proposito',n:{pt:'Propósito',en:'Purpose'},full:{pt:'Propósito',en:'Purpose'},ico:'✦',c:'var(--a1)',hex:'#cfb5f1',level:1,
-  q:{pt:'Em quantos dos últimos 7 dias você fez algo que sentiu ter sentido para a sua vida?',en:'On how many of the last 7 days did you do something that felt meaningful for your life?'},
-  help:{pt:'Pode ter sido uma escolha pequena, ligada a algo que você considera importante.',en:'It may have been a small choice, tied to something you consider important.'}},
- {slug:'alimentacao',n:{pt:'Alimentação',en:'Nutrition'},full:{pt:'Alimentação',en:'Nutrition'},ico:'❋',c:'var(--a2)',hex:'#c9a4f0',level:2,
-  q:{pt:'Em quantos dos últimos 7 dias você conseguiu dar à sua alimentação a atenção que gostaria?',en:'On how many of the last 7 days did you give your nutrition the attention you wanted?'},
-  help:{pt:'Pense no que foi possível na sua rotina, sem comparar com a de outra pessoa.',en:'Think about what was possible in your routine, without comparing to anyone else.'}},
- {slug:'movimento',n:{pt:'Movimento',en:'Movement'},full:{pt:'Movimento',en:'Movement'},ico:'⟡',c:'var(--a3)',hex:'#ba92ec',level:2,
-  q:{pt:'Em quantos dos últimos 7 dias você movimentou o corpo de uma forma que fez sentido para você?',en:'On how many of the last 7 days did you move your body in a way that made sense to you?'},
-  help:{pt:'Uma caminhada, um alongamento, outra forma possível para você. Dentro dos seus limites.',en:'A walk, a stretch, any form possible for you. Within your limits.'}},
- {slug:'memoria',n:{pt:'Memória',en:'Memory'},full:{pt:'Memória',en:'Memory'},ico:'◉',c:'var(--a4)',hex:'#b083e9',level:3,
-  q:{pt:'Em quantos dos últimos 7 dias você sentiu sua memória e seu foco funcionando do jeito que gostaria?',en:'On how many of the last 7 days did your memory and focus work the way you wanted?'},
-  help:{pt:'Para estudar, trabalhar, lembrar do que importa ou manter a atenção em uma coisa de cada vez.',en:'To study, work, remember what matters or keep attention on one thing at a time.'}},
- {slug:'financas',n:{pt:'Finanças',en:'Finances'},full:{pt:'Finanças',en:'Finances'},ico:'◈',c:'var(--a5)',hex:'#9f72e3',level:5,
-  q:{pt:'Em quantos dos últimos 7 dias você dedicou algum tempo a cuidar da sua organização financeira?',en:'On how many of the last 7 days did you spend some time on your financial organization?'},
-  help:{pt:'Olhar as contas, organizar um pagamento, planejar um gasto. Não precisa ser todos os dias.',en:'Looking at bills, organizing a payment, planning a purchase. It doesn’t have to be every day.'}},
- {slug:'relacoes',n:{pt:'Relações',en:'Relationships'},full:{pt:'Relações',en:'Relationships'},ico:'♡',c:'var(--a6)',hex:'#9466df',level:4,
-  q:{pt:'Em quantos dos últimos 7 dias você teve um momento de conexão com alguém importante para você?',en:'On how many of the last 7 days did you have a moment of connection with someone important to you?'},
-  help:{pt:'Uma conversa, uma troca de apoio, um momento de convivência que teve significado.',en:'A conversation, a moment of support, time together that meant something.'}},
- {slug:'crescimento',n:{pt:'Crescimento',en:'Growth'},full:{pt:'Crescimento',en:'Growth'},ico:'✿',c:'var(--a7)',hex:'#7b4de2',level:5,
-  q:{pt:'Em quantos dos últimos 7 dias você reconheceu algo em si de que gostou ou se orgulhou?',en:'On how many of the last 7 days did you recognize something in yourself you liked or were proud of?'},
-  help:{pt:'Uma atitude, um esforço, uma habilidade, uma pequena conquista.',en:'An attitude, an effort, a skill, a small win.'}},
- {slug:'transcendencia',n:{pt:'Transcendência',en:'Transcendence'},full:{pt:'Transcendência',en:'Transcendence'},ico:'☼',c:'var(--a8)',hex:'#4b32c7',level:6,
-  q:{pt:'Em quantos dos últimos 7 dias você reservou um momento para a sua energia interior ou espiritualidade?',en:'On how many of the last 7 days did you set aside a moment for your inner energy or spirituality?'},
-  help:{pt:'Silêncio, reflexão, oração ou outra prática que faça sentido para você, com ou sem religião.',en:'Silence, reflection, prayer or any practice that makes sense to you, with or without religion.'}}
-];
-const LEVELS=[
- {num:'Centro',name:{pt:'Centro',en:'Center'},sub:{pt:'Onde tudo começa',en:'Where it all begins'},hex:'#F0E8FB',mid:'#EADAFB',deep:'#A67FDC',areas:[]},
- {num:'I',name:{pt:'Propósito',en:'Purpose'},sub:{pt:'Descubra quem você realmente é',en:'Discover who you really are'},hex:'#DCC6F5',mid:'#C9A4F0',deep:'#A67FDC',areas:[0]},
- {num:'II',name:{pt:'Saúde',en:'Health'},sub:{pt:'O combustível para a sua jornada',en:'The fuel for your journey'},hex:'#C9A4F0',mid:'#B58EE6',deep:'#8E68D0',areas:[1,2]},
- {num:'III',name:{pt:'Inteligência',en:'Intelligence'},sub:{pt:'A confiança para construir',en:'The confidence to build'},hex:'#B083E9',mid:'#9B6BDB',deep:'#6F44B8',areas:[3]},
- {num:'IV',name:{pt:'Relações',en:'Relationships'},sub:{pt:'Conexões que transformam',en:'Connections that transform'},hex:'#9466DF',mid:'#8451D4',deep:'#5A2FA0',areas:[5]},
- {num:'V',name:{pt:'Prosperidade',en:'Prosperity'},sub:{pt:'A abundância que você merece',en:'The abundance you deserve'},hex:'#7B4DE2',mid:'#7B4DE2',deep:'#4A2394',areas:[4,6]},
- {num:'VI',name:{pt:'Espiritualidade',en:'Spirituality'},sub:{pt:'A conexão com algo maior',en:'The connection with something bigger'},hex:'#4B32C7',mid:'#4B32C7',deep:'#2D1B85',areas:[7]}
-];
-const SPECS=[
- {slug:'nicolas-toigo',name:'Nicolas Toigo',level:1,spec:{pt:'Fundador do MeuFluxo · propósito',en:'MeuFluxo founder · purpose'},bio:{pt:'Reuniu os especialistas do MeuFluxo e criou a Jornada: sair da zona de conforto sem medo e escolher o próximo destino. Incluída em qualquer compra.',en:'Brought the MeuFluxo specialists together and created the Jornada: leave the comfort zone without fear and choose the next destination. Included with any purchase.'},programs:['A Jornada MeuFluxo']},
- {slug:'eduardo-claas',name:'Eduardo Claas',level:2,spec:{pt:'Nutrição funcional e saúde intestinal',en:'Functional nutrition and gut health'},bio:{pt:'Nutricionista e naturopata, referência em modulação intestinal e protocolos Low FODMAP. O intestino é o seu segundo cérebro.',en:'Nutritionist and naturopath, a reference in gut modulation and Low FODMAP protocols. The gut is your second brain.'},programs:['Dieta das 3 Fases 2.0','Reset Digestivo','Ciclo de Dietas']},
- {slug:'lucas-mallmann',name:'Lucas Mallmann',level:2,spec:{pt:'Nutrição esportiva e jejum',en:'Sports nutrition and fasting'},bio:{pt:'Mais de 7 anos de experiência, certificação internacional IFBB. Une corpo, mente e emoção. Emagrecer sem passar fome.',en:'7+ years of experience, international IFBB certification. Body, mind and emotion together. Lose weight without going hungry.'},programs:['Jejum 2.0','Desafio Jejum 7 em 10','Protocolo Detox Turbinado']},
- {slug:'jaqueline-brihy',name:'Jaqueline Brihy',level:2,spec:{pt:'Emagrecimento sem restrições',en:'Weight loss without restrictions'},bio:{pt:'Nutricionista que criou o método a partir da própria história e de estudos sobre falha metabólica. Leve, sem proibições radicais.',en:'Nutritionist who built her method from her own story and studies on metabolic failure. Light, no radical bans.'},programs:['Emagrecer Sem Restrições']},
- {slug:'suellen-lopes',name:'Suéllen Lopes',level:2,spec:{pt:'Saúde da mulher 40+',en:"Women's health 40+"},bio:{pt:'Personal trainer há mais de 14 anos, dedicada exclusivamente à saúde feminina acima dos 40. Resultados sustentáveis.',en:'Personal trainer for 14+ years, dedicated exclusively to women over 40. Sustainable results.'},programs:['Projeto Mulher 40+','Receitas Detox 40+ Express','Mindset 40+']},
- {slug:'peterson-menezes',name:'Peterson Menezes',level:2,spec:{pt:'Chi kung e terapia vibracional',en:'Chi kung and vibrational therapy'},bio:{pt:'Mestre em cultura oriental e artes marciais, terapeuta há mais de 30 anos. Alívio de dores e equilíbrio corporal.',en:'Master of Eastern culture and martial arts, therapist for 30+ years. Pain relief and body balance.'},programs:['Costas Sem Dores','Terapia Vibracional']},
- {slug:'mateus-cecconello',name:'Mateus Cecconello',level:2,spec:{pt:'Saúde física e shape',en:'Physical health and shape'},bio:{pt:'Educador físico, especialista em cinesiologia e biomecânica. Shape sem academia, com abordagem integrativa.',en:'Physical educator, specialist in kinesiology and biomechanics. Shape without a gym, integrative approach.'},programs:['Meu Shape Ideal']},
- {slug:'marcelo-roxo',name:'Dr. Marcelo Roxo',level:3,spec:{pt:'Performance mental e neurociência',en:'Mental performance and neuroscience'},bio:{pt:'Médico neurocirurgião e professor de medicina. Criador do método Ultra Inteligência: memória, foco e aprendizado.',en:'Neurosurgeon and professor of medicine. Creator of the Ultra Inteligência method: memory, focus and learning.'},programs:['Ultra Inteligência','15 Ferramentas da Alta Performance','Receitas da Inteligência']},
- {slug:'roberta-desnos',name:'Roberta Desnos',level:3,spec:{pt:'Desenvolvimento profissional',en:'Professional development'},bio:{pt:'Psicóloga, terapeuta e mestre em ciências sociais. Inteligência emocional e social para se destacar no trabalho.',en:'Psychologist, therapist and master in social sciences. Emotional and social intelligence to stand out at work.'},programs:['Novo Profissional 3R']},
- {slug:'gabriela-barea',name:'Gabriela Barea',level:4,spec:{pt:'Relacionamentos e libertação emocional',en:'Relationships and emotional release'},bio:{pt:'Criadora do método LDA (Libertar, Desbloquear e Atrair): exercícios práticos para abrir espaço para conexões profundas.',en:'Creator of the LDA method (Release, Unblock, Attract): practical exercises to make room for deep connection.'},programs:['4 Códigos do Amor']},
- {slug:'eddy-giordani',name:'Eddy Giordani',level:4,spec:{pt:'Relações familiares e disciplina positiva',en:'Family relationships and positive discipline'},bio:{pt:'Criador do método TRIPLO C: vínculos mais fortes entre pais e filhos, menos conflito, filhos capazes e conectados.',en:'Creator of the TRIPLO C method: stronger parent-child bonds, less conflict, capable and connected kids.'},programs:['Filhos Sem Conflitos']},
- {slug:'lucia-lux-tellaris',name:'Lucia Lux Tellaris',level:5,spec:{pt:'Desbloqueios energéticos e abundância',en:'Energetic unblocking and abundance'},bio:{pt:'Terapeuta holística. Integra espiritualidade, energia e reprogramação de crenças para liberar o que trava a prosperidade.',en:'Holistic therapist. Integrates spirituality, energy and belief reprogramming to release what blocks prosperity.'},programs:['Matriz da Abundância']},
- {slug:'nereu-araldi',name:'Nereu Araldi',level:5,spec:{pt:'Reprogramação mental e meditação',en:'Mental reprogramming and meditation'},bio:{pt:'Empresário, palestrante e escritor, com mais de 8 livros em 17 países. Técnicas para liberar padrões negativos.',en:'Entrepreneur, speaker and author of 8+ books in 17 countries. Techniques to release negative patterns.'},programs:['Restart Mental','Meditação Alfa']},
- {slug:'zaika-capita',name:'Zaika Capita',level:6,spec:{pt:'Frequências sonoras e bioenergia',en:'Sound frequencies and bioenergy'},bio:{pt:'Neurocientista, biocomunicadora e terapeuta. Cada célula, órgão e emoção tem a sua frequência.',en:'Neuroscientist, biocommunicator and therapist. Every cell, organ and emotion has its own frequency.'},programs:['Frequências da Vida','Bioenergia do Dinheiro']},
- {slug:'ariosto-mello',name:'Ariosto Mello',level:6,spec:{pt:'Yoga, meditação e sono',en:'Yoga, meditation and sleep'},bio:{pt:'Professor há mais de 11 anos, formado com um monge na Índia, na tradição dos meditadores do Himalaia.',en:'Teacher for 11+ years, trained with a monk in India in the Himalayan meditation tradition.'},programs:['Estado Delta','Mega Meditação']},
- {slug:'fernando-felix',name:'Fernando Felix',level:6,spec:{pt:'Comportamento humano e propósito',en:'Human behavior and purpose'},bio:{pt:'Trainer e especialista em comportamento humano. Método Desperte Seu Destino: conquistas rápidas e profundas.',en:'Trainer and human-behavior specialist. The Desperte Seu Destino method: fast, deep wins.'},programs:['Desperte Seu Destino']}
-];
-const DEPOS=[
- {who:'Cledi',where:'',spec:'eduardo-claas',prog:'Dieta das 3 Fases',q:{pt:'Eu fiz a dieta das 3 fases em fevereiro, o resultado foi excelente.',en:'I did the 3 Phases diet in February; the result was excellent.'}},
- {who:'Leandro',where:'',spec:'eduardo-claas',prog:'Dieta das 3 Fases',q:{pt:'Fiz o 3 Fases e perdi 18 kg e tive melhoras significativas.',en:'I did the 3 Phases and lost 18 kg, with significant improvements.'}},
- {who:'Juliana',where:'',spec:'marcelo-roxo',prog:'Ultra Inteligência',q:{pt:'Eu estudava 10 horas por dia e não lembrava de nada no dia seguinte. Hoje leio 420 palavras por minuto. O curso funciona.',en:'I used to study 10 hours a day and remember nothing the next day. Today I read 420 words per minute. The course works.'}},
- {who:'Daniel',where:'',spec:'marcelo-roxo',prog:'Ultra Inteligência',q:{pt:'Fui aprovado em 7 universidades de medicina e depois fui bicampeão de anatomia utilizando essas técnicas de estudo.',en:'I was accepted at 7 medical schools and then won the anatomy championship twice using these study techniques.'}},
- {who:'Marcia',where:'',spec:'gabriela-barea',prog:'4 Códigos do Amor',q:{pt:'Só de ouvir a explicação da Gabriela Barea foi terapêutico pra mim, senti verdade, bem-estar e mais força.',en:'Just hearing Gabriela Barea’s explanation was therapeutic for me; I felt truth, well-being and more strength.'}},
- {who:'Ivelize',where:'',spec:'nereu-araldi',prog:'Restart Mental',q:{pt:'Estou me sentindo mais forte e muito mais leve, muitas oportunidades aparecendo… estou animada, fazendo planos que já não fazia mais há muito tempo, e ainda não acabei a jornada!',en:'I feel stronger and much lighter, many opportunities showing up… I’m excited, making plans I hadn’t made in a long time, and I haven’t even finished the journey!'}},
- {who:'Edson',where:'',spec:'zaika-capita',prog:'Frequências da Vida',q:{pt:'Comprei este acesso porque sabia que seria bom, mas não sabia que seria tão incrível.',en:'I bought this access because I knew it would be good, but I didn’t know it would be this incredible.'}},
- {who:'Dilma',where:'',spec:'zaika-capita',prog:'Frequências da Vida',q:{pt:'Faço parte da plataforma MeuFluxo, e esse belo trabalho da Zaika Capita faz parte das coisas maravilhosas que tem por lá pra nos ajudar a construir uma saúde melhor em todas as áreas.',en:'I’m part of the MeuFluxo platform, and Zaika Capita’s beautiful work is one of the wonderful things there to help us build better health in every area.'}},
- {who:'Olga',where:'',spec:'ariosto-mello',prog:'Mega Meditação',q:{pt:'Sempre recusei meditação. Nunca consegui mais que dois minutos. No meufluxo.com pude finalmente iniciar uma relação de meditação e resultados.',en:'I always refused meditation. I never managed more than two minutes. At meufluxo.com I could finally start a relationship with meditation, and results.'}},
- {who:'Claudio',where:'São Paulo, SP',spec:'fernando-felix',prog:'Desperte Seu Destino',q:{pt:'Fiz a 1ª jornada e assisti as aulas de Desperte Seu Destino. Resultou em melhora no meu astral. E o mais importante, retomei o caminho certo!',en:'I did the first journey and watched the Desperte Seu Destino classes. My mood improved. And most importantly, I got back on the right path!'}},
- {who:'Bruna',where:'',spec:'lucas-mallmann',prog:'Jejum 2.0',q:{pt:'Transformou minha relação com a alimentação, me auxiliando a aderir a um estilo de vida saudável e livre de extremismos.',en:'It transformed my relationship with food, helping me adopt a healthy lifestyle free of extremes.'}}
-];
+/* ---------- data (data.js) ---------- */
+const {AREAS,LEVELS,SPECS,DEPOS,PROGS,PROOFS}=window.MF_DATA;
+
+
+
+
 const lab=i=>`${i+1} — ${t(AREAS[i].full)}`;
 const byName=n=>SPECS.find(s=>s.name.replace('Dr. ','')===String(n||'').replace('Dr. ',''))||null;
 const photo=s=>`img/approved/${s.slug}.jpg`, photoSq=s=>`img/approved/${s.slug}-sq.jpg`;
@@ -141,7 +80,7 @@ const dayLabel=v=>v==='unknown'?S.unknownShort:S.days(v);
 const KEYS=MF.paramsRepassados||[];
 (function cap(){try{const kept={};KEYS.forEach(k=>{if(Q.get(k))kept[k]=Q.get(k)});if(Object.keys(kept).length)sessionStorage.setItem('mf_params',JSON.stringify(kept))}catch(e){}})();
 function stored(){try{return JSON.parse(sessionStorage.getItem('mf_params')||'{}')}catch(e){return{}}}
-function cartaHref(){const p=new URLSearchParams(stored());if(priority!==null){p.set('prioridade',AREAS[priority].slug);if(TR)p.set('ordem',TR.encode(TR.order(values,priority)))}if(extras.g)p.set('g',extras.g);if(extras.r)p.set('r',extras.r);const s=p.toString();return (L==='en'?'carta-en.html':'carta.html')+(s?'?'+s:'')}
+function cartaHref(){const p=new URLSearchParams(stored());if(priority!==null){p.set('prioridade',AREAS[priority].slug);if(TR)p.set('ordem',TR.encode(TR.order(values,priority)))}if(extras.g)p.set('g',extras.g);if(extras.r)p.set('r',extras.r);if(L==='en')p.set('lang','en');const s2=p.toString();return 'carta.html'+(s2?'?'+s2:'')}
 function selfHref(extra){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');Object.entries(extra||{}).forEach(([k,v])=>p.set(k,v));const s=p.toString();return 'index.html'+(s?'?'+s:'')}
 
 /* ---------- wheel svg ---------- */
@@ -202,7 +141,7 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  <div class="week" aria-hidden="true">${[...Array(7)].map((_,n)=>`<i class="${typeof v==='number'&&n<v?'on':''}"></i>`).join('')}</div>
  <button class="unknown" id="unk" aria-pressed="${v==='unknown'}">${esc(S.unknown)}</button>
  <p class="live" aria-live="polite">${v===null?esc(S.choose):esc(S.chosen(dayLabel(v)))}</p>
- ${i===2?`<div class="extras">${esc(S.optG)}<div class="chips"><button class="chip" data-x="g" data-val="m" aria-pressed="${extras.g==='m'}">${esc(S.g_m)}</button><button class="chip" data-x="g" data-val="h" aria-pressed="${extras.g==='h'}">${esc(S.g_h)}</button><button class="chip" data-x="g" data-val="" aria-pressed="${extras.g===null}">${esc(S.g_x)}</button></div></div>`:''}
+ ${i===1?`<div class="extras">${esc(S.optG)}<div class="chips"><button class="chip" data-x="g" data-val="m" aria-pressed="${extras.g==='m'}">${esc(S.g_m)}</button><button class="chip" data-x="g" data-val="h" aria-pressed="${extras.g==='h'}">${esc(S.g_h)}</button><button class="chip" data-x="g" data-val="" aria-pressed="${extras.g===null}">${esc(S.g_x)}</button></div></div>`:''}
  ${i===5?`<div class="extras">${esc(S.optR)}<div class="chips"><button class="chip" data-x="r" data-val="f" aria-pressed="${extras.r==='f'}">${esc(S.r_f)}</button><button class="chip" data-x="r" data-val="p" aria-pressed="${extras.r==='p'}">${esc(S.r_p)}</button><button class="chip" data-x="r" data-val="" aria-pressed="${extras.r===null}">${esc(S.r_x)}</button></div></div>`:''}
  <div class="nav"><button class="btn ghost" id="back">${esc(S.back)}</button><button class="btn primary" id="next" ${v===null?'disabled':''}>${editing?esc(S.save):i===7?esc(S.see):esc(S.next)} →</button></div>
  </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}<div class="legend">${esc(S.legend)}</div></div></aside></div></div>`+footer();
@@ -236,12 +175,13 @@ function renderPath(){const box=document.getElementById('path');if(!box||!TR||pr
   return `<div class="step" style="--c:${a.hex};animation-delay:${k*90}ms"><span class="n${seed?' seed':''}">${seed?esc(S.seed):esc(S.step(n))}</span>${sp?`<img src="${photoSq(sp)}" alt="${esc(sp.name)}">`:`<span class="ico" style="width:54px;height:54px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff">${a.ico}</span>`}<div><b>${esc(lab(i))}</b><small>${esc(p.programa||'')}${p.especialista?' · '+esc(p.especialista):''}</small></div></div>`}).join('')}</div></div>`}
 
 function renderExplainer(hiLevel){const box=document.getElementById('explainer');if(!box)return;const lv=hiLevel==null?2:hiLevel;
- box.innerHTML=`<div class="section" id="sp"><div class="head"><span class="eyebrow">${esc(S.spEyebrow)}</span><h2>${esc(S.spH)}</h2><p class="lead">${esc(S.spLead)}</p></div>
-  <div class="spiral"><div id="spsvg">${spiral(lv)}</div><div><div role="tablist">${LEVELS.map((l,k)=>k===0?'':`<button class="lvl-tab" role="tab" data-lv="${k}" aria-selected="${k===lv}" style="--c:${l.deep}"><span class="n">${l.num}</span><span><b>${l.num} — ${esc(t(l.name))}</b><small>${esc(t(l.sub))}</small></span></button>`).join('')}</div><div class="lvl-panel" id="lvlpanel"></div></div></div></div>
+ box.innerHTML=`<details class="section optional" id="sp"${hiLevel!=null?' open':''}><summary><span class="eyebrow">${esc(S.spEyebrow)}</span><h2>${esc(S.spH)}</h2><span class="btn ghost">${esc(S.spOpen)}</span></summary><p class="lead" style="margin:0 0 22px">${esc(S.spLead)}</p>
+  <div class="spiral"><div id="spsvg">${spiral(lv)}</div><div><div role="tablist">${LEVELS.map((l,k)=>k===0?'':`<button class="lvl-tab" role="tab" data-lv="${k}" aria-selected="${k===lv}" style="--c:${l.deep}"><span class="n">${l.num}</span><span><b>${l.num} — ${esc(t(l.name))}</b><small>${esc(t(l.sub))}</small></span></button>`).join('')}</div><div class="lvl-panel" id="lvlpanel"></div></div></div></details>
   <div class="section"><div class="head"><span class="eyebrow">${esc(S.specEyebrow)}</span><h2>${esc(S.specH)}</h2><p class="lead">${esc(S.specLead)}</p></div>
-  <div class="grid">${SPECS.map(s=>`<button class="spec" data-s="${s.slug}" style="--c:${LEVELS[s.level].deep}"><img src="${photo(s)}" alt="${esc(s.name)}" loading="lazy"><span class="body"><b>${esc(s.name)}</b><small>${esc(t(s.spec))}</small><span class="lv">${L==='en'?'LEVEL':'NÍVEL'} ${LEVELS[s.level].num}</span><span class="more">${esc(t(s.bio))}</span><span class="progs">${s.programs.map(esc).join(' · ')}</span></span></button>`).join('')}</div></div>
+  <div class="grid">${SPECS.map(s=>`<button class="spec" data-s="${s.slug}" style="--c:${LEVELS[s.level].deep}"><img src="${photo(s)}" alt="${esc(s.name)}" loading="lazy"><span class="body"><b>${esc(s.name)}</b><small>${esc(t(s.spec))}</small><span class="lv">${(()=>{const ai=AREAS.findIndex(a=>a.slug===s.area);return ai>=0?lab(ai):''})()}</span><span class="more">${esc(t(s.bio))}</span><span class="progs">${s.programs.map(esc).join(' · ')}</span></span></button>`).join('')}</div></div>
   <div class="section" id="depos"><div class="head"><span class="eyebrow">${esc(S.depoEyebrow)}</span><h2>${esc(S.depoH)}</h2><p class="lead">${esc(S.depoLead)}</p>${MF.depoimentosAprovados?'':`<span class="pill check">⚠ ${esc(S.depoCheck)}</span>`}</div>
-  <div class="depos">${DEPOS.map((d,k)=>{const sp=byName(SPECS.find(x=>x.slug===d.spec)?.name);return `<figure class="depo" style="--c:${sp?LEVELS[sp.level].deep:'var(--violet)'};animation-delay:${k*70}ms"><blockquote>“${esc(t(d.q))}”</blockquote><figcaption>${sp?`<img src="${photoSq(sp)}" alt="">`:''}<span><b>${esc(d.who)}${d.where?' · '+esc(d.where):''}</b><small>${esc(d.prog)}${sp?' · '+esc(sp.name):''}</small></span></figcaption></figure>`}).join('')}</div></div>
+  <div class="depos">${DEPOS.map((d,k)=>`<figure class="depo" style="animation-delay:${k*70}ms"><blockquote>“${esc(t(d.q))}”</blockquote><figcaption>${d.photo?`<img src="${d.photo}" alt="">`:''}<span><b>${esc(d.who)}${d.where?' · '+esc(d.where):''}</b><small>${esc(d.prog)}</small></span></figcaption></figure>`).join('')}</div>
+  <div class="provas">${PROOFS.map(p=>`<button class="prova" data-img="${p.img}" aria-label="${esc(t(p.cap))}"><img src="${p.img}" alt="${esc(t(p.cap))}" loading="lazy"><span>${esc(t(p.cap))} · ${L==='en'?'tap to enlarge':'toque para ampliar'}</span></button>`).join('')}</div></div></div>
   <div class="section"><div class="head"><span class="eyebrow">${esc(S.howEyebrow)}</span><h2>${esc(S.howH)}</h2></div><div class="how">
    <div class="card"><span class="big">1</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 1</span><h3>${esc(S.how1h)}</h3><p class="muted">${esc(S.how1)}</p></div>
    <div class="card"><span class="big">2</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 2</span><h3>${esc(S.how2h)}</h3><p class="muted">${esc(S.how2)}</p></div>
@@ -256,6 +196,7 @@ function renderExplainer(hiLevel){const box=document.getElementById('explainer')
  box.querySelectorAll('.lvl-tab').forEach(b=>b.onclick=()=>select(Number(b.dataset.lv)));
  box.querySelectorAll('path.arc').forEach(p=>p.onclick=()=>{const k=Number(p.dataset.lv);if(k>0)select(k)});
  box.querySelectorAll('.spec').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
+ box.querySelectorAll('.prova').forEach(b=>b.onclick=()=>{const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${b.dataset.img}" alt=""><button aria-label="close">×</button>`;m.onclick=()=>m.remove();document.body.appendChild(m)});
  box.querySelector('#redo').onclick=()=>{values=Array(8).fill(null);priority=null;extras={g:null,r:null};go(-1)};
  panel()}
 
