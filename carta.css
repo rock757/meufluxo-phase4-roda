@@ -251,3 +251,13 @@ footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
 .summary .deadline{background:var(--ink);color:var(--gold-2);border:0;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;text-align:center}
 .summary .was{display:block;margin-top:14px;font-size:clamp(30px,3.6vw,42px);font-weight:800;color:var(--muted);text-decoration:line-through;text-decoration-color:#c9375f;text-decoration-thickness:4px;line-height:1}
 .summary .was+.price{margin-top:2px}
+/* v6: visible program descriptions, "para quem", day line, help button */
+.dayline{display:block;margin-top:8px;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#9a2d6d}
+.forwho{font-size:17px;color:var(--ink);margin:0 0 12px;font-weight:600}
+.learn{margin:8px 0 0;padding-left:18px;font-size:15.5px;color:var(--ink-2);line-height:1.5}.learn li{margin-bottom:6px}
+ul.progs{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px}
+ul.progs li{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+ul.progs img{width:54px;height:36px;border-radius:6px;object-fit:cover;flex:0 0 54px;margin-top:2px}
+ul.progs b{display:block;font-size:14.5px;line-height:1.2}ul.progs span{display:block;font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:2px}
+.summary .btn.help{width:100%;margin-top:10px;font-size:15px;padding:12px}
+.spec-block small{margin-bottom:8px}

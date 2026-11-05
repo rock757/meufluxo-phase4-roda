@@ -3,7 +3,12 @@
 const S = require('./_sheets.js');
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  if (!S.configured()) return res.end(JSON.stringify({ configured: false }));
+  // Privado: exige PAINEL_KEY (Vercel env) igual ao parâmetro k. Sem PAINEL_KEY definida, nunca devolve dados reais.
+  const key = process.env.PAINEL_KEY || '';
+  const q = new URL(req.url, 'http://x').searchParams;
+  if (!S.configured()) return res.end(JSON.stringify({ configured: false, reason: 'storage-not-configured' }));
+  if (!key) return res.end(JSON.stringify({ configured: true, locked: true, reason: 'PAINEL_KEY-not-set' }));
+  if (q.get('k') !== key) { res.statusCode = 403; return res.end(JSON.stringify({ configured: true, locked: true, reason: 'bad-key' })); }
   try {
     const rows = await S.readTab('eventos', 'A:O');
     const head = rows[0] || []; const ix = n => head.indexOf(n);
