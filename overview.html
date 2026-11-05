@@ -227,8 +227,14 @@ function wheel(on){const cx=180,cy=180,R=150;const ang=i=>(-90+i*45)*Math.PI/180
  AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2;h+=`<text x="${cx+Math.cos(m)*(R-42)}" y="${cy+Math.sin(m)*(R-42)}" text-anchor="middle" dominant-baseline="middle" fill="${i===on?'#fff':'#2a2440'}">${i+1}</text>`});
  return h+`<circle cx="${cx}" cy="${cy}" r="30" fill="#fff"/></svg>`}
 const ARCS=[[0,[144,267,21],'M165,288 A21,21 0 0 1 144,267'],[1,[144,233,34],'M144,267 A34,34 0 0 1 178,233'],[2,[178,233,55],'M178,233 A55,55 0 0 1 233,288'],[3,[144,288,89],'M233,288 A89,89 0 0 1 144,377'],[4,[0,233,144],'M144,377 A144,144 0 0 1 0,233'],[5,[0,0,233],'M0,233 A233,233 0 0 1 233,0'],[6,[233,0,377],'M233,0 A377,377 0 0 1 610,377']];
+function ghostWheel(vals,cx,cy,R,op){const ang=i=>(-90+i*45)*Math.PI/180;const P=(i,r)=>[cx+Math.cos(ang(i))*r,cy+Math.sin(ang(i))*r];let h=`<g class="ghost" opacity="${op}">`;
+ for(let k=1;k<=7;k++)h+=`<polygon points="${[...Array(8)].map((_,i)=>P(i,R*k/7).join(',')).join(' ')}" fill="none" stroke="#5a3fb4" stroke-width="${k===7?1.5:.6}" opacity="${k===7?.5:.25}"/>`;
+ for(let i=0;i<8;i++){const e=P(i,R);h+=`<line x1="${cx}" y1="${cy}" x2="${e[0]}" y2="${e[1]}" stroke="#5a3fb4" stroke-width=".6" opacity=".25"/>`}
+ vals.forEach((v,i)=>{if(typeof v!=='number'||v===0)return;const r=R*v/7;const a=P(i,r),b=P(i+1,r);h+=`<polygon points="${cx},${cy} ${a.join(',')} ${b.join(',')}" fill="${AREAS[i].hex}" opacity=".55" stroke="#fff" stroke-width="1"/>`});
+ return h+`<circle cx="${cx}" cy="${cy}" r="14" fill="#fff" opacity=".9"/><text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#5a3fb4" opacity=".7" style="font-family:var(--sans)">m</text></g>`}
 function spiral(hi){let h=`<svg viewBox="-16 -16 642 409" aria-hidden="true">`;ARCS.forEach(([k,q])=>h+=`<rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="${LEVELS[k].mid}" opacity="${k===hi?.45:.14}"/><rect x="${q[0]}" y="${q[1]}" width="${q[2]}" height="${q[2]}" fill="none" stroke="#c9a24f" stroke-width="1" opacity=".55"/>`);
  ARCS.forEach(([k,q,d])=>h+=`<path class="arc${hi!=null&&k!==hi?' dim':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
+ h+=`<circle cx="165" cy="267" r="124" fill="#fff" opacity=".45"/>`+ghostWheel([5,4,6,3,5,6,4,5],165,267,110,.75);
  h+=`<circle cx="165" cy="267" r="5" fill="#c9a24f"><animate attributeName="r" values="4;7;4" dur="2.4s" repeatCount="indefinite"/></circle>`;return h+'</svg>'}
 const firstProgram=()=>TR?TR.resolve(prio,{}):{};
 function seqMini(){const o=TR.order(Array(8).fill(4),prio);return `<div class="seed"><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><span>${esc(TR.SEMENTE[L].titulo)} ✓</span></div>`+o.map(i=>{const p=TR.resolve(i,{});return `<div class="${i===prio?'on':''}"><img src="${cover(p.programa)}" alt=""><span>${i+1} — ${esc(t(AREAS[i].n))}</span></div>`}).join('')}
