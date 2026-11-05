@@ -244,3 +244,10 @@ footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
  .offer .team{grid-template-columns:1fr}
  .nico .who img{max-width:320px}
 }
+
+/* v5.3: offer eyebrow clean, countdown line, struck reference price */
+.offer .eyebrow.off{color:var(--gold-2);background:none;border:0;padding:0;letter-spacing:2.4px;font-size:13px}
+.offer .countdown{display:block;margin:8px 0 4px;font-size:clamp(18px,2.2vw,24px);font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:#fff}
+.summary .deadline{background:var(--ink);color:var(--gold-2);border:0;text-transform:uppercase;letter-spacing:1.5px;font-size:13px;text-align:center}
+.summary .was{display:block;margin-top:14px;font-size:clamp(30px,3.6vw,42px);font-weight:800;color:var(--muted);text-decoration:line-through;text-decoration-color:#c9375f;text-decoration-thickness:4px;line-height:1}
+.summary .was+.price{margin-top:2px}

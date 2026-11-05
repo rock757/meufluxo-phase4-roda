@@ -8,6 +8,7 @@ window.MF_CONFIG = {
   // Campanha (Rock 2026-11-05: urgência real, datas reais). PROPOSTO até Rock confirmar: prazo = Black Friday 27/11/2026 23:59 BRT. lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'27 de novembro, Black Friday', prazoTextoEn:'November 27, Black Friday', prazoISO:'2026-11-27T23:59:00-03:00',
               lote:{ ativo:false, texto:'primeiro lote' },
+              rodaValor:'R$299',   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
               // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
@@ -22,6 +23,7 @@ window.MF_CONFIG = {
   oferta: {
     A: { nome: 'MeuFluxo Ilimitado — Versão Black November (5 anos)',
          preco: 'R$997 à vista',
+         precoDe: 'R$1.997',       // PROPOSTO (Rock 05/11): preço de referência riscado acima do R$997. Confirmar preço real praticado antes de publicar.
          parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
          acessoPrazo: 'por cinco anos, contados da confirmação do pagamento',
          garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',

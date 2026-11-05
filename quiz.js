@@ -7,6 +7,7 @@ const C=MF.campanha||{};const deadline=C.prazoISO?new Date(C.prazoISO):null;cons
 const Q=new URLSearchParams(location.search);
 const L=Q.get('lang')==='en'?'en':'pt';
 const t=o=>o[L]||o.pt;
+const G=(window.MF_DATA&&window.MF_DATA.NICO&&window.MF_DATA.NICO.urg[L]&&window.MF_DATA.NICO.urg[L].gift)||{};
 
 /* ---------- strings ---------- */
 const S={
@@ -136,6 +137,7 @@ function footer(){return `<div class="wrap foot">${esc(S.foot)}</div>`}
 function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="hero"><div class="copy"><span class="eyebrow">${esc(S.eyebrowHero)}</span><h1>${esc(S.h1)}</h1><p class="lead">${esc(S.lead)}</p>
  <div class="nav"><button class="btn primary" id="start">${esc(S.start)} →</button><button class="btn ghost" id="how">${esc(S.how)}</button></div>
  <p class="muted" style="font-size:14px">${esc(S.min)}</p>
+ ${C.rodaValor?`<div class="gift"><span class="eb">🎁 ${esc(G.eb)}</span><div class="row"><span class="was"><small>${esc(G.normally)}</small><s>${esc(C.rodaValor)}</s></span><span class="free">${esc(G.free)}</span></div><b>${esc(G.only)}${daysLeft()!==null?' · '+esc(window.MF_DATA.NICO.urg[L].only(daysLeft()).toLowerCase()):''}</b><em>${esc(G.soon)}</em></div>`:''}
  <div class="trust"><span class="pill"><i class="dotc" style="background:var(--a8)"></i>${esc(S.trust1)}</span><span class="pill"><i class="dotc" style="background:var(--a5)"></i>${esc(S.trust2)}</span><span class="pill"><i class="dotc" style="background:var(--gold)"></i>${esc(S.trust3)}</span></div></div>
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}

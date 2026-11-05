@@ -207,3 +207,13 @@ details.optional[open] summary .btn{display:none}
 /* v5: a Roda como semente (3 colunas: 1 semente + 8 passos) */
 .path{grid-template-columns:repeat(3,1fr)}
 .step.seed{border-color:var(--gold);background:#fffaf0}
+
+/* v5.3: Black November gift block in the hero */
+.gift{background:linear-gradient(135deg,#1f1640,#3a2a6a);color:#fff;border-radius:18px;padding:18px 22px;max-width:520px;box-shadow:0 24px 50px -24px rgba(45,27,133,.8);border:1px solid rgba(241,220,160,.45)}
+.gift .eb{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-2,#f1dca0);font-weight:700}
+.gift .row{display:flex;align-items:baseline;gap:14px;margin:6px 0 4px}
+.gift .was{font-size:30px;font-weight:800;color:#cdbff0}.gift .was s{text-decoration:line-through;text-decoration-color:#ff6b8a;text-decoration-thickness:3px}
+.gift .was small{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#cdbff0;margin-bottom:2px}
+.gift .free{font-size:clamp(34px,4vw,44px);font-weight:900;letter-spacing:-.02em;color:var(--gold-2,#f1dca0)}
+.gift b{display:block;font-size:14px}
+.gift em{display:block;font-style:normal;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#ffb3c4;font-weight:700;margin-top:4px}
