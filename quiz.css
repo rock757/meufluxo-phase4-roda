@@ -133,7 +133,7 @@ h3{font-size:clamp(20px,2.4vw,26px);letter-spacing:-.01em}
 .face img{width:36px;height:36px;border-radius:50%;object-fit:cover}
 /* path (sequence) */
 .path{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px}
-.step{position:relative;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;gap:12px;align-items:center;animation:rise .6s both}
+.step>div{min-width:0}.step{position:relative;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;gap:12px;align-items:center;animation:rise .6s both}
 .step img{width:54px;height:54px;border-radius:50%;object-fit:cover;flex:0 0 54px;border:2px solid var(--c)}
 .step .n{position:absolute;top:-10px;left:12px;background:var(--c);color:#fff;font-size:11px;font-weight:700;border-radius:99px;padding:2px 8px}
 .step .n.seed{background:var(--gold);color:var(--ink)}
@@ -172,7 +172,7 @@ h3{font-size:clamp(20px,2.4vw,26px);letter-spacing:-.01em}
   .aside{position:static}.aside .wheelbox{padding:10px}
   .q .aside{order:2}.q .aside svg{max-width:210px;margin:auto}.top .pill{display:none}
   .days{grid-template-columns:repeat(4,1fr);gap:10px}
-  .prios,.path,.grid{grid-template-columns:repeat(2,1fr)}
+  .prios,.grid{grid-template-columns:repeat(2,1fr)}.path{grid-template-columns:1fr;gap:12px}
   .how{grid-template-columns:1fr}
   .cta{padding:28px}
 }
