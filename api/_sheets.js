@@ -46,12 +46,13 @@ async function readTab(tab, range) {
   return (await r.json()).values || [];
 }
 
-function readBody(req) {
+function readBody(req, max) {
+  max = max || 20000;
   return new Promise(resolve => {
     if (req.body && typeof req.body === 'object') return resolve(req.body);
     let s = typeof req.body === 'string' ? req.body : '';
     if (s) { try { return resolve(JSON.parse(s)); } catch (e) { return resolve({}); } }
-    req.on('data', c => { s += c; if (s.length > 20000) s = s.slice(0, 20000); });
+    req.on('data', c => { s += c; if (s.length > max) s = s.slice(0, max); });
     req.on('end', () => { try { resolve(JSON.parse(s || '{}')); } catch (e) { resolve({}); } });
     req.on('error', () => resolve({}));
   });

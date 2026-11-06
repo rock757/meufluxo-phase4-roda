@@ -23,7 +23,7 @@ code{font-size:12px;background:var(--lilac);border-radius:4px;padding:1px 5px}
 @media(max-width:900px){.how{grid-template-columns:1fr 1fr}}
 </style>
 <script src="config.js"></script>
-<script src="track.js"></script>
+<script>/* Batch 1: o painel é privado e não entra no funil. Este navegador passa a ser marcado como equipe (internal). Desfazer: ?mf_internal=off no site. */try{localStorage.setItem('mf_internal','painel')}catch(e){}</script>
 </head>
 <body>
 <div class="wrap">
@@ -31,10 +31,10 @@ code{font-size:12px;background:var(--lilac);border-radius:4px;padding:1px 5px}
  <h1>Quem chega, até onde vai, quem clica para comprar.</h1>
  <div id="painel"></div>
  <div class="how">
-  <div><b>1 · Captura</b>Cada página carrega <code>track.js</code>: cookie <code>mf_vid</code> (1 ano), <code>mf_sid</code> (30 min), UTMs do convite guardadas 30 dias.</div>
-  <div><b>2 · Eventos</b><code>page_view · quiz_start · answer · quiz_done · priority_pick · cta_letter · letter_view · scroll · offer_view · checkout_click · leave</code></div>
-  <div><b>3 · Destinos</b>dataLayer (GTM), GA4 e Meta Pixel quando os IDs existirem em <code>config.js</code>; planilha pelas funções <code>/api/track</code> e <code>/api/roda</code>.</div>
-  <div><b>4 · Ligar</b>Na Vercel: <code>GOOGLE_SA_EMAIL</code>, <code>GOOGLE_SA_KEY</code>, <code>SHEET_ID</code>. Abas <code>eventos</code> e <code>roda</code> com os cabeçalhos de <code>api/*.js</code>. Sem isso: tudo no-op.</div>
+  <div><b>1 · Quem conta</b><strong style="color:var(--green)">Elegível</strong> = abriu a página e interagiu (toque, tecla, rolagem). <strong style="color:#9a7a1f">Desconhecido</strong> = abriu e não fez nada: pode ser pessoa ou robô, por isso aparece à parte.</div>
+  <div><b>2 · Quem sai</b>Testes (<code>?mf_test=nome</code>, <code>utm_source=teste</code>), equipe (quem abre este painel) e robôs com evidência (nome do robô no navegador, automação). Nada é apagado: só separado.</div>
+  <div><b>3 · Hora</b>A hora vem do servidor ao receber o evento. Dias seguem o horário de Brasília. A hora do celular fica guardada, mas não decide nada.</div>
+  <div><b>4 · Venda</b>Só conta com confirmação do Payt, uma por pedido. Avisos repetidos são ignorados, reembolsos aparecem à parte e venda sem visita ligada continua visível.</div>
  </div>
 </div>
 <script src="painel.js"></script>

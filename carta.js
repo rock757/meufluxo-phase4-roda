@@ -5,7 +5,12 @@
 'use strict';
 const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA, D=window.MF_DATA;
 const {AREAS,SPECS,DEPOS,PROOFS,progOf}=D;
-const Q=new URLSearchParams(location.search);
+/* Privacidade (06/11): prioridade/ordem/g/r vêm da roda (autoavaliação). Ficam em sessionStorage e SAEM da URL antes de qualquer
+   rastreador ler location.href (o central manda event_source_url ao Meta). Os utm e mf_test permanecem na URL. */
+const Q=(function(){const u=new URL(location.href),q=u.searchParams,PRIV=['prioridade','ordem','g','r'];let st={};try{st=JSON.parse(sessionStorage.getItem('mf_carta')||'{}')}catch(e){}
+ let has=false;PRIV.forEach(k=>{if(q.has(k)){st[k]=q.get(k);has=true}});
+ if(has){try{sessionStorage.setItem('mf_carta',JSON.stringify(st))}catch(e){}PRIV.forEach(k=>q.delete(k));try{history.replaceState(history.state,'',u.pathname+(q.toString()?'?'+q:'')+u.hash)}catch(e){}}
+ PRIV.forEach(k=>{if(!q.has(k)&&st[k])q.set(k,st[k])});return q})();
 const L=Q.get('lang')==='en'?'en':'pt'; const t=o=>(o&&(o[L]||o.pt))||'';
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const A=MF.oferta&&MF.oferta.A||{}; const REV=!!MF.revisao; const C=Object.assign({},MF.campanha||{}); const STD=!!MF.jornadaPadrao;

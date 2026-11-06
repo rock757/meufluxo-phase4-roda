@@ -1,0 +1,140 @@
+{
+ "configured": true,
+ "source": "neon",
+ "rule_version": "v1-2026-11-06",
+ "window": {
+  "from": "2026-11-06",
+  "to": "2026-11-06",
+  "tz": "America/Sao_Paulo"
+ },
+ "clean_start": "2026-11-06 19:40",
+ "historical_rows_total": 0,
+ "rows_total": 832,
+ "cohorts": {
+  "eligible": 4,
+  "unknown": 1,
+  "bot": 200,
+  "internal": 0,
+  "test": 201,
+  "historical": 0,
+  "no_pageview": 0
+ },
+ "excluded": 401,
+ "reasons": [
+  {
+   "cohort": "bot",
+   "reason": "robô: ua:headless",
+   "n": 200
+  },
+  {
+   "cohort": "test",
+   "reason": "teste: fixture-qa",
+   "n": 200
+  },
+  {
+   "cohort": "test",
+   "reason": "teste: ts-check",
+   "n": 1
+  }
+ ],
+ "funnel": {
+  "steps": [
+   4,
+   2,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "direct_letter": 0
+ },
+ "sales": {
+  "verified": 2,
+  "refunded": 2,
+  "duplicates_ignored": 1,
+  "by_attribution": {
+   "excluded": 1,
+   "eligible": 1
+  },
+  "buyers_eligible": 1,
+  "buyers_unknown": 0,
+  "gross": 3988,
+  "net": 1994,
+  "sources": {
+   "payt": 3,
+   "fixture": 5,
+   "total": 8,
+   "raw_unmapped": 1
+  }
+ },
+ "conversion": {
+  "definition": "identidades compradoras ÷ identidades elegíveis (mesmo período, dias BRT)",
+  "eligible": {
+   "num": 1,
+   "den": 4,
+   "rate": 0.25
+  },
+  "if_unknown_are_people": {
+   "num": 1,
+   "den": 5,
+   "rate": 0.2
+  },
+  "raw": {
+   "num": 2,
+   "den": 406,
+   "rate": 0.0049261083743842365,
+   "definition": "pedidos verificados ÷ todas as identidades com visita (inclui testes, equipe e robôs)"
+  },
+  "reliable": false,
+  "flags": [
+   "small_sample"
+  ]
+ },
+ "raw": {
+  "rows": 830,
+  "identities": 406,
+  "pv_identities": 406,
+  "sessions": 406,
+  "page_views": 407
+ },
+ "sources": [
+  {
+   "s": "whatsapp",
+   "n": 2
+  },
+  {
+   "s": "(direto)",
+   "n": 1
+  },
+  {
+   "s": "email",
+   "n": 1
+  }
+ ],
+ "days": [
+  {
+   "d": "2026-11-06",
+   "cohort": "bot",
+   "n": 200
+  },
+  {
+   "d": "2026-11-06",
+   "cohort": "eligible",
+   "n": 4
+  },
+  {
+   "d": "2026-11-06",
+   "cohort": "test",
+   "n": 201
+  },
+  {
+   "d": "2026-11-06",
+   "cohort": "unknown",
+   "n": 1
+  }
+ ],
+ "depth": {
+  "50": 1
+ }
+}

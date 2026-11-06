@@ -13,7 +13,14 @@ window.MF_CONFIG = {
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
   jornadaPadrao: true,  // Rock 05/11 15:xx: no lançamento, UMA jornada recomendada igual para todos (ordem 1→8). As variantes por prioridade/gênero/filhos ficam no código, desligadas.
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
-  tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
+  tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' },
+  // Rastreador CENTRAL (plataforma tracking-meufluxo, Vini). VERIFICADO 2026-11-06 19:40 BRT, somente leitura:
+  //  · script público t.js (idêntico em tracking-meufluxo.vercel.app e dados.meufluxoultrainteligencia.com); chave da página = data-funil
+  //  · funil existente 'Fase 3 - Black November' = chave 'black-november-bf' → Pixel Meta 'MF - BLACK FRIDAY 2026' (1120529180840486), GA4 nenhum
+  //  · a venda do Payt chega pelo webhook central e vira 1 Purchase por transação (event_id pur_<chave Payt>), casada por trck_user_id → e-mail → telefone
+  // ativo:false = NADA é enviado ao central (sem PageView, pixel ou etapa). Ligar SÓ com aprovação do Rock de que a Fase 4 usa esse funil/pixel.
+  central: { ativo:false, script:'https://dados.meufluxoultrainteligencia.com/t.js', funil:'black-november-bf', etapas:true },
+ // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
