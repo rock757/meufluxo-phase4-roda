@@ -25,7 +25,7 @@ function stored(){try{return JSON.parse(sessionStorage.getItem('mf_params')||'{}
 let prio=AREAS.findIndex(a=>a.slug===Q.get('prioridade')); if(prio<0)prio=null;
 const ctx=STD?{}:{g:Q.get('g')||null,r:Q.get('r')||null};
 function checkoutHref(){if(!MF.checkoutUrl)return'';let u;try{u=new URL(MF.checkoutUrl)}catch(e){return''}
- const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;
+ const p=Object.assign({},stored()); // prioridade NÃO vai ao checkout (autoavaliação fica na Fase 4)
  Object.entries(p).forEach(([k,v])=>{if(v&&!u.searchParams.has(k))u.searchParams.set(k,v)});return u.toString()}
 function indexHref(){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');const s=p.toString();return 'index.html'+(s?'?'+s:'')}
 const first=()=>prio===null?null:(TR?TR.resolve(prio,ctx):null);

@@ -20,12 +20,14 @@ PASS  S3 23:30 BRT visit (UTC already next day) counts on the BRT day
 PASS  S3 refund removes FX-2 from verified sales and shows as refunded
 PASS  S3 test purchase counted as excluded, not in eligible rate
 PASS  S4 trck stored on events (3/3)
+PASS  S4 receiver disabled by default → 503, nothing stored
 PASS  S4 wrong token → 401, nothing stored
 PASS  S4 approved → 200 new; retry → duplicate
 PASS  S4 order stored once, no raw email, trck = sck/xcod, mapping flagged unverified
 PASS  S4 both deliveries kept in compras_raw
+PASS  S4 raw copy is redacted: no email/name/phone/document/address/ip, tracking ids kept
 PASS  S4 unknown payload → 202 kept raw as unmapped
 PASS  S4 Payt order attributed to eligible E via trck (no vid in webhook); pending status not a sale
 PASS  S4 payt_not_connected flag cleared once a Payt row exists
 PASS  S4 refund via webhook moves PT0001 to refunded
-30 passed, 0 failed · 2026-11-06T22:41:00.646Z
+32 passed, 0 failed · 2026-11-06T22:58:45.440Z

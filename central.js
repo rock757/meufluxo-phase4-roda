@@ -7,6 +7,11 @@ const C=(window.MF_CONFIG||{}).central||{};
 const page=(location.pathname.split('/').pop()||'index.html').replace('.html','')||'index';
 const PRIVATE=['painel','overview','decidir'];
 let internal='';try{internal=localStorage.getItem('mf_internal')||''}catch(e){}
+/* Privacidade: prioridade/ordem/g/r (vêm da Roda = autoavaliação) saem da URL AQUI, no <head>, antes de qualquer rastreador existir.
+   Ficam em sessionStorage 'mf_carta'; carta.js e obrigado lêem de lá. utm_* e mf_test continuam na URL. */
+(function scrub(){try{const u=new URL(location.href),q=u.searchParams,PRIV=['prioridade','ordem','g','r'];let st={};try{st=JSON.parse(sessionStorage.getItem('mf_carta')||'{}')}catch(e){}
+ let has=false;PRIV.forEach(k=>{if(q.has(k)){st[k]=q.get(k);has=true}});
+ if(has){sessionStorage.setItem('mf_carta',JSON.stringify(st));PRIV.forEach(k=>q.delete(k));history.replaceState(history.state,'',u.pathname+(q.toString()?'?'+q:'')+u.hash)}}catch(e){}})();
 const on=!!(C.ativo&&C.script&&C.funil&&PRIVATE.indexOf(page)<0&&!internal);
 if(on&&!document.querySelector('script[src$="/t.js"]')){const s=document.createElement('script');s.async=true;s.src=C.script;s.setAttribute('data-funil',C.funil);document.head.appendChild(s)}
 const id=()=>{try{return localStorage.getItem('trck_user_id')||''}catch(e){return ''}};
