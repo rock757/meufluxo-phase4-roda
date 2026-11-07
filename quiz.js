@@ -3,9 +3,10 @@
 'use strict';
 const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA;
 const track=(ev,p)=>{try{window.MF_TRACK&&window.MF_TRACK(ev,p)}catch(e){}};
-const C=MF.campanha||{};const deadline=C.prazoISO?new Date(C.prazoISO):null;const daysLeft=()=>deadline?Math.max(0,Math.ceil((deadline-Date.now())/86400000)):null;
+const C=MF.campanha||{};const daysLeft=()=>null;
 const Q=new URLSearchParams(location.search);
 const L=Q.get('lang')==='en'?'en':'pt';
+const countdownLabel=()=>window.MF_COUNTDOWN_LABEL?window.MF_COUNTDOWN_LABEL(L):'';
 const t=o=>o[L]||o.pt;
 const G=(window.MF_DATA&&window.MF_DATA.NICO&&window.MF_DATA.NICO.urg[L]&&window.MF_DATA.NICO.urg[L].gift)||{};
 
@@ -131,13 +132,13 @@ function spiral(hi){const gv=values.every(v=>v===null)?[5,4,6,3,5,6,4,5]:values;
 if(!document.getElementById('kf')){const st=document.createElement('style');st.id='kf';st.textContent='@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadein{to{opacity:1}}';document.head.appendChild(st)}
 
 /* ---------- views ---------- */
-function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(MF.revisao?S.review:S.bn(daysLeft()))}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
+function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(MF.revisao?S.review:(countdownLabel()||S.bn(null)))}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
 function footer(){return `<div class="wrap foot">${esc(S.foot)}</div>`}
 
 function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="hero"><div class="copy"><span class="eyebrow">${esc(S.eyebrowHero)}</span><h1>${esc(S.h1)}</h1><p class="lead">${esc(S.lead)}</p>
  <div class="nav"><button class="btn primary" id="start">${esc(S.start)} →</button><button class="btn ghost" id="how">${esc(S.how)}</button></div>
  <p class="muted" style="font-size:14px">${esc(S.min)}</p>
- ${G.eb?`<div class="gift"><span class="eb">🎁 ${esc(G.eb)}</span><div class="row">${C.rodaValor?`<span class="was"><small>${esc(G.normally)}</small><s>${esc(C.rodaValor)}</s></span>`:''}<span class="free">${esc(G.free)}</span></div><b>${esc(G.only)}${daysLeft()!==null?' · '+esc(window.MF_DATA.NICO.urg[L].only(daysLeft()).toLowerCase()):''}</b><em>${esc(G.soon)}</em></div>`:''}
+ ${G.eb?`<div class="gift"><span class="eb">🎁 ${esc(G.eb)}</span><div class="row">${C.rodaValor?`<span class="was"><small>${esc(G.normally)}</small><s>${esc(C.rodaValor)}</s></span>`:''}<span class="free">${esc(G.free)}</span></div><b>${esc(G.only)}</b><em>${esc(G.soon)}</em></div>`:''}
  <div class="trust"><span class="pill"><i class="dotc" style="background:var(--a8)"></i>${esc(S.trust1)}</span><span class="pill"><i class="dotc" style="background:var(--a5)"></i>${esc(S.trust2)}</span><span class="pill"><i class="dotc" style="background:var(--gold)"></i>${esc(S.trust3)}</span></div></div>
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
