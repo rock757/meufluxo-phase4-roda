@@ -97,7 +97,7 @@ Object.assign(S,{
 /* ---------- v10 copy (2026-11-07, ROCKdot/Rock: palavras primeiro). Sobre o v9; remover este bloco = volta ao v9 (tag sales-v9-2026-11-07). ----------
    Selos só com fatos verificáveis (8 áreas, grátis, sem cadastro) no lugar das contagens não confirmadas; rodapé sem "anônimas" (há identificadores de sessão). */
 Object.assign(S,{
- pt:{start:'Começar minha Roda',eyebrowHero:'Sua Roda da Vida',min:'Se uma pergunta for difícil, responda “Não sei dizer”.',
+ pt:{start:'Começar minha Roda',eyebrowHero:'Sua Roda da Vida',min:'Escolha quantos dias, de 0 a 7.',
   lead:'Oito perguntas rápidas sobre a sua semana. Como uma foto: você vê o que está bem, o que pede mais carinho e escolhe por onde começar.',
   trust1:'8 áreas da vida',trust2:'Grátis',trust3:'Sem cadastro, sem e-mail',
   legend:'Um retrato da semana, não uma nota sobre você.',
@@ -107,7 +107,7 @@ Object.assign(S,{
   chosenP:'Um bom primeiro passo para essa área. É uma sugestão, não um diagnóstico: você pode abrir outro programa quando quiser.',
   specH:'Conheça os especialistas e os programas',
   foot:'A Roda é um convite à reflexão, não uma avaliação clínica. Suas respostas são registradas sem nome e sem e-mail, para preparar a sua sugestão e melhorar a Roda. Para responder, você não precisa se cadastrar nem comprar.'},
- en:{start:'Start my Wheel',eyebrowHero:'Your Wheel of Life',min:'If a question is hard, answer “I can\'t say”.',
+ en:{start:'Start my Wheel',eyebrowHero:'Your Wheel of Life',min:'Choose how many days, from 0 to 7.',
   lead:'Eight quick questions about your week. Like a photo: you see what is going well, what needs more care, and you choose where to start.',
   trust1:'8 areas of life',trust2:'Free',trust3:'No sign-up, no e-mail',
   legend:'A picture of the week, not a grade about you.',
@@ -118,7 +118,7 @@ Object.assign(S,{
   specH:'Meet the specialists and the programs',
   foot:'The Wheel is an invitation to reflect, not a clinical assessment. Your answers are recorded without your name or e-mail, to prepare your suggestion and improve the Wheel. You do not need to sign up or buy to answer.'}}[L]);
 
-const REVIEW_COPY={"en": {"h1": "Get to know yourself better, in Just 2 Minutes.", "lead": "Just 8 simple questions about your typical week -- you see what's good now, what could be better, and the easiest way to get there... starting TODAY.", "trust1": "Free", "trust2": "No sign-up", "trust3": "No email needed", "start": "Start my Wheel", "weekPrompt": "In your typical week, how many days…", "choose": "Choose how many days out of 7", "review": "Review only · not published", "less": "Less = Still Growing", "more": "More = Going Well", "resultTitle": "Your Best Next Step", "support": "Now, to move forward in the right way, let’s take it one step at a time.", "go": "See your next step", "redo": "Redo my Wheel", "pending": "Review note: the recommendation rule is still to be agreed. No program has been selected from your answers.", "strong": "Going well", "growing": "Still growing"}, "pt": {"h1": "Conheça melhor você, em Apenas 2 Minutos.", "lead": "Só 8 perguntas simples sobre uma semana típica sua -- você vê o que está bom agora, o que pode melhorar e o jeito mais fácil de chegar lá... começando HOJE.", "trust1": "Grátis", "trust2": "Sem cadastro", "trust3": "Sem precisar de e-mail", "start": "Começar minha Roda", "weekPrompt": "Em uma semana típica sua, em quantos dias…", "choose": "Escolha quantos dias, de 0 a 7", "review": "Em revisão · não publicado", "less": "Menos = Ainda Crescendo", "more": "Mais = Indo Bem", "resultTitle": "Seu Melhor Próximo Passo", "support": "Agora, para evoluir da maneira certa, vamos por partes.", "go": "Ver seu próximo passo", "redo": "Refazer minha Roda", "pending": "Nota de revisão: a regra da recomendação ainda será definida. Nenhum programa foi escolhido com base nas suas respostas.", "strong": "Indo bem", "growing": "Ainda crescendo"}};
+const REVIEW_COPY={"en": {"h1": "Get to know yourself better, in Just 2 Minutes.", "lead": "Just 8 simple questions about your typical week -- you see what's good now, what could be better, and the easiest way to get there... starting TODAY.", "trust1": "Free", "trust2": "No sign-up", "trust3": "No email needed", "start": "Start my Wheel", "weekPrompt": "In your typical week, how many days…", "choose": "Choose how many days out of 7", "review": "Review only · not published", "less": "Less = Still Growing", "more": "More = Going Well", "resultTitle": "Your Best Next Step", "support": "Now, to move forward in the right way, let’s take it one step at a time.", "go": "See your next step", "redo": "Redo my Wheel", "pending": "Review note: the recommendation rule is still to be agreed. No program has been selected from your answers.", "strong": "Going well", "growing": "Still growing"}, "pt": {"h1": "Conheça melhor você, em Apenas 2 Minutos.", "lead": "Só 8 perguntas simples sobre uma semana típica sua -- você vê o que está bom agora, o que pode melhorar e o jeito mais fácil de chegar lá... começando HOJE.", "trust1": "Grátis", "trust2": "Sem cadastro", "trust3": "Sem precisar de e-mail", "start": "Começar minha Roda", "weekPrompt": "Em uma semana normal sua, em quantos dias…", "choose": "Escolha quantos dias, de 0 a 7", "review": "Em revisão · não publicado", "less": "Dá pra melhorar", "more": "Indo bem!", "resultTitle": "Seu Melhor Próximo Passo", "support": "Agora, para evoluir da maneira certa, vamos por partes.", "go": "Ver seu próximo passo", "redo": "Refazer minha Roda", "pending": "Nota de revisão: a regra da recomendação ainda será definida. Nenhum programa foi escolhido com base nas suas respostas.", "strong": "Indo bem", "growing": "Ainda crescendo"}};
 Object.assign(S,REVIEW_COPY[L]);
 const REVIEW_QUESTIONS={"en": ["do you feel on the right track?", "do you move your body?", "are you proud of the way you ate?", "do you remember all you need to, and focus?", "do you feel at peace about money?", "do you have someone close you know you can count on?", "are you better, in some way, from the day before?", "do you feel a sense of inner peace?"], "pt": ["você sente que está no caminho certo?", "você movimenta o corpo?", "você sente orgulho da forma como se alimentou?", "você lembra de tudo o que precisa e consegue se concentrar?", "você se sente em paz com o dinheiro?", "você tem alguém próximo com quem sabe que pode contar?", "você está melhor, de alguma forma, do que no dia anterior?", "você sente paz interior?"]};
 /* ---------- data (data.js) ---------- */
@@ -197,6 +197,19 @@ function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="he
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
 
+
+/* Recovered specialist cards. Nov 6 mapping: Nicolas/Roda opens; Fernando closes. */
+function specialistCard(i){
+ const p=i===0?{especialista:'Nicolas Toigo',programa:'Sua Roda da Vida (autoavaliação)'}:
+  i===7?{especialista:'Fernando Felix',programa:'Desperte Seu Destino'}:
+  TR?TR.resolve(i,MF.jornadaPadrao?{}:extras):null;
+ const sp=p&&window.MF_DATA.SPECS.find(s=>s.name.replace('Dr. ','')===p.especialista.replace('Dr. ',''));
+ if(!sp)return '';
+ const c=window.MF_DATA.progOf(p.programa);
+ const description=i===0?t(window.MF_DATA.PROGS[p.programa]):c?c.desc:'';
+ return `<div class="who-card" style="--c:${AREAS[i].hex}"><span class="eb">${esc(S.whoCares)}</span><div class="row"><img src="img/approved/${sp.slug}-sq.jpg" alt="${esc(sp.name)}" width="44" height="44"><div><b>${esc(sp.name)}</b><small>${esc(t(sp.spec))}</small></div></div><p><b>${esc(p.programa)}</b>${description?' — '+esc(description):''}</p></div>`;
+}
+
 function vQuestion(i){const a=AREAS[i];const v=values[i];
  app.innerHTML=header()+`<div class="wrap screen"><div class="q" style="--c:${a.hex}"><section>
  <div class="progress" aria-label="${esc(S.qof(i+1))}">${AREAS.map((x,k)=>`<i class="${k<i?'done':k===i?'cur':''}" style="--c:${x.hex}"></i>`).join('')}</div>
@@ -204,19 +217,17 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  <p class="week-prompt">${esc(S.weekPrompt)}</p><h1>${esc(REVIEW_QUESTIONS[L][i])}</h1>
  <div class="slider" style="--c:${a.hex}"><div class="val" id="val">${typeof v==='number'?v:'–'}<small>${typeof v==='number'?(v===1?(L==='en'?'day':'dia'):(L==='en'?'days':'dias')):(L==='en'?'slide':'arraste')}</small></div>
   <input type="range" id="rng" min="0" max="7" step="1" value="${typeof v==='number'?v:0}" aria-label="0–7" ${typeof v==='number'?'':'data-untouched="1"'}>
-  <div class="ticks">${[...Array(8)].map((_,n)=>`<span${typeof v==='number'&&n===v?' class="on"':''}>${n}</span>`).join('')}</div></div>
+  <div class="ticks">${[...Array(8)].map((_,n)=>`<span${typeof v==='number'&&n===v?' class="on"':''}>${n}</span>`).join('')}</div><div class="scale-labels"><span>${esc(S.less)}</span><span>${esc(S.more)}</span></div></div>
  <div class="week" aria-hidden="true">${[...Array(7)].map((_,n)=>`<i class="${typeof v==='number'&&n<v?'on':''}"></i>`).join('')}</div>
- <button class="unknown" id="unk" aria-pressed="${v==='unknown'}">${esc(S.unknown)}</button>
  <p class="live" aria-live="polite">${v===null?esc(S.choose):esc(S.chosen(dayLabel(v)))}</p>
  ${i===1&&!MF.jornadaPadrao?`<div class="extras">${esc(S.optG)}<div class="chips"><button class="chip" data-x="g" data-val="m" aria-pressed="${extras.g==='m'}">${esc(S.g_m)}</button><button class="chip" data-x="g" data-val="h" aria-pressed="${extras.g==='h'}">${esc(S.g_h)}</button><button class="chip" data-x="g" data-val="" aria-pressed="${extras.g===null}">${esc(S.g_x)}</button></div></div>`:''}
  ${i===5&&!MF.jornadaPadrao?`<div class="extras">${esc(S.optR)}<div class="chips"><button class="chip" data-x="r" data-val="f" aria-pressed="${extras.r==='f'}">${esc(S.r_f)}</button><button class="chip" data-x="r" data-val="p" aria-pressed="${extras.r==='p'}">${esc(S.r_p)}</button><button class="chip" data-x="r" data-val="" aria-pressed="${extras.r===null}">${esc(S.r_x)}</button></div></div>`:''}
  <div class="nav"><button class="btn ghost" id="back">${esc(S.back)}</button><button class="btn primary" id="next" ${v===null?'disabled':''}>${editing?esc(S.save):i===7?esc(S.see):esc(S.next)} →</button></div>
- </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}</div></aside></div></div>`+footer();
+ </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}</div>${specialistCard(i)}</aside></div></div>`+footer();
  animateWheel(app);
- const rng=app.querySelector('#rng');rng.style.setProperty('--p',typeof v==='number'?v/7:0);const paint=(v)=>{values[i]=v;rng.removeAttribute('data-untouched');rng.style.setProperty('--p',v/7);app.querySelector('#val').innerHTML=`${v}<small>${v===1?(L==='en'?'day':'dia'):(L==='en'?'days':'dias')}</small>`;app.querySelectorAll('.ticks span').forEach((x,n)=>x.classList.toggle('on',n===v));app.querySelectorAll('.week i').forEach((x,n)=>x.classList.toggle('on',n<v));app.querySelector('#unk').setAttribute('aria-pressed','false');app.querySelector('.live').textContent=S.chosen(dayLabel(v));app.querySelector('#next').disabled=false;const wb=app.querySelector('.wheelbox');wb.querySelector('svg').outerHTML=wheel(values,{hi:i,labels:true,R:160});wb.querySelectorAll('.wedge').forEach(w=>w.classList.add('in'))};
+ const rng=app.querySelector('#rng');rng.style.setProperty('--p',typeof v==='number'?v/7:0);const paint=(v)=>{values[i]=v;rng.removeAttribute('data-untouched');rng.style.setProperty('--p',v/7);app.querySelector('#val').innerHTML=`${v}<small>${v===1?(L==='en'?'day':'dia'):(L==='en'?'days':'dias')}</small>`;app.querySelectorAll('.ticks span').forEach((x,n)=>x.classList.toggle('on',n===v));app.querySelectorAll('.week i').forEach((x,n)=>x.classList.toggle('on',n<v));app.querySelector('.live').textContent=S.chosen(dayLabel(v));app.querySelector('#next').disabled=false;const wb=app.querySelector('.wheelbox');wb.querySelector('svg').outerHTML=wheel(values,{hi:i,labels:true,R:160});wb.querySelectorAll('.wedge').forEach(w=>w.classList.add('in'))};
  rng.oninput=()=>paint(Number(rng.value));rng.onchange=()=>track('answer',{q:i+1,area:AREAS[i].slug,v:values[i]});
  rng.addEventListener('pointerdown',()=>{if(rng.dataset.untouched)paint(Number(rng.value))});rng.addEventListener('keydown',()=>{if(rng.dataset.untouched)setTimeout(()=>paint(Number(rng.value)),0)});
- app.querySelector('#unk').onclick=()=>{values[i]='unknown';track('answer',{q:i+1,area:AREAS[i].slug,v:'unknown'});vQuestion(i);app.querySelector('#unk').focus({preventScroll:true})};
  app.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{extras[b.dataset.x]=b.dataset.val||null;vQuestion(i)});
  app.querySelector('#back').onclick=()=>{editing=false;go(i-1)};
  app.querySelector('#next').onclick=()=>{if(values[i]===null)return;const tgt=editing?8:i+1;editing=false;if(tgt===8)track('quiz_done',{vals:values.map(v=>v==='unknown'?'x':v).join('')});go(tgt)};
