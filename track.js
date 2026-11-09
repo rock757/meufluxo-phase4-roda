@@ -4,11 +4,21 @@
    Não guarda nome, e-mail ou telefone. IDs são aleatórios. Ver painel.html para o funil. */
 (function(){
 'use strict';
-const CFG=(window.MF_CONFIG||{}).tracking||{};
+const CFG=Object.assign({},(window.MF_CONFIG||{}).tracking||{});
 const KEYS=(window.MF_CONFIG||{}).paramsRepassados||['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
 const q=new URLSearchParams(location.search);
 const page=(location.pathname.split('/').pop()||'index.html').replace('.html','')||'index';
 const lang=q.get('lang')==='en'?'en':'pt';
+/* Explicit test/staff sessions stay local. No automatic classification of customers. */
+const store=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k)||'';if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return ''}};
+const label=v=>String(v||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,40);
+const flags={test:store('mf_test'),internal:store('mf_internal')};
+for(const [param,key] of [['mf_test','test'],['mf_internal','internal']]){
+ if(q.has(param)){const raw=q.get(param);flags[key]=raw==='off'?'':(label(raw)||'1');store(param,flags[key]||null)}
+}
+if(['painel','overview'].includes(page)){flags.internal='staff';store('mf_internal','staff')}
+const excluded=!!(flags.test||flags.internal);
+if(excluded){CFG.gtm='';CFG.ga4='';CFG.metaPixel=''}
 /* ---- ids ---- */
 const uid=()=>{try{return crypto.randomUUID().replace(/-/g,'').slice(0,20)}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,10)}};
 const getC=n=>{const m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):''};
@@ -18,8 +28,9 @@ let sid=getC('mf_sid');const newSession=!sid;if(!sid){sid=uid();}setC('mf_sid',s
 /* ---- origem (utm) ---- */
 const utm={};KEYS.forEach(k=>{if(q.get(k))utm[k]=q.get(k).slice(0,120)});
 let first=null;try{first=JSON.parse(localStorage.getItem('mf_first')||'null')}catch(e){}
-if(!first||!first.ts||(Date.now()-first.ts)>30*86400000){first={ts:Date.now(),ref:(document.referrer||'').slice(0,200),landing:page,...utm};try{localStorage.setItem('mf_first',JSON.stringify(first))}catch(e){}}
-const origin=Object.assign({},first,utm); // último toque sobrescreve o primeiro, só para os utm_*
+if(first&&first.ts&&!first.first_ts){first.first_ts=first.ts;delete first.ts;try{localStorage.setItem('mf_first',JSON.stringify(first))}catch(e){}}
+if(!first||!first.first_ts||(Date.now()-first.first_ts)>30*86400000){first={first_ts:Date.now(),ref:(document.referrer||'').slice(0,200),landing:page,...utm};try{localStorage.setItem('mf_first',JSON.stringify(first))}catch(e){}}
+const origin=Object.assign({},first,utm);delete origin.ts; // último toque sobrescreve o primeiro, só para os utm_*
 /* ---- carregadores opcionais (IDs vêm do config.js; vazios = nada carrega) ---- */
 window.dataLayer=window.dataLayer||[];
 function loadScript(src){const s=document.createElement('script');s.async=true;s.src=src;document.head.appendChild(s)}
@@ -29,13 +40,13 @@ if(CFG.metaPixel&&!window.fbq){(function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=
 const META={letter_view:'ViewContent',offer_view:'ViewContent',checkout_click:'InitiateCheckout',quiz_done:'CompleteRegistration',quiz_start:'Lead'};
 /* ---- envio ---- */
 function local(rec){try{const a=JSON.parse(localStorage.getItem('mf_events')||'[]');a.push(rec);if(a.length>400)a.splice(0,a.length-400);localStorage.setItem('mf_events',JSON.stringify(a))}catch(e){}}
-function beacon(rec){if(!CFG.endpoint)return;try{const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(CFG.endpoint,new Blob([body],{type:'application/json'}));else fetch(CFG.endpoint,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
-function send(ev,p){p=p||{};const rec=Object.assign({ev,ts:Date.now(),vid,sid,page,lang,path:location.pathname},origin,p);
- try{window.dataLayer.push(Object.assign({event:'mf_'+ev},rec))}catch(e){}
+function beacon(rec){if(excluded||!CFG.endpoint)return;try{const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(CFG.endpoint,new Blob([body],{type:'application/json'}));else fetch(CFG.endpoint,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
+function send(ev,p){p=p||{};const rec=Object.assign({},origin,p,{ev,ts:Date.now(),vid,sid,page,lang,path:location.pathname,test:flags.test,internal:flags.internal});
+ try{if(!excluded)window.dataLayer.push(Object.assign({event:'mf_'+ev},rec))}catch(e){}
  try{if(window.gtag&&CFG.ga4)window.gtag('event',ev,Object.assign({page,lang},p))}catch(e){}
  try{if(window.fbq&&CFG.metaPixel){if(META[ev])window.fbq('track',META[ev],p);else window.fbq('trackCustom','mf_'+ev,p)}}catch(e){}
  local(rec);beacon(rec);return rec}
-send.ids={vid,sid,first,utm,newVisitor,newSession};
+send.ids={vid,sid,first,utm,newVisitor,newSession};send.flags=flags;send.excluded=excluded;
 window.MF_TRACK=send;
 /* ---- automáticos: page_view, profundidade de rolagem, saída ---- */
 send('page_view',{new_visitor:newVisitor?1:0,new_session:newSession?1:0,ref:(document.referrer||'').slice(0,200),w:window.innerWidth,h:window.innerHeight});

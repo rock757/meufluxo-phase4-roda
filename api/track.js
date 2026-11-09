@@ -8,6 +8,8 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') { res.statusCode = 405; return res.end(); }
   const b = await S.readBody(req);
+  // Defense in depth for explicitly marked tests/staff: never append them to campaign storage.
+  if (b && (b.test || b.internal)) { res.setHeader('x-mf-stored', '0'); res.setHeader('x-mf-reason', 'excluded-test-or-staff'); res.statusCode = 204; return res.end(); }
   if (!b || !b.ev) { res.statusCode = 400; return res.end(); }
   if (!DB.configured() && !S.configured()) { res.setHeader('x-mf-stored', '0'); res.setHeader('x-mf-reason', 'storage-not-configured'); res.statusCode = 204; return res.end(); } // no-op até configurar as variáveis
   const extra = {}; Object.keys(b).forEach(k => { if (!BASE.includes(k)) extra[k] = b[k]; });
