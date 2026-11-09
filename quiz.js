@@ -4,11 +4,12 @@
 const MF=window.MF_CONFIG||{}, TR=window.MF_TRILHA;
 const track=(ev,p)=>{try{window.MF_TRACK&&window.MF_TRACK(ev,p)}catch(e){}};
 const C=MF.campanha||{};const daysLeft=()=>null;
+const countdownLabel=()=>window.MF_COUNTDOWN_LABEL?window.MF_COUNTDOWN_LABEL(L):'';
 const Q=new URLSearchParams(location.search);
 const L=Q.get('lang')==='en'?'en':'pt';
-const countdownLabel=()=>window.MF_COUNTDOWN_LABEL?window.MF_COUNTDOWN_LABEL(L):'';
 const t=o=>o[L]||o.pt;
-const G=(window.MF_DATA&&window.MF_DATA.NICO&&window.MF_DATA.NICO.urg[L]&&window.MF_DATA.NICO.urg[L].gift)||{};
+/* v9: o selo "Presente de Black November · só durante o Black November · pouco tempo restando" saiu: a Roda é grátis sempre e não há prazo confirmado. */
+const G={};
 
 /* ---------- strings ---------- */
 const S={
@@ -24,7 +25,7 @@ const S={
   revEyebrow:'Sua Roda da Vida',revH:'Um retrato da sua última semana.',revLead:'Veja como cada área esteve presente na sua semana e escolha o que você quer cuidar agora.',
   listH:'Suas respostas',edit:'Rever resposta',unknownNote:'Áreas em “Não sei dizer” ficam vazias no desenho.',
   prioEyebrow:'O próximo passo',prioH:'De qual área você gostaria de cuidar agora?',prioLead:'Escolha uma área à qual você quer dedicar mais atenção ou continuar cuidando.',
-  pathEyebrow:'Sua espiral',pathH:'Comece pela área que você escolheu. Continue no seu ritmo.',pathLead:'A sua Roda da Vida já está feita: ela é o ponto de partida e vai junto no acesso. Esta é a jornada recomendada pelas oito áreas, uma de cada vez. Você pode começar pela que escolheu e seguir no seu ritmo.',whoCares:'Quem cuida desta área no MeuFluxo',seed:'Feita ✓ · incluída',step:(n)=>`Passo ${n}`,
+  pathEyebrow:'A jornada recomendada',pathH:'Uma sugestão de caminho pelas oito áreas. A ordem é sua.',pathLead:'É a mesma jornada para todo mundo, pensada pela equipe do MeuFluxo: um programa de cada área, do Propósito à Espiritualidade. A sua Roda já é o primeiro passo. Você começa pela área que escolheu e segue no seu ritmo.',chosenEb:'Seu começo',chosenH:(a)=>`Seu começo: ${a}`,chosenP:'Uma sugestão para começar pela área que você escolheu. Não é um diagnóstico: é um bom ponto de partida, e você pode trocar quando quiser.',chosenGo:'Ver a proposta completa',chosenRoda:'Você já fez a Roda da Vida, a ferramenta de reflexão do Nicolas. O próximo passo é escolher um programa para começar.',chosenTag:'Seu começo',done:'Feita ✓',whoCares:'Especialista desta área no MeuFluxo',seed:'Feita ✓',step:(n)=>`Área ${n}`,
   spEyebrow:'Conheça os temas',spH:'Como as áreas se conectam',spLead:'A roda mostra oito áreas da vida. A espiral reúne essas áreas em seis níveis, do centro para fora. Selecione um nível para conhecer os programas e especialistas.',spOpen:'Conhecer a espiral',
   inThisLevel:'Neste nível',areasIn:'Áreas da roda',
   specEyebrow:'Conheça os especialistas',specH:'Especialistas para cuidar das diferentes áreas da sua vida.',specLead:'Conheça os médicos, nutricionistas, terapeutas e educadores do MeuFluxo. Selecione um nome para saber mais sobre seu trabalho e seus programas.',tapMore:'Toque para ver',
@@ -32,8 +33,8 @@ const S={
   how1h:'Escolha por onde começar',how1:'Conheça um programa da área que você escolheu. Com o acesso, você pode começar pela primeira aula.',
   how2h:'Continue quando fizer sentido',how2:'Volte ao mesmo programa ou explore outro conteúdo incluído no seu acesso. Você escolhe a ordem.',
   how3h:'Aprenda no seu ritmo',how3:'Assista às aulas gravadas no celular ou no computador e reveja os conteúdos durante os seus cinco anos de acesso.',
-  ctaEyebrow:'Oferta especial Black November · só para quem fez a Roda',ctaH:'Programas de todos os especialistas, em um só lugar. Por tempo limitado.',ctaP:'O Nicolas escreveu uma carta para você: o seu primeiro passo, o que está incluído, o valor do Black November, o prazo e a garantia.',ctaBtn:'Ler a carta do Nicolas',redo:'Refazer minha roda',
-  depoEyebrow:'Quem já está na jornada',depoH:'Histórias de quem já participa',depoLead:'Relatos de alunos do MeuFluxo, com suas próprias palavras. Cada pessoa tem sua experiência, e os resultados podem variar.',depoCheck:'Em verificação · não publicar sem autorização',depoOn:'Depoimento do programa',
+  ctaEyebrow:'MeuFluxo Ilimitado · Black November',ctaH:'Programas de todos os especialistas, em um só lugar.',ctaP:'Veja a proposta do Nicolas: os programas incluídos, o valor, o tempo de acesso e a garantia.',ctaBtn:'Ver a proposta completa',redo:'Refazer minha roda',
+  depoEyebrow:'Quem já está na jornada',depoH:'Histórias de quem já participa',depoLead:'Relatos de pessoas que participam do MeuFluxo, com suas próprias palavras. Cada pessoa tem sua experiência, e os resultados podem variar.',depoCheck:'Em verificação · não publicar sem autorização',depoOn:'Depoimento do programa',
   howAlone:'Ver como funciona, sem fazer a roda',
   foot:'Esta roda é um convite à reflexão pessoal e não substitui uma avaliação clínica. Suas respostas são registradas de forma anônima (sem nome, sem e-mail) para preparar a sua sugestão e melhorar a Roda. Para responder, você não precisa se cadastrar nem comprar.',
   review:'Prévia de conceito · Black November',bn:(n)=>n===null?'Black November':`Black November · faltam ${n} dias`},
@@ -44,38 +45,101 @@ const S={
   back:'Back',next:'Continue',see:'See my Wheel of Life',save:'Save change',
   weekHint:'Think about the last 7 days. Each area has its own rhythm: seven is not a target.',
   legend:'Your wheel takes shape with every answer.',
-  optG:'Optional, to personalize the suggestion:',g_m:"I'm a woman",g_h:"I'm a man",g_x:"Rather not say",
+  optG:'If you like, answer to personalize the suggestion:',g_m:"I'm a woman",g_h:"I'm a man",g_x:"Rather not answer",
   optR:'Optional: the relationship that needs attention most today is with…',r_f:'my kids',r_p:'partner or people my age',r_x:'rather not say',
-  revEyebrow:'Your Wheel of Life',revH:'A portrait of your last week.',revLead:"Not a grade. A seven-day portrait. Look where there was room, and where it got small.",
-  listH:'Your answers',edit:'Change',unknownNote:'Areas marked “can’t say” stay empty in the drawing.',
-  prioEyebrow:'The next step',prioH:'What would you like to take care of now?',prioLead:'Pick one area. It can be the one that got small, or one you want to cultivate. Your call.',
-  pathEyebrow:'Your spiral',pathH:'Start with the area you chose. Continue at your pace.',pathLead:'Your Wheel of Life is already done: it is the starting point and comes with your access. This is the recommended journey through the eight areas, one at a time. You can start with the one you chose and go at your pace.',whoCares:'Who takes care of this area at MeuFluxo',seed:'Done ✓ · included',step:(n)=>`Step ${n}`,
-  spEyebrow:'Meet the themes',spH:'How the areas connect',spLead:'The wheel has eight areas. The spiral groups related areas into six levels, from the centre outward. Tap a level to see who takes care of it.',spOpen:'Explore the spiral',
+  revEyebrow:'Your Wheel of Life',revH:'A portrait of your last week.',revLead:'See how present each area was in your week and choose what you want to take care of now.',
+  listH:'Your answers',edit:'Review answer',unknownNote:'Areas marked “can’t say” stay empty in the drawing.',
+  prioEyebrow:'The next step',prioH:'Which area would you like to take care of now?',prioLead:'Choose an area you want to give more attention to, or keep caring for.',
+  pathEyebrow:'The recommended journey',pathH:'A suggested path through the eight areas. The order is yours.',pathLead:'It is the same journey for everyone, planned by the MeuFluxo team: one program from each area, from Purpose to Spirituality. Your Wheel is already the first step. You start with the area you chose and go at your own pace.',chosenEb:'Your start',chosenH:(a)=>`Your start: ${a}`,chosenP:'A suggestion to begin with the area you chose. It is not a diagnosis: it is a good starting point, and you can change it whenever you like.',chosenGo:'See the full offer',chosenRoda:'You have already done the Wheel of Life, Nicolas’s reflection tool. The next step is choosing a program to start with.',chosenTag:'Your start',done:'Done ✓',whoCares:'Specialist for this area at MeuFluxo',seed:'Done ✓',step:(n)=>`Area ${n}`,
+  spEyebrow:'Meet the themes',spH:'How the areas connect',spLead:'The wheel shows eight areas of life. The spiral groups those areas into six levels, from the centre outward. Select a level to meet the programs and specialists.',spOpen:'Explore the spiral',
   inThisLevel:'At this level',areasIn:'Wheel areas',
-  specEyebrow:'Who is behind it',specH:'Hand-picked. One for every piece of your life.',specLead:'Doctors, nutritionists, therapists, educators. Tap a specialist to see their method.',tapMore:'Tap to see',
+  specEyebrow:'Meet the specialists',specH:'Specialists to care for the different areas of your life.',specLead:'Meet the doctors, nutritionists, therapists and educators of MeuFluxo. Select a name to learn about their work and programs.',tapMore:'Tap to see',
   howEyebrow:'How it works',howH:'How to start',
-  how1h:'Choose where to start',how1:'See a program related to the area you chose and watch the first class.',
-  how2h:'Continue when it makes sense',how2:'Go back to the same program or explore other content included in your access. The spiral suggests the order; you decide.',
-  how3h:'Learn at your pace',how3:'Classes are recorded. On your phone or computer, come back to the included content throughout your five years of access.',
-  ctaEyebrow:'Special Black November offer · only for people who did the Wheel',ctaH:'Programs from every specialist, in one place. For a limited time.',ctaP:'Nicolas wrote you a letter: your first step, what is included, the Black November price, the deadline and the guarantee.',ctaBtn:'Read Nicolas’s letter',redo:'Redo my wheel',
-  depoEyebrow:'Already on the journey',depoH:'Stories from people already taking part',depoLead:'Personal accounts from MeuFluxo students, translated here for review (originals in Portuguese). Every story is one person’s: results vary.',depoCheck:'Under verification · do not publish without authorization',depoOn:'Program testimonial',
+  how1h:'Choose where to start',how1:'Get to know a program in the area you chose. With access, you can start with the first class.',
+  how2h:'Continue when it makes sense',how2:'Go back to the same program or explore other content included in your access. You choose the order.',
+  how3h:'Learn at your pace',how3:'Watch the recorded classes on your phone or computer and revisit the content throughout your five years of access.',
+  ctaEyebrow:'MeuFluxo Ilimitado · Black November',ctaH:'Programs from every specialist, in one place.',ctaP:'See Nicolas’s offer: the programs included, the price, the access period and the guarantee.',ctaBtn:'See the full offer',redo:'Redo my wheel',
+  depoEyebrow:'Already on the journey',depoH:'Stories from people already taking part',depoLead:'Accounts from MeuFluxo students, in their own words (translated for review). Everyone has their own experience, and results may vary.',depoCheck:'Under verification · do not publish without authorization',depoOn:'Program testimonial',
   howAlone:'See how it works, without the wheel',
-  foot:'A personal reflection, not a clinical assessment. Your answers are recorded anonymously (no name, no e-mail) to prepare your suggestion and improve the Wheel. No form, sign-up or purchase.',
+  foot:'This wheel is an invitation to personal reflection and does not replace a clinical assessment. Your answers are recorded anonymously (no name, no e-mail) to prepare your suggestion and improve the Wheel. You do not need to sign up or buy anything to answer.',
   review:'Concept preview · English review copy',bn:(n)=>n===null?'Black November':`Black November · ${n} days left`}
 }[L];
+/* ---------- v9 copy (2026-11-07, Rock: só palavras — mais simples, mais curto, mais alegre). Remover este bloco = volta ao v8. ---------- */
+Object.assign(S,{
+ pt:{start:'Fazer minha Roda grátis',
+  eyebrowHero:'Roda da Vida · grátis',h1:'Como anda a sua vida? Veja em dois minutos.',lead:'Oito perguntas rápidas sobre a sua semana. É como tirar uma foto: no fim, você vê o que está bem, o que pede mais carinho e escolhe por onde começar.',
+  weekHint:'Pense nos últimos 7 dias. Responda sem pensar muito: não existe resposta certa, e sete não é meta.',
+  legend:'A sua roda vai ganhando forma a cada resposta.',
+  revEyebrow:'Sua Roda da Vida',revH:'Pronto. Esta é a sua semana.',revLead:'Nenhuma roda é perfeita, e não precisa ser. Ela só mostra onde vale a pena colocar um pouco mais de carinho agora.',
+  prioEyebrow:'O próximo passo',prioH:'O que você quer cuidar primeiro?',prioLead:'Escolha uma área: a que está pedindo ajuda ou a que você quer fortalecer. Uma de cada vez já é um ótimo começo.',
+  pathEyebrow:'A jornada recomendada',pathH:'Um passo de cada vez, pelas oito áreas.',pathLead:'É como um GPS: você não precisa adivinhar o próximo passo. A jornada é a mesma para todo mundo, e a sua Roda já é o primeiro. Você começa pela área que escolheu e segue no seu ritmo.',
+  chosenP:'Um ótimo jeito de começar. É uma sugestão, não um diagnóstico: você pode trocar quando quiser.',chosenGo:'Ver como começar',
+  specLead:'Médicos, nutricionistas, terapeutas e educadores. Toque num nome para conhecer o trabalho e os programas.',
+  how1h:'Comece pelo que importa agora',how1:'Abra a primeira aula do programa da área que você escolheu.',
+  how2h:'Volte quando quiser',how2:'Retome de onde parou ou abra outro tema incluído no acesso.',
+  how3h:'Vá no seu ritmo',how3:'Aulas gravadas, no celular ou no computador, por cinco anos.',
+  ctaH:'Os programas de todos os especialistas, em uma casa só.',ctaP:'Veja o que está incluído, quanto custa, por quanto tempo e como funciona a garantia de 7 dias.',ctaBtn:'Ver a proposta',
+  spLead:'As oito áreas se encaixam em seis níveis, do centro para fora. Toque num nível para ver os programas e especialistas.',bn:(n)=>n===null?'Black November':`Black November · ${n} dias para a Black Friday`},
+ en:{start:'Do my Wheel, free',
+  eyebrowHero:'Wheel of Life · free',h1:'How is your life going? See it in two minutes.',lead:'Eight quick questions about your week. It is like taking a photo: at the end you see what is going well, what needs more care, and you choose where to start.',
+  weekHint:'Think about the last 7 days. Answer without overthinking: there is no right answer, and seven is not a target.',
+  legend:'Your wheel takes shape with each answer.',
+  revEyebrow:'Your Wheel of Life',revH:'Done. This is your week.',revLead:'No wheel is perfect, and it does not need to be. It just shows where a little more care is worth it right now.',
+  prioEyebrow:'The next step',prioH:'What do you want to care for first?',prioLead:'Pick one area: the one asking for help or the one you want to strengthen. One at a time is already a great start.',
+  pathEyebrow:'The recommended journey',pathH:'One step at a time, through the eight areas.',pathLead:'It is like a GPS: you do not need to guess the next step. The journey is the same for everyone, and your Wheel is already the first one. You start with the area you chose and go at your own pace.',
+  chosenP:'A great way to start. It is a suggestion, not a diagnosis: you can change it whenever you like.',chosenGo:'See how to start',
+  specLead:'Doctors, nutritionists, therapists and educators. Tap a name to see their work and programs.',
+  how1h:'Start with what matters now',how1:'Open the first class of the program for the area you chose.',
+  how2h:'Come back whenever you like',how2:'Pick up where you stopped or open another topic included in the access.',
+  how3h:'Go at your pace',how3:'Recorded classes, on your phone or computer, for five years.',
+  ctaH:'Every specialist’s programs, under one roof.',ctaP:'See what is included, what it costs, for how long and how the 7-day guarantee works.',ctaBtn:'See the offer',
+  spLead:'The eight areas fit into six levels, from the center outward. Tap a level to see the programs and specialists.',bn:(n)=>n===null?'Black November':`Black November · ${n} days to Black Friday`}}[L]);
+/* ---------- v10 copy (2026-11-07, ROCKdot/Rock: palavras primeiro). Sobre o v9; remover este bloco = volta ao v9 (tag sales-v9-2026-11-07). ----------
+   Selos só com fatos verificáveis (8 áreas, grátis, sem cadastro) no lugar das contagens não confirmadas; rodapé sem "anônimas" (há identificadores de sessão). */
+Object.assign(S,{
+ pt:{start:'Começar minha Roda',eyebrowHero:'Sua Roda da Vida',min:'Se uma pergunta for difícil, responda “Não sei dizer”.',
+  lead:'Oito perguntas rápidas sobre a sua semana. Como uma foto: você vê o que está bem, o que pede mais carinho e escolhe por onde começar.',
+  trust1:'8 áreas da vida',trust2:'Grátis',trust3:'Sem cadastro, sem e-mail',
+  legend:'Um retrato da semana, não uma nota sobre você.',
+  revLead:'É um retrato, não uma nota. Nenhuma roda é perfeita: ela só mostra onde vale colocar um pouco mais de carinho agora.',
+  prioLead:'Escolha uma área: a que pede ajuda ou a que você quer fortalecer. Você pode mudar depois.',
+  pathLead:'É como um GPS: você não precisa adivinhar o próximo passo. A jornada sugere um programa por área, igual para todo mundo, e a sua Roda já é o primeiro. Comece pela área que escolheu; não precisa fazer tudo de uma vez.',
+  chosenP:'Um bom primeiro passo para essa área. É uma sugestão, não um diagnóstico: você pode abrir outro programa quando quiser.',
+  specH:'Conheça os especialistas e os programas',
+  foot:'A Roda é um convite à reflexão, não uma avaliação clínica. Suas respostas são registradas sem nome e sem e-mail, para preparar a sua sugestão e melhorar a Roda. Para responder, você não precisa se cadastrar nem comprar.'},
+ en:{start:'Start my Wheel',eyebrowHero:'Your Wheel of Life',min:'If a question is hard, answer “I can\'t say”.',
+  lead:'Eight quick questions about your week. Like a photo: you see what is going well, what needs more care, and you choose where to start.',
+  trust1:'8 areas of life',trust2:'Free',trust3:'No sign-up, no e-mail',
+  legend:'A picture of the week, not a grade about you.',
+  revLead:'It is a picture, not a grade. No wheel is perfect: it just shows where a little more care is worth it right now.',
+  prioLead:'Pick one area: the one asking for help or the one you want to strengthen. You can change later.',
+  pathLead:'It is like a GPS: you do not need to guess the next step. The journey suggests one program per area, the same for everyone, and your Wheel is already the first. Start with the area you chose; you do not need to do everything at once.',
+  chosenP:'A good first step for this area. It is a suggestion, not a diagnosis: you can open another program whenever you like.',
+  specH:'Meet the specialists and the programs',
+  foot:'The Wheel is an invitation to reflect, not a clinical assessment. Your answers are recorded without your name or e-mail, to prepare your suggestion and improve the Wheel. You do not need to sign up or buy to answer.'}}[L]);
 
+const REVIEW_COPY={"en": {"h1": "Get to know yourself better, in Just 2 Minutes.", "lead": "Just 8 simple questions about your typical week -- you see what's good now, what could be better, and the easiest way to get there... starting TODAY.", "trust1": "Free", "trust2": "No sign-up", "trust3": "No email needed", "start": "Start my Wheel", "weekPrompt": "In your typical week, how many days…", "choose": "Choose how many days out of 7", "review": "Review only · not published", "less": "Less = Still Growing", "more": "More = Going Well", "resultTitle": "Your Best Next Step", "support": "Now, to move forward in the right way, let’s take it one step at a time.", "go": "See your next step", "redo": "Redo my Wheel", "pending": "Review note: the recommendation rule is still to be agreed. No program has been selected from your answers.", "strong": "Going well", "growing": "Still growing"}, "pt": {"h1": "Conheça melhor você, em Apenas 2 Minutos.", "lead": "Só 8 perguntas simples sobre uma semana típica sua -- você vê o que está bom agora, o que pode melhorar e o jeito mais fácil de chegar lá... começando HOJE.", "trust1": "Grátis", "trust2": "Sem cadastro", "trust3": "Sem precisar de e-mail", "start": "Começar minha Roda", "weekPrompt": "Em uma semana típica sua, em quantos dias…", "choose": "Escolha quantos dias, de 0 a 7", "review": "Em revisão · não publicado", "less": "Menos = Ainda Crescendo", "more": "Mais = Indo Bem", "resultTitle": "Seu Melhor Próximo Passo", "support": "Agora, para evoluir da maneira certa, vamos por partes.", "go": "Ver seu próximo passo", "redo": "Refazer minha Roda", "pending": "Nota de revisão: a regra da recomendação ainda será definida. Nenhum programa foi escolhido com base nas suas respostas.", "strong": "Indo bem", "growing": "Ainda crescendo"}};
+Object.assign(S,REVIEW_COPY[L]);
+const REVIEW_QUESTIONS={"en": ["do you feel on the right track?", "do you move your body?", "are you proud of the way you ate?", "do you remember all you need to, and focus?", "do you feel at peace about money?", "do you have someone close you know you can count on?", "are you better, in some way, from the day before?", "do you feel a sense of inner peace?"], "pt": ["você sente que está no caminho certo?", "você movimenta o corpo?", "você sente orgulho da forma como se alimentou?", "você lembra de tudo o que precisa e consegue se concentrar?", "você se sente em paz com o dinheiro?", "você tem alguém próximo com quem sabe que pode contar?", "você está melhor, de alguma forma, do que no dia anterior?", "você sente paz interior?"]};
 /* ---------- data (data.js) ---------- */
-const {AREAS,LEVELS,SPECS,DEPOS,PROGS,PROOFS}=window.MF_DATA;
+const {AREAS}=window.MF_DATA;
 
 
 
 
 const lab=i=>`${i+1} — ${t(AREAS[i].full)}`;
-const byName=n=>SPECS.find(s=>s.name.replace('Dr. ','')===String(n||'').replace('Dr. ',''))||null;
-const photo=s=>`img/approved/${s.slug}.jpg`, photoSq=s=>`img/approved/${s.slug}-sq.jpg`;
-
 /* ---------- state ---------- */
 let values=Array(8).fill(null), step=-1, editing=false, priority=null, extras={g:null,r:null};
+/* 2026-11-06: a roda concluída fica só NESTA aba (sessionStorage 'mf_roda'), para "Voltar à Roda da Vida" reabrir o resultado e a área escolhida.
+   Nada vai para a URL nem para o servidor por causa disso; fechar a aba apaga. "Refazer minha roda" apaga de propósito. */
+/* v8 (2026-11-07): Propósito = passo 1 (a Roda). Quem já fez não recebe de novo o mesmo passo: o painel mostra "feito" e o próximo passo da jornada. */
+const Q8={pt:{doneH:(a)=>`Primeiro passo feito: ${a}`,next:'Próximo passo',nextTag:'Próximo',doneP:'Você já fez a Roda: o primeiro passo está dado. Este é o próximo da jornada. Siga essa ordem ou escolha outra área quando quiser.',startDone:'Seu começo ✓'},
+ en:{doneH:(a)=>`First step done: ${a}`,next:'Next step',nextTag:'Next',doneP:'You have already done the Wheel: the first step is taken. This is the next one in the journey. Follow that order or choose another area whenever you like.',startDone:'Your start ✓'}}[L==='en'?'en':'pt'];
+const ST_KEY='mf_roda';
+function keep(){try{if(values.every(v=>v!==null))sessionStorage.setItem(ST_KEY,JSON.stringify({v:values,p:priority}))}catch(e){}}
+function forget(){try{sessionStorage.removeItem(ST_KEY)}catch(e){}}
+function restore(){try{const o=JSON.parse(sessionStorage.getItem(ST_KEY)||'null');if(!o||!Array.isArray(o.v)||o.v.length!==8)return false;
+ if(!o.v.every(x=>x==='unknown'||(Number.isInteger(x)&&x>=0&&x<=7)))return false;values=o.v.slice();priority=(Number.isInteger(o.p)&&o.p>=0&&o.p<8)?o.p:null;return true}catch(e){return false}}
 const app=document.getElementById('app');
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dayLabel=v=>v==='unknown'?S.unknownShort:S.days(v);
@@ -122,23 +186,13 @@ function ghostWheel(vals,cx,cy,R,op){const ang=i=>(-90+i*45)*Math.PI/180;const P
  for(let i=0;i<8;i++){const e=P(i,R);h+=`<line x1="${cx}" y1="${cy}" x2="${e[0]}" y2="${e[1]}" stroke="#5a3fb4" stroke-width=".6" opacity=".25"/>`}
  vals.forEach((v,i)=>{if(typeof v!=='number'||v===0)return;const r=R*v/7;const a=P(i,r),b=P(i+1,r);h+=`<polygon points="${cx},${cy} ${a.join(',')} ${b.join(',')}" fill="${AREAS[i].hex}" opacity=".55" stroke="#fff" stroke-width="1"/>`});
  return h+`<circle cx="${cx}" cy="${cy}" r="14" fill="#fff" opacity=".9"/><text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="middle" font-size="16" fill="#5a3fb4" opacity=".7" style="font-family:var(--sans)">m</text></g>`}
-function spiral(hi){const gv=values.every(v=>v===null)?[5,4,6,3,5,6,4,5]:values;let h=`<svg viewBox="-20 -20 650 417" aria-hidden="true"><defs><filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter></defs>`;
- ARCS.forEach(a=>{const [x,y,sz]=a.sq;h+=`<rect x="${x}" y="${y}" width="${sz}" height="${sz}" fill="${LEVELS[a.lv].mid}" opacity=".28"/><rect class="gold" x="${x}" y="${y}" width="${sz}" height="${sz}" fill="none" stroke="#d9b86a" stroke-width="1.2" opacity=".7"/>`});
- ARCS.forEach((a,k)=>{const on=hi!=null&&hi===a.lv;h+=`${on?`<path d="${a.d}" fill="none" stroke="#f1dca0" stroke-width="44" opacity=".9" filter="url(#soft)"/>`:''}<path class="arc${on?' hi':''}" data-lv="${a.lv}" d="${a.d}" stroke="${LEVELS[a.lv].deep}" pathLength="1" style="stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.1s ${k*.18}s cubic-bezier(.2,.7,.2,1) forwards"/>`});
- ARCS.forEach((a,k)=>{if(a.lv<3)return;const i=arcInfo(a);const rr=i.r-36;const x=i.c[0]+Math.cos(i.mid)*rr,y=i.c[1]+Math.sin(i.mid)*rr;h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" font-size="${a.lv>=5?26:18}" font-weight="700" fill="${LEVELS[a.lv].deep}" style="font-family:var(--sans);opacity:0;animation:fadein .6s ${1.1+k*.18}s forwards">${LEVELS[a.lv].num}</text>`});
- h+=`<circle cx="165" cy="267" r="124" fill="#fff" opacity=".45"/>`+ghostWheel(gv,165,267,110,.75);
- h+=`<circle cx="165" cy="267" r="5" fill="#d9b86a"><animate attributeName="r" values="4;7;4" dur="2.4s" repeatCount="indefinite"/></circle>`;
- return h+'</svg>'}
-if(!document.getElementById('kf')){const st=document.createElement('style');st.id='kf';st.textContent='@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadein{to{opacity:1}}';document.head.appendChild(st)}
-
-/* ---------- views ---------- */
-function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(MF.revisao?S.review:(countdownLabel()||S.bn(null)))}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
-function footer(){return `<div class="wrap foot">${esc(S.foot)}</div>`}
+function header(){return `<div class="wrap top"><a href="${selfHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div style="display:flex;gap:12px;align-items:center"><span class="pill" style="font-size:12px">${esc(MF.revisao?S.review:countdownLabel())}</span><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div></div></div>`}
+function footer(){return ''}
 
 function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="hero"><div class="copy"><span class="eyebrow">${esc(S.eyebrowHero)}</span><h1>${esc(S.h1)}</h1><p class="lead">${esc(S.lead)}</p>
  <div class="nav"><button class="btn primary" id="start">${esc(S.start)} →</button><button class="btn ghost" id="how">${esc(S.how)}</button></div>
- <p class="muted" style="font-size:14px">${esc(S.min)}</p>
- ${G.eb?`<div class="gift"><span class="eb">🎁 ${esc(G.eb)}</span><div class="row">${C.rodaValor?`<span class="was"><small>${esc(G.normally)}</small><s>${esc(C.rodaValor)}</s></span>`:''}<span class="free">${esc(G.free)}</span></div><b>${esc(G.only)}</b><em>${esc(G.soon)}</em></div>`:''}
+ 
+ <div class="gift"><div class="row"><span class="was"><small>${L==='en'?'NORMALLY':'NORMALMENTE'}</small><s>R$299</s></span><span class="free">${L==='en'?'FREE':'GRÁTIS'}</span></div></div>
  <div class="trust"><span class="pill"><i class="dotc" style="background:var(--a8)"></i>${esc(S.trust1)}</span><span class="pill"><i class="dotc" style="background:var(--a5)"></i>${esc(S.trust2)}</span><span class="pill"><i class="dotc" style="background:var(--gold)"></i>${esc(S.trust3)}</span></div></div>
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
@@ -147,7 +201,7 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  app.innerHTML=header()+`<div class="wrap screen"><div class="q" style="--c:${a.hex}"><section>
  <div class="progress" aria-label="${esc(S.qof(i+1))}">${AREAS.map((x,k)=>`<i class="${k<i?'done':k===i?'cur':''}" style="--c:${x.hex}"></i>`).join('')}</div>
  <div class="qbadge"><span class="ico">${a.ico}</span><span class="eyebrow">${esc(S.qof(i+1))} · ${i+1} — ${esc(t(a.n))}</span></div>
- <h1>${esc(t(a.q))}</h1><p class="help">${esc(t(a.help))}</p>
+ <p class="week-prompt">${esc(S.weekPrompt)}</p><h1>${esc(REVIEW_QUESTIONS[L][i])}</h1>
  <div class="slider" style="--c:${a.hex}"><div class="val" id="val">${typeof v==='number'?v:'–'}<small>${typeof v==='number'?(v===1?(L==='en'?'day':'dia'):(L==='en'?'days':'dias')):(L==='en'?'slide':'arraste')}</small></div>
   <input type="range" id="rng" min="0" max="7" step="1" value="${typeof v==='number'?v:0}" aria-label="0–7" ${typeof v==='number'?'':'data-untouched="1"'}>
   <div class="ticks">${[...Array(8)].map((_,n)=>`<span${typeof v==='number'&&n===v?' class="on"':''}>${n}</span>`).join('')}</div></div>
@@ -157,7 +211,7 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  ${i===1&&!MF.jornadaPadrao?`<div class="extras">${esc(S.optG)}<div class="chips"><button class="chip" data-x="g" data-val="m" aria-pressed="${extras.g==='m'}">${esc(S.g_m)}</button><button class="chip" data-x="g" data-val="h" aria-pressed="${extras.g==='h'}">${esc(S.g_h)}</button><button class="chip" data-x="g" data-val="" aria-pressed="${extras.g===null}">${esc(S.g_x)}</button></div></div>`:''}
  ${i===5&&!MF.jornadaPadrao?`<div class="extras">${esc(S.optR)}<div class="chips"><button class="chip" data-x="r" data-val="f" aria-pressed="${extras.r==='f'}">${esc(S.r_f)}</button><button class="chip" data-x="r" data-val="p" aria-pressed="${extras.r==='p'}">${esc(S.r_p)}</button><button class="chip" data-x="r" data-val="" aria-pressed="${extras.r===null}">${esc(S.r_x)}</button></div></div>`:''}
  <div class="nav"><button class="btn ghost" id="back">${esc(S.back)}</button><button class="btn primary" id="next" ${v===null?'disabled':''}>${editing?esc(S.save):i===7?esc(S.see):esc(S.next)} →</button></div>
- </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}<div class="legend">${esc(S.legend)}</div></div>${(()=>{const p=TR?TR.resolve(i,MF.jornadaPadrao?{}:extras):null;const sp=p&&byName(p.especialista);const c=p&&window.MF_DATA.progOf(p.programa);if(!sp)return'';return `<div class="who-card" style="--c:${a.hex}"><span class="eb">${esc(S.whoCares)}</span><div class="row"><img src="${photoSq(sp)}" alt="${esc(sp.name)}"><div><b>${esc(sp.name)}</b><small>${esc(t(sp.spec))}</small></div></div><p><b>${esc(p.programa)}</b> — ${esc(c?c.desc:'')}</p></div>`})()}</aside></div></div>`+footer();
+ </section><aside class="aside"><div class="wheelbox">${wheel(values,{hi:i,labels:true,R:160})}</div></aside></div></div>`+footer();
  animateWheel(app);
  const rng=app.querySelector('#rng');rng.style.setProperty('--p',typeof v==='number'?v/7:0);const paint=(v)=>{values[i]=v;rng.removeAttribute('data-untouched');rng.style.setProperty('--p',v/7);app.querySelector('#val').innerHTML=`${v}<small>${v===1?(L==='en'?'day':'dia'):(L==='en'?'days':'dias')}</small>`;app.querySelectorAll('.ticks span').forEach((x,n)=>x.classList.toggle('on',n===v));app.querySelectorAll('.week i').forEach((x,n)=>x.classList.toggle('on',n<v));app.querySelector('#unk').setAttribute('aria-pressed','false');app.querySelector('.live').textContent=S.chosen(dayLabel(v));app.querySelector('#next').disabled=false;const wb=app.querySelector('.wheelbox');wb.querySelector('svg').outerHTML=wheel(values,{hi:i,labels:true,R:160});wb.querySelectorAll('.wedge').forEach(w=>w.classList.add('in'))};
  rng.oninput=()=>paint(Number(rng.value));rng.onchange=()=>track('answer',{q:i+1,area:AREAS[i].slug,v:values[i]});
@@ -168,57 +222,30 @@ function vQuestion(i){const a=AREAS[i];const v=values[i];
  app.querySelector('#next').onclick=()=>{if(values[i]===null)return;const tgt=editing?8:i+1;editing=false;if(tgt===8)track('quiz_done',{vals:values.map(v=>v==='unknown'?'x':v).join('')});go(tgt)};
  bindLang()}
 
+function reviewObservations(){
+ const known=values.map((v,i)=>({v,i})).filter(x=>typeof x.v==='number');
+ if(!known.length)return `<p>${L==='en'?'You left all eight areas open. There is no ranking to show yet.':'Você deixou as oito áreas em aberto. Ainda não há uma comparação para mostrar.'}</p>`;
+ const hi=Math.max(...known.map(x=>x.v)),lo=Math.min(...known.map(x=>x.v));
+ if(hi===lo)return `<p>${L==='en'?`You reported ${hi} days in each answered area.`:`Você marcou ${hi} dias em todas as áreas respondidas.`}</p>`;
+ const names=n=>known.filter(x=>x.v===n).map(x=>t(AREAS[x.i].n)).join(', ');
+ const phrase=(n,growing)=>L==='en'?`You are ${growing?'still growing':'doing well'} in ${names(n)} (you marked ${n} ${n===1?'day':'days'}).`:`Você está ${growing?'ainda crescendo':'indo bem'} em ${names(n)} (marcou ${n} ${n===1?'dia':'dias'}).`;
+ return `<div class="observation"><p>${esc(phrase(hi,false))}</p></div><div class="observation"><p>${esc(phrase(lo,true))}</p></div>`;
+}
 function vReveal(showOnly){
- const has=values.every(v=>v!==null);
- if(!showOnly&&!has){go(values.findIndex(v=>v===null));return}
- let h=header()+`<div class="wrap screen">`;
- if(!showOnly){h+=`<div class="reveal"><div class="card">${wheel(values,{anim:true,R:160})}</div><div><span class="eyebrow">${esc(S.revEyebrow)}</span><h2 style="margin:8px 0 12px">${esc(S.revH)}</h2><p class="lead">${esc(S.revLead)}</p>
-  <div class="card" style="margin-top:18px"><b>${esc(S.listH)}</b><ul class="scores">${AREAS.map((a,i)=>`<li style="--c:${a.hex}"><button data-edit="${i}" aria-label="${esc(S.edit)}: ${esc(lab(i))}">${esc(lab(i))}</button><span class="bar"><i data-w="${typeof values[i]==='number'?values[i]/7*100:0}"></i></span><strong>${esc(dayLabel(values[i]))}</strong></li>`).join('')}</ul>${values.includes('unknown')?`<p class="muted" style="font-size:13px;margin:10px 0 0">${esc(S.unknownNote)}</p>`:''}</div></div></div>
-  <div class="section" id="prio"><div class="head"><span class="eyebrow">${esc(S.prioEyebrow)}</span><h2>${esc(S.prioH)}</h2><p class="lead">${esc(S.prioLead)}</p></div>
-  <div class="prios">${AREAS.map((a,i)=>`<button class="prio" style="--c:${a.hex}" data-p="${i}" aria-pressed="${priority===i}"><span class="ico">${a.ico}</span><span>${esc(lab(i))}</span></button>`).join('')}</div><div id="path"></div></div>`}
- h+=`<div id="explainer"></div></div>`+footer();
- app.innerHTML=h; animateWheel(app);
- requestAnimationFrame(()=>app.querySelectorAll('.scores .bar i').forEach(b=>b.style.width=b.dataset.w+'%'));
- app.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{editing=true;go(Number(b.dataset.edit))});
- app.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{priority=Number(b.dataset.p);track('priority_pick',{area:AREAS[priority].slug,where:'roda'});saveRoda();app.querySelectorAll('[data-p]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderPath();renderExplainer(AREAS[priority].level);document.getElementById('path').scrollIntoView({behavior:'smooth',block:'start'})});
- renderExplainer(showOnly?null:(priority!==null?AREAS[priority].level:null));
- if(!showOnly&&priority!==null)renderPath();
- bindLang()}
+ if(showOnly){go(0);return}
+ if(!values.every(v=>v!==null)){go(values.findIndex(v=>v===null));return}
+ priority=null;keep();saveRoda();
+ app.innerHTML=header()+`<div class="wrap screen"><div class="guided-result"><div class="result-wheel"><div class="card"><h2 class="wheel-title eyebrow">${esc(S.revEyebrow)}</h2>${wheel(values,{anim:true,R:160})}</div><div class="fill-key"><span><i class="less"></i>${esc(S.less)}</span><span><i class="more"></i>${esc(S.more)}</span></div></div><section><h1>${esc(S.resultTitle)}</h1>${reviewObservations()}${values.includes('unknown')?`<p class="unknown-note">${L==='en'?'Unanswered areas are not compared.':'Áreas sem resposta não entram na comparação.'}</p>`:''}<p class="support">${esc(S.support)}</p><a class="btn primary" id="guided-next" href="${cartaHref()}">${esc(S.go)} →</a><p class="redo-later">${L==='en'?'You can redo it later.':'Você pode refazer depois.'}</p></section></div></div>`;
+ animateWheel(app);bindLang();
+ app.querySelector('#guided-next').addEventListener('click',()=>{track('cta_letter',{prioridade:''});saveRoda()});
+}
 
-function renderPath(){const box=document.getElementById('path');if(!box||!TR||priority===null)return;const order=MF.jornadaPadrao?[0,1,2,3,4,5,6,7]:TR.order(values,priority);let n=0;const SE=TR.SEMENTE[L];const ctx=MF.jornadaPadrao?{}:extras;
- box.innerHTML=`<div class="section" style="padding-bottom:0"><div class="head"><span class="eyebrow">${esc(S.pathEyebrow)}</span><h2>${esc(S.pathH)}</h2><p class="lead">${esc(S.pathLead)}</p></div><div class="path"><div class="step seed" style="--c:var(--gold)"><span class="n seed">${esc(S.seed)}</span><img src="img/approved/nicolas-toigo-sq.jpg" alt="Nicolas Toigo"><div><b>${esc(SE.titulo)}</b><small>${esc(SE.sub)}</small></div></div>${order.map((i,k)=>{const p=TR.resolve(i,ctx);const sp=byName(p.especialista);const a=AREAS[i];n++;
-  return `<div class="step" style="--c:${a.hex};animation-delay:${(k+1)*90}ms"><span class="n">${esc(S.step(n))}</span>${sp?`<img src="${photoSq(sp)}" alt="${esc(sp.name)}">`:`<span class="ico" style="width:54px;height:54px;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#fff">${a.ico}</span>`}<div><b>${esc(lab(i))}</b><small>${esc(p.programa||'')}${p.especialista?' · '+esc(p.especialista):''}</small></div></div>`}).join('')}</div></div>`}
-
-function renderExplainer(hiLevel){const box=document.getElementById('explainer');if(!box)return;const lv=hiLevel==null?2:hiLevel;
- box.innerHTML=`<details class="section optional" id="sp"${hiLevel!=null?' open':''}><summary><span class="eyebrow">${esc(S.spEyebrow)}</span><h2>${esc(S.spH)}</h2><span class="btn ghost">${esc(S.spOpen)}</span></summary><p class="lead" style="margin:0 0 22px">${esc(S.spLead)}</p>
-  <div class="spiral"><div id="spsvg">${spiral(lv)}</div><div><div role="tablist">${LEVELS.map((l,k)=>k===0?'':`<button class="lvl-tab" role="tab" data-lv="${k}" aria-selected="${k===lv}" style="--c:${l.deep}"><span class="n">${l.num}</span><span><b>${l.num} — ${esc(t(l.name))}</b><small>${esc(t(l.sub))}</small></span></button>`).join('')}</div><div class="lvl-panel" id="lvlpanel"></div></div></div></details>
-  <div class="section"><div class="head"><span class="eyebrow">${esc(S.specEyebrow)}</span><h2>${esc(S.specH)}</h2><p class="lead">${esc(S.specLead)}</p></div>
-  <div class="grid">${SPECS.map(s=>`<button class="spec" data-s="${s.slug}" style="--c:${LEVELS[s.level].deep}"><img src="${photo(s)}" alt="${esc(s.name)}" loading="lazy"><span class="body"><b>${esc(s.name)}</b><small>${esc(t(s.spec))}</small><span class="lv">${(()=>{const ai=AREAS.findIndex(a=>a.slug===s.area);return ai>=0?lab(ai):''})()}</span><span class="more">${esc(t(s.bio))}</span><span class="progs">${s.programs.map(esc).join(' · ')}</span></span></button>`).join('')}</div></div>
-  ${(MF.depoimentosAprovados||MF.revisao)?`<div class="section" id="depos"><div class="head"><span class="eyebrow">${esc(S.depoEyebrow)}</span><h2>${esc(S.depoH)}</h2><p class="lead">${esc(S.depoLead)}</p>${MF.depoimentosAprovados?'':`<span class="pill check">⚠ ${esc(S.depoCheck)}</span>`}</div>
-  <div class="depos">${DEPOS.map((d,k)=>`<figure class="depo" style="animation-delay:${k*70}ms"><blockquote>“${esc(t(d.q))}”</blockquote><figcaption>${d.photo?`<img src="${d.photo}" alt="">`:''}<span><b>${esc(d.who)}${d.where?' · '+esc(d.where):''}</b><small>${esc(d.prog)}</small></span></figcaption></figure>`).join('')}</div>
-  <div class="provas">${PROOFS.map(p=>`<button class="prova" data-img="${p.img}" aria-label="${esc(t(p.cap))}"><img src="${p.img}" alt="${esc(t(p.cap))}" loading="lazy"><span>${esc(t(p.cap))} · ${L==='en'?'tap to enlarge':'toque para ampliar'}</span></button>`).join('')}</div></div>`:''}</div>
-  <div class="section"><div class="head"><span class="eyebrow">${esc(S.howEyebrow)}</span><h2>${esc(S.howH)}</h2></div><div class="how">
-   <div class="card"><span class="big">1</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 1</span><h3>${esc(S.how1h)}</h3><p class="muted">${esc(S.how1)}</p></div>
-   <div class="card"><span class="big">2</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 2</span><h3>${esc(S.how2h)}</h3><p class="muted">${esc(S.how2)}</p></div>
-   <div class="card"><span class="big">3</span><span class="eyebrow">${L==='en'?'Step':'Passo'} 3</span><h3>${esc(S.how3h)}</h3><p class="muted">${esc(S.how3)}</p></div></div></div>
-  <div class="cta"><div><span class="eyebrow" style="color:#f1dca0">${esc(S.ctaEyebrow)}</span><h2 style="margin:8px 0 12px">${esc(S.ctaH)}</h2><p>${esc(S.ctaP)}</p></div><div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start"><a class="btn" id="cta" href="${cartaHref()}" data-track="cta_letter">${esc(S.ctaBtn)} →</a><button class="btn ghost" id="redo" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)">${hiLevel==null&&values.every(v=>v===null)?esc(S.start):esc(S.redo)}</button></div></div>`;
- const panel=()=>{const k=Number(box.querySelector('.lvl-tab[aria-selected=true]').dataset.lv);const l=LEVELS[k];const specs=SPECS.filter(s=>s.level===k);
-  box.querySelector('#lvlpanel').innerHTML=`<span class="eyebrow" style="color:${l.deep}">${esc(S.inThisLevel)} · ${l.num}</span><h3 style="margin:6px 0 4px">${esc(t(l.name))}</h3><p class="muted" style="margin:0 0 8px">${esc(t(l.sub))}</p>
-   <div class="muted" style="font-size:13px">${esc(S.areasIn)}: ${l.areas.map(i=>`<span class="pill" style="margin:2px 4px 2px 0"><i class="dotc" style="background:${AREAS[i].hex}"></i>${esc(lab(i))}</span>`).join('')}</div>
-   <div class="faces">${specs.map(s=>`<button class="face" data-s="${s.slug}"><img src="${photoSq(s)}" alt=""><span><b>${esc(s.name)}</b><br><span class="muted" style="font-size:12px">${esc(s.programs[0])}</span></span></button>`).join('')}</div>`;
-  box.querySelectorAll('.face').forEach(f=>f.onclick=()=>{const card=box.querySelector(`.spec[data-s="${f.dataset.s}"]`);if(card){card.classList.add('open');card.scrollIntoView({behavior:'smooth',block:'center'})}})};
- const select=k=>{box.querySelectorAll('.lvl-tab').forEach(b=>b.setAttribute('aria-selected',Number(b.dataset.lv)===k));box.querySelector('#spsvg').innerHTML=spiral(k);box.querySelectorAll('#spsvg text').forEach(x=>{x.style.animation='none';x.style.opacity='1'});box.querySelectorAll('path.arc').forEach(p=>{p.style.animation='none';p.style.strokeDashoffset='0';p.onclick=()=>{const kk=Number(p.dataset.lv);if(kk>0)select(kk)}});panel()};
- box.querySelectorAll('.lvl-tab').forEach(b=>b.onclick=()=>select(Number(b.dataset.lv)));
- box.querySelectorAll('path.arc').forEach(p=>p.onclick=()=>{const k=Number(p.dataset.lv);if(k>0)select(k)});
- box.querySelectorAll('.spec').forEach(c=>c.onclick=()=>c.classList.toggle('open'));
- box.querySelectorAll('.prova').forEach(b=>b.onclick=()=>{const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${b.dataset.img}" alt=""><button aria-label="close">×</button>`;m.onclick=()=>m.remove();document.body.appendChild(m)});
- box.querySelector('#cta').addEventListener('click',()=>{track('cta_letter',{prioridade:priority!==null?AREAS[priority].slug:''});saveRoda()});
- box.querySelector('#redo').onclick=()=>{values=Array(8).fill(null);priority=null;extras={g:null,r:null};go(-1)};
- panel()}
-
-/* respostas da roda → /api/roda (anônimo: vid/sid do track.js, sem nome, sem e-mail). No-op até configurar a planilha. */
 let rodaSent='';function saveRoda(){try{const ep=(MF.dados||{}).endpoint;if(!ep||!values.every(v=>v!==null))return;const ids=(window.MF_TRACK&&window.MF_TRACK.ids)||{};const rec={ts:Date.now(),vid:ids.vid||'',sid:ids.sid||'',lang:L,vals:values.map(v=>v==='unknown'?'x':v).join(''),prioridade:priority!==null?AREAS[priority].slug:'',ordem:priority!==null&&TR?TR.encode(TR.order(values,priority)):'',g:extras.g||'',r:extras.r||'',...(ids.utm||{}),ref:(ids.first||{}).ref||''};const key=JSON.stringify(rec).replace(/"ts":\d+,/,'');if(key===rodaSent)return;rodaSent=key;const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(ep,new Blob([body],{type:'application/json'}));else fetch(ep,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
 function bindLang(){app.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()})}
 function go(n){step=n;if(n<0)vHero();else if(n<8)vQuestion(n);else vReveal(false);window.scrollTo({top:0,behavior:'instant'});const h=app.querySelector('h1,h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
-go(-1);
+(function boot(){const back=Q.get('voltar')==='1', redo=Q.get('refazer')==='1';
+ if(back||redo){try{const u=new URL(location.href);u.searchParams.delete('voltar');u.searchParams.delete('refazer');history.replaceState(history.state,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash)}catch(e){}}
+ if(redo)forget();
+ if(!redo&&restore()){go(8);if(priority!==null){const b=document.querySelector(`[data-p="${priority}"]`);if(b)b.setAttribute('aria-pressed','true');const pa=document.getElementById('path');if(pa)setTimeout(()=>pa.scrollIntoView({block:'start'}),60)}return}
+ go(-1)})();
 })();
