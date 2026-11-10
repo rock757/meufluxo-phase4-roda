@@ -3,7 +3,7 @@
 window.MF_CONFIG = {
   revisao: false,        // true = mostra avisos internos e campos [a confirmar]; false = versão para clientes
   fechamento: 'A',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
-  checkoutUrl: '',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
+  checkoutUrl: 'https://checkout.payt.com.br/4ced8f35dc1c393cca8c3c80148b86b3',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true SOMENTE após Gabi/Júlia confirmarem texto, programa e autorização (LEIA-ME de 29/10).
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'27 de novembro, Black Friday', prazoTextoEn:'November 27, Black Friday', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
