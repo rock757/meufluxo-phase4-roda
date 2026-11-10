@@ -43,8 +43,8 @@ def convert(lines, wall_html):
                 out.append(wall_html.strip()); md.append(re.sub(r'<!--.*?-->', '', wall_html, flags=re.S).strip()); wall_done = True
             continue
         held = next((k for k in HOLD if s.startswith(k)), None)
-        if held:  # fica no HTML só como comentário: invisível para o leitor; aparece em amarelo no modo revisão das prévias
-            log.append(('SEGURADO: ' + HOLD[held], s[:120])); out.append('<!--SEGURADO:' + html.escape(s).replace('--', '&#45;&#45;') + '-->'); continue
+        if held:  # fica fora do HTML publicado (o arquivo é público); só no log
+            log.append(('SEGURADO: ' + HOLD[held], s[:120])); continue
         if s.startswith(OFERTA_BEFORE): out.append('<!--OFERTA-->'); md.append('[BLOCO DA OFERTA: R$997, checkout Payt, garantia]')
         if s.startswith('## '):
             out.append(f'<h2>{inline(s[3:])}</h2>'); md.append(s)
@@ -60,7 +60,7 @@ def main(argv=None):
     if not out or not wall_done or '<!--OFERTA-->' not in out:
         print('ERRO: texto vazio, parede ou ponto da oferta não encontrados; nada gravado.', file=sys.stderr); return 2
     name = os.path.basename(o.src)
-    open(o.out, 'w', encoding='utf-8').write(f'<!-- Gerado de {name} por tools/carta_txt_to_html.py. Parede de benefícios: tradução pt-BR (revisar). -->\n' + '\n'.join(out) + '\n')
+    open(o.out, 'w', encoding='utf-8').write('\n'.join(out) + '\n')  # sem cabeçalho: o arquivo é servido publicamente
     open(o.md, 'w', encoding='utf-8').write('\n\n'.join(md) + '\n')
     nums = sorted({m.group(0) for l in md for m in re.finditer(r'R\$ ?\d[\d.,]*(?: mil)?|\b\d[\d.,]*(?: mil| milhão| milhões)?\b(?= ?(?:pessoas|membros|plays|acessos|programas|especialistas|aulas|anos|meses|dias|mil|reais|%))', l)})
     lines = [f'# Log {name}', '', f'Blocos no ar: {len(out)}. Removidos/segurados: {len(log)}.', '', '## Segurados (voltam só com o ok do Rock)', '']

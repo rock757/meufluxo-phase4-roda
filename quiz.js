@@ -64,7 +64,7 @@ const S={
   foot:'This wheel is an invitation to personal reflection and does not replace a clinical assessment. Your answers are recorded anonymously (no name, no e-mail) to prepare your suggestion and improve the Wheel. You do not need to sign up or buy anything to answer.',
   review:'Concept preview · English review copy',bn:(n)=>n===null?'Black November':`Black November · ${n} days left`}
 }[L];
-/* ---------- v9 copy (2026-11-07, Rock: só palavras — mais simples, mais curto, mais alegre). Remover este bloco = volta ao v8. ---------- */
+/* ---------- v9 copy. Remover este bloco = volta ao v8. ---------- */
 Object.assign(S,{
  pt:{start:'Fazer minha Roda grátis',
   eyebrowHero:'Roda da Vida · grátis',h1:'Como anda a sua vida? Veja em dois minutos.',lead:'Oito perguntas rápidas sobre a sua semana. É como tirar uma foto: no fim, você vê o que está bem, o que pede mais carinho e escolhe por onde começar.',
@@ -94,8 +94,7 @@ Object.assign(S,{
   how3h:'Go at your pace',how3:'Recorded classes, on your phone or computer, for five years.',
   ctaH:'Every specialist’s programs, under one roof.',ctaP:'See what is included, what it costs, for how long and how the 7-day guarantee works.',ctaBtn:'See the offer',
   spLead:'The eight areas fit into six levels, from the center outward. Tap a level to see the programs and specialists.',bn:(n)=>n===null?'Black November':`Black November · ${n} days to Black Friday`}}[L]);
-/* ---------- v10 copy (2026-11-07, ROCKdot/Rock: palavras primeiro). Sobre o v9; remover este bloco = volta ao v9 (tag sales-v9-2026-11-07). ----------
-   Selos só com fatos verificáveis (8 áreas, grátis, sem cadastro) no lugar das contagens não confirmadas; rodapé sem "anônimas" (há identificadores de sessão). */
+/* ---------- v10 copy, sobre o v9. Remover este bloco = volta ao v9. ---------- */
 Object.assign(S,{
  pt:{start:'Começar minha Roda',eyebrowHero:'Sua Roda da Vida',min:'Escolha quantos dias, de 0 a 7.',
   lead:'Oito perguntas rápidas sobre a sua semana. Como uma foto: você vê o que está bem, o que pede mais carinho e escolhe por onde começar.',
@@ -118,7 +117,7 @@ Object.assign(S,{
   specH:'Meet the specialists and the programs',
   foot:'The Wheel is an invitation to reflect, not a clinical assessment. Your answers are recorded without your name or e-mail, to prepare your suggestion and improve the Wheel. You do not need to sign up or buy to answer.'}}[L]);
 
-// 2026-11-10: herói "Especial 2027" (direção aprovada pelo Rock; texto combinado). Arte do herói continua a atual.
+// Herói "Especial 2027".
 const REVIEW_COPY={"en": {"h1": "2027 could be the best year of your life. But do you know where to start?", "lead": "Find out which area of your life needs your attention most right now, and step into the new year with more clarity, balance and direction.", "trust1": "Free", "trust2": "No sign-up", "trust3": "No email needed", "start": "I WANT TO FIND MY PRIORITY FOR 2027", "weekPrompt": "In your typical week, how many days…", "choose": "Choose how many days out of 7", "review": "Review only · not published", "less": "Less = Still Growing", "more": "More = Going Well", "resultTitle": "Your Best Next Step", "support": "Now, to move forward in the right way, let’s take it one step at a time.", "go": "See your next step", "redo": "Redo my Wheel", "pending": "Review note: the recommendation rule is still to be agreed. No program has been selected from your answers.", "strong": "Going well", "growing": "Still growing", "eyebrowHero": "Your Wheel of Life | 2027 Special", "lead2": "Answer 8 simple questions in just 2 minutes and get your personalized MeuFluxo Wheel of Life Map as a gift. See what is already going well, what deserves more attention, and what your next step could be."}, "pt": {"h1": "2027 pode ser o melhor ano da sua vida. Mas você sabe por onde começar?", "lead": "Descubra qual área da sua vida mais precisa da sua atenção neste momento e entre no novo ano com mais clareza, equilíbrio e direção.", "trust1": "Grátis", "trust2": "Sem cadastro", "trust3": "Sem precisar de e-mail", "start": "QUERO DESCOBRIR MINHA PRIORIDADE PARA 2027", "weekPrompt": "Em uma semana normal sua, em quantos dias…", "choose": "Escolha quantos dias, de 0 a 7", "review": "Em revisão · não publicado", "less": "Dá pra melhorar", "more": "Indo bem!", "resultTitle": "Seu Melhor Próximo Passo", "support": "Agora, para evoluir da maneira certa, vamos por partes.", "go": "Ver seu próximo passo", "redo": "Refazer minha Roda", "pending": "Nota de revisão: a regra da recomendação ainda será definida. Nenhum programa foi escolhido com base nas suas respostas.", "strong": "Indo bem", "growing": "Ainda crescendo", "eyebrowHero": "Sua Roda da Vida | Especial 2027", "lead2": "Responda a 8 perguntas simples em apenas 2 minutos e receba de presente seu Mapa Personalizado da Roda da Vida MeuFluxo. Veja o que já está indo bem, o que merece mais atenção e qual pode ser seu próximo passo."}};
 Object.assign(S,REVIEW_COPY[L]);
 const REVIEW_QUESTIONS={"en": ["do you feel on the right track?", "do you move your body?", "are you proud of the way you ate?", "do you remember all you need to, and focus?", "do you feel at peace about money?", "do you have someone close you know you can count on?", "are you better, in some way, from the day before?", "do you feel a sense of inner peace?"], "pt": ["você sente que está no caminho certo?", "você movimenta o corpo?", "você sente orgulho da forma como se alimentou?", "você lembra de tudo o que precisa e consegue se concentrar?", "você se sente em paz com o dinheiro?", "você tem alguém próximo com quem sabe que pode contar?", "você está melhor, de alguma forma, do que no dia anterior?", "você sente paz interior?"]};
@@ -199,7 +198,7 @@ function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="he
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
 
 
-/* Recovered specialist cards. Nov 6 mapping: Nicolas/Roda opens; Fernando closes. */
+/* Specialist cards. */
 function specialistCard(i){
  const p=i===0?{especialista:'Nicolas Toigo',programa:'Sua Roda da Vida (autoavaliação)'}:
   i===7?{especialista:'Fernando Felix',programa:'Desperte Seu Destino'}:

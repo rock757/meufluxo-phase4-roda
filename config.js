@@ -4,36 +4,35 @@ window.MF_CONFIG = {
   revisao: false,        // true = mostra avisos internos e campos [a confirmar]; false = versão para clientes
   fechamento: 'A',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
   checkoutUrl: 'https://checkout.payt.com.br/4ced8f35dc1c393cca8c3c80148b86b3',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
-  depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true SOMENTE após Gabi/Júlia confirmarem texto, programa e autorização (LEIA-ME de 29/10).
+  depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true só com texto, programa e autorização confirmados.
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
               lote:{ ativo:false, texto:'primeiro lote' },
-              rodaValor:'R$197',   // Rock 2026-11-09 21:07 BRT: valor de referência do presente = R$197 (exibido em quiz.js). Antes: vazio até Rock confirmar um preço realmente praticado para a Roda (feedback 05/11: não riscar valor que nunca foi cobrado).   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
-              // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
+              rodaValor:'R$197',   // valor de referência do presente (exibido em quiz.js)
+              // números institucionais
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
-  prazoConfirmado: true,  // Rock 2026-11-09 21:07 BRT: confirmado, a condição vale até 30 de novembro (prazoTexto). Sem lote/escassez extra.
-  jornadaPadrao: true,  // Rock 05/11 15:xx: no lançamento, UMA jornada recomendada igual para todos (ordem 1→8). As variantes por prioridade/gênero/filhos ficam no código, desligadas.
+  prazoConfirmado: true,  // true = a condição vale até prazoTexto e a contagem vai até contagemFimMes
+  jornadaPadrao: true,  // true = uma jornada recomendada igual para todos (ordem 1→8)
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
-  tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
+  tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // vazios = só dataLayer + localStorage + /api/track
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
-  // Teste A/B da carta (Rock 2026-11-09 21:20 BRT: 'Both, split test'). Ligado com os dois textos em cartas/carta-a.html e carta-b.html.
-  splitTeste: { ativo:true, variantes:['A','B'] }, // 2026-11-10: Carta A (Segredo) e Carta B (Oferta) pass 2 nos slots, a pedido do Rock. Desligar = false.
+  // Teste A/B da carta: textos em cartas/carta-a.html e carta-b.html.
+  splitTeste: { ativo:true, variantes:['A','B'] }, // desligar = false
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
-  // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
+  // parâmetros já presentes na URL do checkout (ex.: coupon, split).
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
 
-  // Fatos comerciais CONFIRMADOS por Rock 2026-11-04 ~20:50 BRT: A = Ilimitado Black November R$997 / 5 anos; B (downsell) = 8 programas R$697 / 1 ano; ambos garantia 7 dias. Parcelas: 12x 'um pouco mais' — total exato só no checkout (Évila). Suporte/entrega ainda vazios.
   // Fatos comerciais. Vazio = a frase correspondente NÃO aparece para o cliente (em revisão aparece "[a confirmar]").
   oferta: {
     A: { nome: 'MeuFluxo Ilimitado — Versão Black November (5 anos)',
          preco: 'R$997 à vista',
-         precoDe: '',             // vazio até existir preço de referência comprovado (feedback 05/11).       // PROPOSTO (Rock 05/11): preço de referência riscado acima do R$997. Confirmar preço real praticado antes de publicar.
+         precoDe: '',             // preço de referência riscado; vazio = não aparece
          parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
          acessoPrazo: 'por cinco anos, contados da confirmação do pagamento',
          garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
          inclusoes: 'todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma',
          suporte: '',               // ex.: 'suporte@meufluxo.com'
-         whatsapp: 'https://wa.me/5554997151575', // 2026-11-10: número do time, confirmado pelo Rock (mesmo de ofertas.meufluxo.com/meufluxo-em-dobro). carta.js adiciona mensagem com ref da carta/origem.
+         whatsapp: 'https://wa.me/5554997151575', // carta.js adiciona mensagem com ref da carta/origem
          entrega: '' },             // ex.: 'o acesso é liberado em até 24h após a aprovação do pagamento, pelo e-mail da compra'
     B: { nome: 'Jornada MeuFluxo — 8 Programas (1 ano)',
          preco: 'R$697 à vista',
@@ -45,10 +44,10 @@ window.MF_CONFIG = {
          entrega: '' }
   },
 
-  // Oito áreas na ordem da espiral (CONFIRMADO por Rock, 2026-11-04). 2026-11-05: a semente é a própria Roda da Vida (autoavaliação com o Nicolas), já feita; o Nicolas não tem programa próprio ainda.
+  // Oito áreas na ordem da espiral.
   // 'variantes' escolhe o programa pela resposta opcional (gênero em Movimento; filhos em Relacionamentos). Padrões = programas-vitrine dos especialistas.
-  programas: [ // Ordem = espiral (Rock 2026-11-05): 1 Propósito · 2 Saúde · 3 Alimentação · 4 Memória · 5 Prosperidade · 6 Relações · 7 Crescimento · 8 Espiritualidade. slug = id estável.
-    { slug:'proposito',      area:'Propósito',      programa:'Desperte Seu Destino',  especialista:'Fernando Felix' }, // 2026-11-05 Rock: a Jornada do Nicolas ainda não existe; a semente é a própria Roda (autoavaliação), ver trilha.js
+  programas: [ // Ordem = espiral: 1 Propósito · 2 Saúde · 3 Alimentação · 4 Memória · 5 Prosperidade · 6 Relações · 7 Crescimento · 8 Espiritualidade. slug = id estável.
+    { slug:'proposito',      area:'Propósito',      programa:'Desperte Seu Destino',  especialista:'Fernando Felix' },
     { slug:'movimento',      area:'Saúde',          programa:'Costas Sem Dores',      especialista:'Peterson Menezes',
       variantes:{ mulher:{programa:'Projeto Mulher 40+',especialista:'Suéllen Lopes'}, homem:{programa:'Meu Shape Ideal',especialista:'Mateus Cecconello'} } },
     { slug:'alimentacao',    area:'Alimentação',    programa:'Dieta das 3 Fases 2.0', especialista:'Eduardo Claas' },
@@ -80,7 +79,7 @@ window.MF_COUNTDOWN_LABEL = function(language, now) {
   const untilBlackFriday = dayNumber(blackFriday) - dayNumber(today);
   const untilMonthEnd = dayNumber(monthEnd) - dayNumber(today);
   const isEnglish = language === 'en';
-  // 2026-11-10 (Rock): com o prazo confirmado, a contagem passa a ser até o fim da oferta (30/11), não até a Black Friday.
+  // Com prazo confirmado, a contagem vai até o fim da oferta.
   if (window.MF_CONFIG && window.MF_CONFIG.prazoConfirmado) {
     if (untilMonthEnd < 0) return '';
     if (untilMonthEnd === 0) return isEnglish ? 'Last day of the offer' : 'Último dia da oferta';
