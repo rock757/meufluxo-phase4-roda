@@ -54,11 +54,13 @@ module.exports.CAMPAIGN_START = CAMPAIGN_START;
       const depth = {}; (await DB.sql("SELECT page, (extra->>'depth') AS d, count(*)::int AS n FROM eventos" + where(" ev='scroll'") + " GROUP BY 1,2", P)).forEach(r => depth[(r.page || '?') + ':' + r.d] = r.n);
       const days = {}; (await DB.sql("SELECT to_char(ts AT TIME ZONE 'America/Sao_Paulo','YYYY-MM-DD') AS d, count(*)::int AS n FROM eventos" + where(" ev='page_view'") + " GROUP BY 1 ORDER BY 1", P)).forEach(r => days[r.d] = r.n);
       const [rd] = await DB.sql("SELECT count(*)::int AS n FROM roda" + where(''), P);
+      // Teste A/B da carta: visitantes únicos por versão nas etapas da carta (visitas forçadas por ?carta= ficam de fora).
+      const ab = {}; (await DB.sql("SELECT extra->>'carta' AS c, ev, count(distinct vid)::int AS u FROM eventos" + where(" ev IN ('letter_view','offer_view','checkout_click') AND extra->>'carta' IN ('A','B') AND coalesce(extra->>'carta_forcada','0') <> '1'") + " GROUP BY 1,2", P)).forEach(r => { (ab[r.c] = ab[r.c] || {})[r.ev] = r.u; });
       // Compras/receita: com janela ativa ficam indisponíveis (null), não zero. O horário gravado pode ser o de recebimento,
       // não o de aprovação do pagamento; só contar depois de confirmar essa semântica com o Payt.
       let compras = null, receita = null;
       if (!win.start) { const [cp] = await DB.sql("SELECT count(*)::int AS n, coalesce(sum(valor),0)::float AS total FROM compras WHERE status='aprovado'"); compras = cp.n; receita = cp.total; }
-      return res.end(JSON.stringify({ configured: true, source: 'neon', window: windowInfo, visitors: tot.visitors, sessions: tot.sessions, pages, sources, events: ev, unique, depth, days, rows: tot.rows, rodas: rd.n, compras, receita, comprasNota: win.start ? 'indisponível na janela: horário de aprovação ainda não verificado' : undefined }));
+      return res.end(JSON.stringify({ configured: true, source: 'neon', window: windowInfo, ab, visitors: tot.visitors, sessions: tot.sessions, pages, sources, events: ev, unique, depth, days, rows: tot.rows, rodas: rd.n, compras, receita, comprasNota: win.start ? 'indisponível na janela: horário de aprovação ainda não verificado' : undefined }));
     } catch (e) { res.statusCode = 500; return res.end(JSON.stringify({ configured: true, error: e.message })); }
   }
   try {
@@ -71,16 +73,19 @@ module.exports.startSetting = startSetting;
 module.exports.CAMPAIGN_START = CAMPAIGN_START;
     const ev = {}; const uniq = {}; // por evento: total e visitantes únicos
     const cut = win.start ? Date.parse(win.start) : null;
+    const abSets = {};
     rows.slice(1).forEach(r => {
       const e = r[iEv], v = r[iVid]; if (!e) return;
       if (cut !== null) { const t = Date.parse(r[0] || ''); if (isNaN(t) || t < cut) return; } // corte inclusivo; sem data = fora da janela
       vis.add(v); ses.add(r[iSid]);
       ev[e] = (ev[e] || 0) + 1; (uniq[e] = uniq[e] || new Set()).add(v);
       if (e === 'page_view') { const p = r[iPage] || '?'; by[p] = (by[p] || 0) + 1; const s = r[iSrc] || '(direto)'; src[s] = (src[s] || 0) + 1; const d = (r[0] || '').slice(0, 10); days[d] = (days[d] || 0) + 1; }
+      if (['letter_view', 'offer_view', 'checkout_click'].includes(e)) { try { const x = JSON.parse(r[iExtra] || '{}'); if ((x.carta === 'A' || x.carta === 'B') && String(x.carta_forcada || '0') !== '1') { const k = x.carta + ':' + e; (abSets[k] = abSets[k] || new Set()).add(v); } } catch (x) {} }
       if (e === 'scroll') { try { const x = JSON.parse(r[iExtra] || '{}'); const k = (r[iPage] || '?') + ':' + x.depth; depth[k] = (depth[k] || 0) + 1; } catch (x) {} }
     });
     const u = {}; Object.keys(uniq).forEach(k => u[k] = uniq[k].size);
-    res.end(JSON.stringify({ configured: true, source: 'sheets', window: windowInfo, visitors: vis.size, sessions: ses.size, pages: by, sources: src, events: ev, unique: u, depth, days, rows: cut === null ? rows.length - 1 : [...Object.values(ev)].reduce((a, b) => a + b, 0) }));
+    const ab = {}; Object.keys(abSets).forEach(k => { const [c, e] = k.split(':'); (ab[c] = ab[c] || {})[e] = abSets[k].size; });
+    res.end(JSON.stringify({ configured: true, source: 'sheets', window: windowInfo, ab, visitors: vis.size, sessions: ses.size, pages: by, sources: src, events: ev, unique: u, depth, days, rows: cut === null ? rows.length - 1 : [...Object.values(ev)].reduce((a, b) => a + b, 0) }));
   } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ configured: true, error: e.message })); }
 };
 module.exports.reportingWindow = reportingWindow;
