@@ -7,7 +7,8 @@
 const CFG=Object.assign({},(window.MF_CONFIG||{}).tracking||{});
 const KEYS=(window.MF_CONFIG||{}).paramsRepassados||['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
 const q=new URLSearchParams(location.search);
-const page=(location.pathname.split('/').pop()||'index.html').replace('.html','')||'index';
+const PAGE_ALIAS={black26:'index'}; // endereços de campanha que mostram o quiz (vercel.json) contam como 'index'; o caminho real fica em path
+const page=(r=>PAGE_ALIAS[r]||r)((location.pathname.split('/').pop()||'index.html').replace('.html','')||'index');
 const lang=q.get('lang')==='en'?'en':'pt';
 /* Explicit test/staff sessions stay local. No automatic classification of customers. */
 const store=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k)||'';if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return ''}};
