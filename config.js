@@ -33,7 +33,7 @@ window.MF_CONFIG = {
          garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
          inclusoes: 'todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma',
          suporte: '',               // ex.: 'suporte@meufluxo.com'
-         whatsapp: '',              // link wa.me do comercial (Rebecca) — só aparece quando preenchido e confirmado (nome, horário, finalidade)
+         whatsapp: 'https://wa.me/5554997151575', // 2026-11-10: número do time, confirmado pelo Rock (mesmo de ofertas.meufluxo.com/meufluxo-em-dobro). carta.js adiciona mensagem com ref da carta/origem.
          entrega: '' },             // ex.: 'o acesso é liberado em até 24h após a aprovação do pagamento, pelo e-mail da compra'
     B: { nome: 'Jornada MeuFluxo — 8 Programas (1 ano)',
          preco: 'R$697 à vista',

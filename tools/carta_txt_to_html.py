@@ -43,7 +43,8 @@ def convert(lines, wall_html):
                 out.append(wall_html.strip()); md.append(re.sub(r'<!--.*?-->', '', wall_html, flags=re.S).strip()); wall_done = True
             continue
         held = next((k for k in HOLD if s.startswith(k)), None)
-        if held: log.append(('SEGURADO: ' + HOLD[held], s[:120])); continue
+        if held:  # fica no HTML só como comentário: invisível para o leitor; aparece em amarelo no modo revisão das prévias
+            log.append(('SEGURADO: ' + HOLD[held], s[:120])); out.append('<!--SEGURADO:' + html.escape(s).replace('--', '&#45;&#45;') + '-->'); continue
         if s.startswith(OFERTA_BEFORE): out.append('<!--OFERTA-->'); md.append('[BLOCO DA OFERTA: R$997, checkout Payt, garantia]')
         if s.startswith('## '):
             out.append(f'<h2>{inline(s[3:])}</h2>'); md.append(s)
