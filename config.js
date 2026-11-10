@@ -60,7 +60,7 @@ window.MF_CONFIG = {
 };
 
 
-// Marcador de calendário da experiência: Black Friday, depois o fim do mês. Não indica prazo da oferta.
+// Com prazoConfirmado: contagem até o fim da oferta (contagemFimMes). Sem prazo confirmado: só marcador de calendário (Black Friday, depois fim do mês).
 window.MF_COUNTDOWN_LABEL = function(language, now) {
   const campaign = (window.MF_CONFIG && window.MF_CONFIG.campanha) || {};
   const blackFriday = campaign.contagemBlackFriday || '2026-11-27';
@@ -78,6 +78,14 @@ window.MF_COUNTDOWN_LABEL = function(language, now) {
   const untilBlackFriday = dayNumber(blackFriday) - dayNumber(today);
   const untilMonthEnd = dayNumber(monthEnd) - dayNumber(today);
   const isEnglish = language === 'en';
+  // 2026-11-10 (Rock): com o prazo confirmado, a contagem passa a ser até o fim da oferta (30/11), não até a Black Friday.
+  if (window.MF_CONFIG && window.MF_CONFIG.prazoConfirmado) {
+    if (untilMonthEnd < 0) return '';
+    if (untilMonthEnd === 0) return isEnglish ? 'Last day of the offer' : 'Último dia da oferta';
+    return isEnglish
+      ? `${untilMonthEnd} day${untilMonthEnd === 1 ? '' : 's'} left on the offer`
+      : `Falta${untilMonthEnd === 1 ? '' : 'm'} ${untilMonthEnd} dia${untilMonthEnd === 1 ? '' : 's'} para o fim da oferta`;
+  }
 
   if (today < blackFriday) {
     return isEnglish
