@@ -125,7 +125,7 @@ function cartaNova(){const parts=NOVA.split('<!--OFERTA-->');const body=`<sectio
 function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`+sticky():nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
 function boot(){const ab=window.MF_CARTA;if(!ab||!window.fetch)return render();let done=false;const go=()=>{if(!done){done=true;render()}};setTimeout(go,3000);
  fetch('cartas/carta-'+ab.variant.toLowerCase()+'.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(h=>{const txt=String(h||'').replace(/<!--[\s\S]*?-->/g,'').trim();if(txt&&!done)NOVA=String(h);go()}).catch(go)}
-function render(){document.getElementById('app').innerHTML=layout();
+function render(){document.getElementById('app').innerHTML=layout();if(window.MF_RENDER_PENDING){window.MF_RENDER_PENDING=false;setTimeout(()=>window.dispatchEvent(new Event('scroll')),1500)}
  document.title='MeuFluxo Ilimitado · Black November';
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()});
  document.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{prio=Number(b.dataset.area);const p=new URLSearchParams(location.search);p.set('prioridade',AREAS[prio].slug);history.replaceState(null,'',location.pathname+'?'+p.toString());track('priority_pick',{area:AREAS[prio].slug,where:'carta'});render();window.scrollTo({top:0,behavior:'smooth'})});
