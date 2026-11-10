@@ -261,3 +261,13 @@ ul.progs img{width:54px;height:36px;border-radius:6px;object-fit:cover;flex:0 0 
 ul.progs b{display:block;font-size:14.5px;line-height:1.2}ul.progs span{display:block;font-size:13px;color:var(--ink-2);line-height:1.4;margin-top:2px}
 .summary .btn.help{width:100%;margin-top:10px;font-size:15px;padding:12px}
 .spec-block small{margin-bottom:8px}
+
+/* teste A/B: texto novo da carta */
+.carta-nova .prose{max-width:720px;margin:0 auto;padding:28px 0 8px;font-size:19px;line-height:1.65}.carta-nova .prose h1,.carta-nova .prose h2{line-height:1.2;margin:1.4em 0 .5em}.carta-nova .prose p{margin:0 0 1em}.carta-nova .prose blockquote{margin:1.2em 0;padding:.2em 0 .2em 1em;border-left:3px solid #8a6fd3}
+/* CTA no fim do texto novo */.carta-nova .carta-fim{max-width:720px;margin:10px auto 40px}
+@media(max-width:640px){.carta-nova .prose{font-size:17.5px;padding-top:18px}}
+
+/* modo revisão das prévias (?revisao=1) e botão do WhatsApp na carta */
+.rev-hold{background:#fff3b0;border-left:4px solid #e0a800;padding:10px 14px;margin:14px 0;color:#4a3a00;border-radius:6px}
+mark.rev-flag{background:#ffe066;padding:0 2px}
+.carta-nova .wa-cta{margin:6px 0 22px}.carta-nova .wa-cta .btn{display:inline-block}

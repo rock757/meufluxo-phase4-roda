@@ -16,11 +16,15 @@ const SHOW_DEPOS=!!MF.depoimentosAprovados||REV;
 /* ---------- params (convite → roda → carta → checkout) ---------- */
 const KEYS=MF.paramsRepassados||[];
 function stored(){try{return JSON.parse(sessionStorage.getItem('mf_params')||'{}')}catch(e){return{}}}
+// WhatsApp com mensagem pronta + ref (carta A/B e origem), para atribuir o lead que chega no WhatsApp. Ex.: "ref BN-A-instagram".
+function waRef(){const p=stored();const v=window.MF_CARTA?window.MF_CARTA.variant:'0';const o=String(p.src||p.utm_source||'direto').replace(/[^\w-]/g,'').slice(0,30)||'direto';return 'BN-'+v+'-'+o}
+function waHref(){if(!A.whatsapp)return'';let u;try{u=new URL(A.whatsapp)}catch(e){return''}u.searchParams.set('text',(L==='en'?'Hi! I came from the Black November letter and have a question.':'Oi! Vim da carta Black November e tenho uma dúvida.')+' (ref '+waRef()+')');return u.toString()}
+function waBtn(){const h=waHref();return h?`<p class="wa-cta"><a class="btn ghost help" href="${esc(h)}" data-track="whatsapp_click" target="_blank" rel="noopener">${esc(S.help)}</a></p>`:''}
 (function cap(){try{const kept=stored();KEYS.forEach(k=>{if(Q.get(k))kept[k]=Q.get(k)});sessionStorage.setItem('mf_params',JSON.stringify(kept))}catch(e){}})();
 let prio=AREAS.findIndex(a=>a.slug===Q.get('prioridade')); if(prio<0)prio=null;
 const ctx=STD?{}:{g:Q.get('g')||null,r:Q.get('r')||null};
 function checkoutHref(){if(!MF.checkoutUrl)return'';let u;try{u=new URL(MF.checkoutUrl)}catch(e){return''}
- const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;
+ const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;if(window.MF_CARTA)p.carta=window.MF_CARTA.variant;
  Object.entries(p).forEach(([k,v])=>{if(v&&!u.searchParams.has(k))u.searchParams.set(k,v)});return u.toString()}
 function indexHref(){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');const s=p.toString();return 'index.html'+(s?'?'+s:'')}
 const first=()=>prio===null?null:(TR?TR.resolve(prio,ctx):null);
@@ -80,10 +84,10 @@ const S={
 
 /* ---------- pieces ---------- */
 const priceNum=()=>esc((A.preco||'R$997 à vista').replace(/ à vista$/,''));
-function summary(id){const href=checkoutHref();const wa=A.whatsapp||'';return `<div class="summary"><span class="eb">${esc(S.sumEb)}</span>${dayLine()?`<span class="deadline">${esc(dayLine())}</span>`:''}${A.precoDe?`<span class="was">${esc(A.precoDe)}</span>`:''}<div class="price">${priceNum()}<small>${esc(S.cash)}</small></div><p class="inst">${esc(S.inst)}</p>
+function summary(id){const href=checkoutHref();const wa=waHref();return `<div class="summary"><span class="eb">${esc(S.sumEb)}</span>${dayLine()?`<span class="deadline">${esc(dayLine())}</span>`:''}${A.precoDe?`<span class="was">${esc(A.precoDe)}</span>`:''}<div class="price">${priceNum()}<small>${esc(S.cash)}</small></div><p class="inst">${esc(S.inst)}</p>
  <div class="ln"><b>${esc(S.term)}</b><span>${esc(S.termS)}</span></div><div class="ln"><b>${esc(S.guar)}</b><span>${esc(S.guarS)}</span></div>
  ${A.entrega?`<div class="ln"><b>${esc(S.entregaL)}</b><span>${esc(A.entrega)}</span></div>`:''}${A.suporte?`<div class="ln"><b>${esc(S.suporteL)}</b><span>${esc(A.suporte)}</span></div>`:''}
- ${href?`<a class="btn primary" id="${id}" href="${href}" data-track="checkout_click">${esc(S.ctaBuy)} →</a><p class="after">${esc(S.after)}</p>`:`<span class="btn placeholder" id="${id}">${esc(S.ctaSoon)}</span>`}${wa?`<a class="btn ghost help" href="${esc(wa)}" data-track="help_click" target="_blank" rel="noopener">${esc(S.help)}</a>`:''}</div>`}
+ ${href?`<a class="btn primary" id="${id}" href="${href}" data-track="checkout_click">${esc(S.ctaBuy)} →</a><p class="after">${esc(S.after)}</p>`:`<span class="btn placeholder" id="${id}">${esc(S.ctaSoon)}</span>`}${wa?`<a class="btn ghost help" href="${esc(wa)}" data-track="whatsapp_click" target="_blank" rel="noopener">${esc(S.help)}</a>`:''}</div>`}
 function nav(){return `<div class="nav3"><div class="wrap row"><a href="${indexHref()}"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"></a><div class="urgbar"><b>${esc(C.nome||'Black November')}</b>${dayLine()?`<span>${esc(dayLine())}</span>`:''}</div><div class="lang" role="group" aria-label="Language"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></div><a class="btn primary cta-top" href="#oferta" data-track="cta_offer_top">${esc(S.ctaBuy)}</a></div><div class="progress" id="prog"></div></div>`}
 function hero(){const f=first();const sp=f?byName(f.especialista):null;
  return `<section id="comeco" style="padding-top:26px"><div class="wrap open"><div><span class="eyebrow urg">${esc(prio!==null?S.ebChoice(prio):S.ebBN)}</span>${dayLine()?`<span class="dayline">${esc(dayLine())}</span>`:''}<h1 class="rise" style="margin:12px 0 16px">${esc(S.h1)}</h1><p class="lead">${esc(S.sub)}</p><div class="nav"><a class="btn primary" href="#oferta" data-track="cta_offer_hero">${esc(S.ctaBuy)} →</a><a class="btn ghost" href="${prio!==null?'#primeiro':'#escolha'}">${esc(S.ctaFirst)}</a></div></div>
@@ -118,17 +122,29 @@ function final(){return `<section id="acao" style="padding-top:20px"><div class=
 function sticky(){return `<div class="sticky" id="sticky"><div><b>${esc(S.stickyB)}</b><small>${esc(S.stickyS)}</small></div><a class="btn primary" href="#oferta" data-track="cta_offer_sticky">${esc(S.ctaBuy)}</a><button class="x" aria-label="close">×</button></div>`}
 
 /* ---------- render ---------- */
-function render(){document.getElementById('app').innerHTML=nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky();
+/* ---------- teste A/B: texto novo da carta (cartas/carta-a.html / carta-b.html); vazio ou erro = carta atual ---------- */
+let NOVA='';
+// botão do WhatsApp logo após o parágrafo da carta que manda chamar o time no WhatsApp
+function withWa(h){const b=waBtn();if(!b)return h;const i=h.search(/nosso time no WhatsApp/i);if(i<0)return h;const j=h.indexOf('</p>',i);return j<0?h:h.slice(0,j+4)+b+h.slice(j+4)}
+// Modo revisão só nas prévias (?revisao=1 em *-contato-q620.vercel.app ou localhost): mostra frases seguradas em amarelo e marca a frase solta. Visitantes do site no ar nunca veem.
+const RVW=/[?&]revisao=1\b/.test(location.search)&&/(-contato-q620\.vercel\.app|^localhost|^127\.0\.0\.1)(:\d+)?$/.test(location.host);
+function revisao(h){if(!RVW)return h;let n=0;h=h.replace(/<!--SEGURADO:([\s\S]*?)-->/g,(m,t)=>`<div class="rev-hold" id="segurado-${++n}"><b>Segurado, fora do ar até o seu ok:</b> ${t}</div>`);return h.replace('Você leu isso lá no começo desta carta.','<mark class="rev-flag" id="frase-solta">Você leu isso lá no começo desta carta.</mark>')}
+function cartaNova(){const parts=revisao(withWa(NOVA)).split('<!--OFERTA-->');const body=`<section id="carta" class="carta-nova"><div class="wrap"><article class="prose">${parts[0]}</article></div></section>`;
+ return parts.length>1?body+offerBand()+`<section class="carta-nova"><div class="wrap"><article class="prose">${parts.slice(1).join('')}</article><div class="carta-fim">${summary('cta2')}</div></div></section>`:body+offerBand()}
+function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`+sticky():nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
+function boot(){const ab=window.MF_CARTA;if(!ab||!window.fetch)return render();let done=false;const go=()=>{if(!done){done=true;render()}};setTimeout(go,3000);
+ fetch('cartas/carta-'+ab.variant.toLowerCase()+'.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(h=>{const txt=String(h||'').replace(/<!--[\s\S]*?-->/g,'').trim();if(txt&&!done)NOVA=String(h);go()}).catch(go)}
+function render(){document.getElementById('app').innerHTML=layout();if(RVW&&location.hash){const el=document.getElementById(location.hash.slice(1));if(el)setTimeout(()=>el.scrollIntoView({block:'center'}),50)}if(window.MF_RENDER_PENDING){window.MF_RENDER_PENDING=false;setTimeout(()=>window.dispatchEvent(new Event('scroll')),1500)}
  document.title='MeuFluxo Ilimitado · Black November';
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()});
  document.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{prio=Number(b.dataset.area);const p=new URLSearchParams(location.search);p.set('prioridade',AREAS[prio].slug);history.replaceState(null,'',location.pathname+'?'+p.toString());track('priority_pick',{area:AREAS[prio].slug,where:'carta'});render();window.scrollTo({top:0,behavior:'smooth'})});
  document.querySelectorAll('.prova').forEach(b=>b.onclick=()=>{track('proof_open',{img:b.dataset.img});const m=document.createElement('div');m.className='modal';m.innerHTML=`<img src="${b.dataset.img}" alt=""><button aria-label="close">×</button>`;m.onclick=()=>m.remove();document.body.appendChild(m)});
- document.querySelectorAll('a[data-track],button[data-track]').forEach(el=>el.addEventListener('click',()=>track(el.dataset.track,{prioridade:prio!==null?AREAS[prio].slug:''})));
+ document.querySelectorAll('a[data-track],button[data-track]').forEach(el=>el.addEventListener('click',()=>track(el.dataset.track,Object.assign({prioridade:prio!==null?AREAS[prio].slug:''},el.dataset.track==='whatsapp_click'?{wa_ref:waRef()}:{}))));
  document.querySelectorAll('details[data-track]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)track('faq_open',{q:d.querySelector('summary').textContent})}));
  const prog=document.getElementById('prog');let offerSeen=false;const onScroll=()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';const st=document.getElementById('sticky');const off=document.getElementById('oferta-bloco');const r=off.getBoundingClientRect();if(!offerSeen&&r.top<window.innerHeight*.7){offerSeen=true;track('offer_view',{})}if(st&&!st.dataset.off){const show=h.scrollTop>600&&(r.bottom<0||r.top>window.innerHeight);st.classList.toggle('on',show);document.body.classList.toggle('has-sticky',show)}};
  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
  document.querySelector('#sticky .x').onclick=()=>{const st=document.getElementById('sticky');st.dataset.off='1';st.classList.remove('on');document.body.classList.remove('has-sticky')};
- track('letter_view',{prioridade:prio!==null?AREAS[prio].slug:'',programa:first()?first().programa:''});
+ track('letter_view',{carta_texto:NOVA?'novo':'atual',prioridade:prio!==null?AREAS[prio].slug:'',programa:first()?first().programa:''});
 }
-render();
+boot();
 })();

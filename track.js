@@ -41,17 +41,18 @@ const META={letter_view:'ViewContent',offer_view:'ViewContent',checkout_click:'I
 /* ---- envio ---- */
 function local(rec){try{const a=JSON.parse(localStorage.getItem('mf_events')||'[]');a.push(rec);if(a.length>400)a.splice(0,a.length-400);localStorage.setItem('mf_events',JSON.stringify(a))}catch(e){}}
 function beacon(rec){if(excluded||!CFG.endpoint)return;try{const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(CFG.endpoint,new Blob([body],{type:'application/json'}));else fetch(CFG.endpoint,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
-function send(ev,p){p=p||{};const rec=Object.assign({},origin,p,{ev,ts:Date.now(),vid,sid,page,lang,path:location.pathname,test:flags.test,internal:flags.internal});
+const AB=window.MF_CARTA?{carta:window.MF_CARTA.variant,carta_forcada:window.MF_CARTA.forced?1:0}:{};
+function send(ev,p){p=p||{};const rec=Object.assign({},origin,AB,p,{ev,ts:Date.now(),vid,sid,page,lang,path:location.pathname,test:flags.test,internal:flags.internal});
  try{if(!excluded)window.dataLayer.push(Object.assign({event:'mf_'+ev},rec))}catch(e){}
- try{if(window.gtag&&CFG.ga4)window.gtag('event',ev,Object.assign({page,lang},p))}catch(e){}
- try{if(window.fbq&&CFG.metaPixel){if(META[ev])window.fbq('track',META[ev],p);else window.fbq('trackCustom','mf_'+ev,p)}}catch(e){}
+ try{if(window.gtag&&CFG.ga4)window.gtag('event',ev,Object.assign({page,lang},AB,p))}catch(e){}
+ try{if(window.fbq&&CFG.metaPixel){const fp=Object.assign({},AB,p);if(META[ev])window.fbq('track',META[ev],fp);else window.fbq('trackCustom','mf_'+ev,fp)}}catch(e){}
  local(rec);beacon(rec);return rec}
 send.ids={vid,sid,first,utm,newVisitor,newSession};send.flags=flags;send.excluded=excluded;
 window.MF_TRACK=send;
 /* ---- automáticos: page_view, profundidade de rolagem, saída ---- */
 send('page_view',{new_visitor:newVisitor?1:0,new_session:newSession?1:0,ref:(document.referrer||'').slice(0,200),w:window.innerWidth,h:window.innerHeight});
 let maxDepth=0;const marks={25:0,50:0,75:0,100:0};const t0=Date.now();
-function depth(){const d=document.documentElement;const total=d.scrollHeight-d.clientHeight;const pct=total<=0?100:Math.min(100,Math.round((d.scrollTop/total)*100));if(pct>maxDepth)maxDepth=pct;[25,50,75,100].forEach(m=>{if(!marks[m]&&pct>=m){marks[m]=1;send('scroll',{depth:m})}})}
+function depth(){if(window.MF_RENDER_PENDING)return; /* carta do teste A/B ainda carregando: página vazia não conta como 100% */const d=document.documentElement;const total=d.scrollHeight-d.clientHeight;const pct=total<=0?100:Math.min(100,Math.round((d.scrollTop/total)*100));if(pct>maxDepth)maxDepth=pct;[25,50,75,100].forEach(m=>{if(!marks[m]&&pct>=m){marks[m]=1;send('scroll',{depth:m})}})}
 window.addEventListener('scroll',depth,{passive:true});setTimeout(depth,1500);
 let left=false;function leave(){if(left)return;left=true;send('leave',{depth:maxDepth,secs:Math.round((Date.now()-t0)/1000)})}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')leave()});window.addEventListener('pagehide',leave);

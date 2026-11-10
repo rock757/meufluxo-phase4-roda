@@ -16,6 +16,8 @@ window.MF_CONFIG = {
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
+  // Teste A/B da carta (Rock 2026-11-09 21:20 BRT: 'Both, split test'). Ligado com os dois textos em cartas/carta-a.html e carta-b.html.
+  splitTeste: { ativo:true, variantes:['A','B'] }, // 2026-11-10: Carta A (Segredo) e Carta B (Oferta) pass 2 nos slots, a pedido do Rock. Desligar = false.
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
@@ -31,7 +33,7 @@ window.MF_CONFIG = {
          garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
          inclusoes: 'todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma',
          suporte: '',               // ex.: 'suporte@meufluxo.com'
-         whatsapp: '',              // link wa.me do comercial (Rebecca) — só aparece quando preenchido e confirmado (nome, horário, finalidade)
+         whatsapp: 'https://wa.me/5554997151575', // 2026-11-10: número do time, confirmado pelo Rock (mesmo de ofertas.meufluxo.com/meufluxo-em-dobro). carta.js adiciona mensagem com ref da carta/origem.
          entrega: '' },             // ex.: 'o acesso é liberado em até 24h após a aprovação do pagamento, pelo e-mail da compra'
     B: { nome: 'Jornada MeuFluxo — 8 Programas (1 ano)',
          preco: 'R$697 à vista',
