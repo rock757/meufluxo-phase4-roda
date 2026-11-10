@@ -1,1 +1,1 @@
-{ "cleanUrls": false, "headers": [ { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] } ] }
+{"cleanUrls": false, "headers": [{"source": "/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]}], "redirects": [{"source": "/black26/", "destination": "/black26", "permanent": false}], "rewrites": [{"source": "/black26", "destination": "/index.html"}]}
