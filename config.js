@@ -6,12 +6,12 @@ window.MF_CONFIG = {
   checkoutUrl: '',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true SOMENTE após Gabi/Júlia confirmarem texto, programa e autorização (LEIA-ME de 29/10).
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
-  campanha: { nome:'Black November', prazoTexto:'27 de novembro, Black Friday', prazoTextoEn:'November 27, Black Friday', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
+  campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
               lote:{ ativo:false, texto:'primeiro lote' },
-              rodaValor:'',        // vazio até Rock confirmar um preço realmente praticado para a Roda (feedback 05/11: não riscar valor que nunca foi cobrado).   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
+              rodaValor:'R$197',   // Rock 2026-11-09 21:07 BRT: valor de referência do presente = R$197 (exibido em quiz.js). Antes: vazio até Rock confirmar um preço realmente praticado para a Roda (feedback 05/11: não riscar valor que nunca foi cobrado).   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
               // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
-  prazoConfirmado: false, // Sem data de encerramento aprovada; a contagem é apenas um marcador de calendário.
+  prazoConfirmado: true,  // Rock 2026-11-09 21:07 BRT: confirmado, a condição vale até 30 de novembro (prazoTexto). Sem lote/escassez extra.
   jornadaPadrao: true,  // Rock 05/11 15:xx: no lançamento, UMA jornada recomendada igual para todos (ordem 1→8). As variantes por prioridade/gênero/filhos ficam no código, desligadas.
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)

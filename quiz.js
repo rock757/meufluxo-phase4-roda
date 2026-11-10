@@ -192,7 +192,7 @@ function footer(){return ''}
 function vHero(){app.innerHTML=header()+`<div class="wrap screen"><div class="hero"><div class="copy"><span class="eyebrow">${esc(S.eyebrowHero)}</span><h1>${esc(S.h1)}</h1><p class="lead">${esc(S.lead)}</p>
  <div class="nav"><button class="btn primary" id="start">${esc(S.start)} →</button><button class="btn ghost" id="how">${esc(S.how)}</button></div>
  
- <div class="gift"><div class="row"><span class="was"><small>${L==='en'?'NORMALLY':'NORMALMENTE'}</small><s>R$299</s></span><span class="free">${L==='en'?'FREE':'GRÁTIS'}</span></div></div>
+ <div class="gift"><div class="row"><span class="was"><small>${L==='en'?'NORMALLY':'NORMALMENTE'}</small><s>R$197</s></span><span class="free">${L==='en'?'FREE':'GRÁTIS'}</span></div></div>
  <div class="trust"><span class="pill"><i class="dotc" style="background:var(--a8)"></i>${esc(S.trust1)}</span><span class="pill"><i class="dotc" style="background:var(--a5)"></i>${esc(S.trust2)}</span><span class="pill"><i class="dotc" style="background:var(--gold)"></i>${esc(S.trust3)}</span></div></div>
  <div class="hero-art">${heroArt()}</div></div></div>`+footer();
  app.querySelector('#start').onclick=()=>{track('quiz_start',{});go(0)};app.querySelector('#how').onclick=()=>{vReveal(true)};bindLang()}
