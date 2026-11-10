@@ -4,17 +4,29 @@ const S = require('./_sheets.js');
 const DB = require('./_db.js');
 // Janela de relatório (não destrutiva): MF_REPORTING_START_AT = instante ISO com fuso (ex.: 2026-11-10T09:00:00-03:00).
 // Vazia = todo o histórico. Nada é apagado: só os agregados contam a partir do corte (inclusivo).
+// Início da campanha escolhido por Rock (2026-11-09 21:07 BRT): 10/11/2026 às 18:00 BRT. A variável na Vercel, se existir,
+// tem prioridade; MF_REPORTING_START_AT=all mostra todo o histórico.
+const CAMPAIGN_START = '2026-11-10T18:00:00-03:00';
+function startSetting(env) { const v = String(env == null ? '' : env).trim(); return v === '' ? CAMPAIGN_START : (v.toLowerCase() === 'all' ? '' : v); }
 function reportingWindow(raw) {
   const v = String(raw || '').trim();
   if (!v) return { ok: true, start: null };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
   if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(v)) return { ok: false };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
   const d = new Date(v); if (isNaN(d.getTime())) return { ok: false };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
   const label = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }).format(d) + ' (BRT)';
   return { ok: true, start: d.toISOString(), label };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
 }
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
@@ -24,10 +36,12 @@ module.exports = async (req, res) => {
   if (!DB.configured() && !S.configured()) return res.end(JSON.stringify({ configured: false, reason: 'storage-not-configured' }));
   if (!key) return res.end(JSON.stringify({ configured: true, locked: true, reason: 'PAINEL_KEY-not-set' }));
   if (q.get('k') !== key) { res.statusCode = 403; return res.end(JSON.stringify({ configured: true, locked: true, reason: 'bad-key' })); }
-  const win = reportingWindow(process.env.MF_REPORTING_START_AT);
+  const win = reportingWindow(startSetting(process.env.MF_REPORTING_START_AT));
   if (!win.ok) { res.statusCode = 500; return res.end(JSON.stringify({ configured: true, error: 'MF_REPORTING_START_AT inválida (use ISO com fuso, ex.: 2026-11-10T09:00:00-03:00)' })); }
   const windowInfo = { start: win.start, label: win.start ? win.label : null, tz: 'America/Sao_Paulo' };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
   if (DB.configured()) {
     try {
       const P = win.start ? [win.start] : [];
@@ -53,6 +67,8 @@ module.exports.reportingWindow = reportingWindow;
     const iEv = ix('ev'), iVid = ix('vid'), iSid = ix('sid'), iPage = ix('page'), iSrc = ix('utm_source'), iExtra = ix('extra(json)') >= 0 ? ix('extra(json)') : 14;
     const vis = new Set(), ses = new Set(), by = {}, src = {}, depth = {}, days = {};
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
     const ev = {}; const uniq = {}; // por evento: total e visitantes únicos
     const cut = win.start ? Date.parse(win.start) : null;
     rows.slice(1).forEach(r => {
@@ -68,3 +84,5 @@ module.exports.reportingWindow = reportingWindow;
   } catch (e) { res.statusCode = 500; res.end(JSON.stringify({ configured: true, error: e.message })); }
 };
 module.exports.reportingWindow = reportingWindow;
+module.exports.startSetting = startSetting;
+module.exports.CAMPAIGN_START = CAMPAIGN_START;
