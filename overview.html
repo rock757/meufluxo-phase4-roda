@@ -220,7 +220,7 @@ const S={
 const bar=(n)=>`<div class="bar"><span>${esc(S.top)}<span class="lang"><button ${L==='pt'?'class="on"':''} data-lang="pt">PT</button><button ${L==='en'?'class="on"':''} data-lang="en">EN</button></span></span><span>0${n} / 06</span></div>`;
 const steps=a=>`<div class="steps">${a.map(s=>`<div><span class="eyebrow">${esc(s[0])}</span><h3>${esc(s[1])}</h3><p>${esc(s[2])}</p></div>`).join('')}</div>`;
 const head=p=>`<span class="eyebrow">${esc(p.eb)}</span><h2>${esc(p.h)}</h2>${p.lead?`<p class="lead">${esc(p.lead)}</p>`:''}`;
-const LIVE='https://meufluxo-phase4-roda.vercel.app/';
+const LIVE=location.origin+'/'; // funciona no vercel.app e em carta.meufluxo.com
 const liveFor=['index.html?utm_source=convite','index.html','index.html','index.html','carta.html?prioridade=alimentacao','carta.html?prioridade=alimentacao#oferta'];
 function wheel(on){const cx=180,cy=180,R=150;const ang=i=>(-90+i*45)*Math.PI/180;const P=(i,r)=>[cx+Math.cos(ang(i))*r,cy+Math.sin(ang(i))*r];let h=`<svg class="wheel" viewBox="0 0 360 360">`;
  AREAS.forEach((a,i)=>{const p1=P(i,R),p2=P(i+1,R);h+=`<polygon class="${i===on?'on':''}" data-i="${i}" points="${cx},${cy} ${p1.join(',')} ${p2.join(',')}"><title>${esc(t(a.n))}</title></polygon>`});
