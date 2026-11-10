@@ -18,7 +18,8 @@ let n = 0; const t = async (name, f) => { calls = []; await f(); n++; console.lo
   process.env.MF_REPORTING_START_AT = 'all';
   await t('all = all history, no cutoff params, compras kept', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.body.window.start, null); assert.ok(calls.every(c => !/\$1/.test(c.q))); assert.equal(r.body.compras, 4); });
   process.env.MF_REPORTING_START_AT = '2026-11-10T09:00:00-03:00';
-  await t('set = 7 cutoff queries (6 eventos + roda), inclusive, compras null', async () => { const r = await run('/api/stats?k=k1'); const cut = calls.filter(c => /ts >= \$1::timestamptz/.test(c.q)); assert.equal(cut.length, 7); assert.ok(cut.every(c => c.p[0] === '2026-11-10T12:00:00.000Z')); assert.ok(!calls.some(c => /FROM compras/.test(c.q))); assert.equal(r.body.compras, null); assert.equal(r.body.receita, null); assert.equal(r.body.window.start, '2026-11-10T12:00:00.000Z'); assert.ok(calls.every(c => (c.q.match(/WHERE/g) || []).length <= 1)); });
+  await t('set = 8 cutoff queries (6 eventos + roda + A/B), inclusive, compras null', async () => { const r = await run('/api/stats?k=k1'); const cut = calls.filter(c => /ts >= \$1::timestamptz/.test(c.q)); assert.equal(cut.length, 8); assert.ok(cut.every(c => c.p[0] === '2026-11-10T12:00:00.000Z')); assert.ok(!calls.some(c => /FROM compras/.test(c.q))); assert.equal(r.body.compras, null); assert.equal(r.body.receita, null); assert.equal(r.body.window.start, '2026-11-10T12:00:00.000Z'); assert.ok(calls.every(c => (c.q.match(/WHERE/g) || []).length <= 1)); });
+  await t('A/B query: per-version unique visitors, forced views excluded, inside window', async () => { await run('/api/stats?k=k1'); const q = calls.find(c => /extra->>'carta'/.test(c.q)); assert.ok(q); assert.match(q.q, /carta_forcada','0'\) <> '1'/); assert.match(q.q, /ts >= \$1::timestamptz/); assert.equal(q.p[0], '2026-11-10T12:00:00.000Z'); });
   process.env.MF_REPORTING_START_AT = 'garbage';
   await t('invalid cutoff = explicit error, not demo', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.status, 500); assert.match(r.body.error, /MF_REPORTING_START_AT/); assert.equal(calls.length, 0); });
   dbOn = false; process.env.MF_REPORTING_START_AT = '2026-11-10T09:00:00-03:00';
@@ -26,9 +27,12 @@ let n = 0; const t = async (name, f) => { calls = []; await f(); n++; console.lo
     ['2026-11-10T11:59:59.000Z', 'page_view', 'a', 's1', 'index', 'pt', '/', 'old'],
     ['2026-11-10T12:00:00.000Z', 'page_view', 'b', 's2', 'index', 'pt', '/', 'email'],
     ['2026-11-11T10:00:00.000Z', 'quiz_start', 'b', 's2', 'index', 'pt', '/', 'email'],
-    ['', 'page_view', 'c', 's3', 'index', 'pt', '/', 'nodate']];
-  await t('sheets fallback applies inclusive cutoff, keeps nothing older or undated', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.body.source, 'sheets'); assert.equal(r.body.visitors, 1); assert.deepEqual(r.body.sources, { email: 1 }); assert.equal(r.body.events.page_view, 1); assert.equal(r.body.rows, 2); });
+    ['', 'page_view', 'c', 's3', 'index', 'pt', '/', 'nodate'],
+    ['2026-11-11T10:05:00.000Z', 'letter_view', 'b', 's2', 'carta', 'pt', '/', 'email', '', '', '', '', '', '', '{"carta":"A","carta_forcada":0}'],
+    ['2026-11-11T10:06:00.000Z', 'letter_view', 'd', 's4', 'carta', 'pt', '/', 'email', '', '', '', '', '', '', '{"carta":"B","carta_forcada":1}'],
+    ['2026-11-11T10:07:00.000Z', 'checkout_click', 'b', 's2', 'carta', 'pt', '/', 'email', '', '', '', '', '', '', '{"carta":"A","carta_forcada":0}']];
+  await t('sheets fallback applies inclusive cutoff, keeps nothing older or undated', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.body.source, 'sheets'); assert.equal(r.body.visitors, 2); assert.deepEqual(r.body.sources, { email: 1 }); assert.equal(r.body.events.page_view, 1); assert.equal(r.body.rows, 5); assert.deepEqual(r.body.ab, { A: { letter_view: 1, checkout_click: 1 } }); });
   process.env.MF_REPORTING_START_AT = 'all';
-  await t('sheets fallback all = all rows', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.body.visitors, 3); assert.equal(r.body.rows, 4); });
+  await t('sheets fallback all = all rows', async () => { const r = await run('/api/stats?k=k1'); assert.equal(r.body.visitors, 4); assert.equal(r.body.rows, 7); });
   console.log(`TOTAL ${n} passed`);
 })().catch(e => { console.error('FAIL', e.message); process.exit(1); });
