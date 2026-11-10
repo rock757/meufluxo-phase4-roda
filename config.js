@@ -12,6 +12,8 @@ window.MF_CONFIG = {
               // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
   prazoConfirmado: false, // Sem data de encerramento aprovada; a contagem é apenas um marcador de calendário.
+  // Teste A/B da carta (Rock 2026-11-09 21:20 BRT: 'Both, split test'). Ligar SOMENTE com os dois textos em cartas/carta-a.html e carta-b.html.
+  splitTeste: { ativo:false, variantes:['A','B'] },
   jornadaPadrao: true,  // Rock 05/11 15:xx: no lançamento, UMA jornada recomendada igual para todos (ordem 1→8). As variantes por prioridade/gênero/filhos ficam no código, desligadas.
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)

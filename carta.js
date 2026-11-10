@@ -20,7 +20,7 @@ function stored(){try{return JSON.parse(sessionStorage.getItem('mf_params')||'{}
 let prio=AREAS.findIndex(a=>a.slug===Q.get('prioridade')); if(prio<0)prio=null;
 const ctx=STD?{}:{g:Q.get('g')||null,r:Q.get('r')||null};
 function checkoutHref(){if(!MF.checkoutUrl)return'';let u;try{u=new URL(MF.checkoutUrl)}catch(e){return''}
- const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;
+ const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;if(window.MF_CARTA)p.carta=window.MF_CARTA.variant;
  Object.entries(p).forEach(([k,v])=>{if(v&&!u.searchParams.has(k))u.searchParams.set(k,v)});return u.toString()}
 function indexHref(){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');const s=p.toString();return 'index.html'+(s?'?'+s:'')}
 const first=()=>prio===null?null:(TR?TR.resolve(prio,ctx):null);
@@ -118,7 +118,14 @@ function final(){return `<section id="acao" style="padding-top:20px"><div class=
 function sticky(){return `<div class="sticky" id="sticky"><div><b>${esc(S.stickyB)}</b><small>${esc(S.stickyS)}</small></div><a class="btn primary" href="#oferta" data-track="cta_offer_sticky">${esc(S.ctaBuy)}</a><button class="x" aria-label="close">×</button></div>`}
 
 /* ---------- render ---------- */
-function render(){document.getElementById('app').innerHTML=nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky();
+/* ---------- teste A/B: texto novo da carta (cartas/carta-a.html / carta-b.html); vazio ou erro = carta atual ---------- */
+let NOVA='';
+function cartaNova(){const parts=NOVA.split('<!--OFERTA-->');const body=`<section id="carta" class="carta-nova"><div class="wrap"><article class="prose">${parts[0]}</article></div></section>`;
+ return parts.length>1?body+offerBand()+`<section class="carta-nova"><div class="wrap"><article class="prose">${parts.slice(1).join('')}</article></div></section>`:body+offerBand()}
+function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`+sticky():nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
+function boot(){const ab=window.MF_CARTA;if(!ab||!window.fetch)return render();let done=false;const go=()=>{if(!done){done=true;render()}};setTimeout(go,3000);
+ fetch('cartas/carta-'+ab.variant.toLowerCase()+'.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(h=>{const txt=String(h||'').replace(/<!--[\s\S]*?-->/g,'').trim();if(txt&&!done)NOVA=String(h);go()}).catch(go)}
+function render(){document.getElementById('app').innerHTML=layout();
  document.title='MeuFluxo Ilimitado · Black November';
  document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{const p=new URLSearchParams(location.search);if(b.dataset.lang==='en')p.set('lang','en');else p.delete('lang');location.search=p.toString()});
  document.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{prio=Number(b.dataset.area);const p=new URLSearchParams(location.search);p.set('prioridade',AREAS[prio].slug);history.replaceState(null,'',location.pathname+'?'+p.toString());track('priority_pick',{area:AREAS[prio].slug,where:'carta'});render();window.scrollTo({top:0,behavior:'smooth'})});
@@ -128,7 +135,7 @@ function render(){document.getElementById('app').innerHTML=nav()+hero()+recognit
  const prog=document.getElementById('prog');let offerSeen=false;const onScroll=()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';const st=document.getElementById('sticky');const off=document.getElementById('oferta-bloco');const r=off.getBoundingClientRect();if(!offerSeen&&r.top<window.innerHeight*.7){offerSeen=true;track('offer_view',{})}if(st&&!st.dataset.off){const show=h.scrollTop>600&&(r.bottom<0||r.top>window.innerHeight);st.classList.toggle('on',show);document.body.classList.toggle('has-sticky',show)}};
  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
  document.querySelector('#sticky .x').onclick=()=>{const st=document.getElementById('sticky');st.dataset.off='1';st.classList.remove('on');document.body.classList.remove('has-sticky')};
- track('letter_view',{prioridade:prio!==null?AREAS[prio].slug:'',programa:first()?first().programa:''});
+ track('letter_view',{carta_texto:NOVA?'novo':'atual',prioridade:prio!==null?AREAS[prio].slug:'',programa:first()?first().programa:''});
 }
-render();
+boot();
 })();
