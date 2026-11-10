@@ -16,8 +16,8 @@ window.MF_CONFIG = {
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
-  // Teste A/B da carta (Rock 2026-11-09 21:20 BRT: 'Both, split test'). Ligar SOMENTE com os dois textos em cartas/carta-a.html e carta-b.html.
-  splitTeste: { ativo:false, variantes:['A','B'] },
+  // Teste A/B da carta (Rock 2026-11-09 21:20 BRT: 'Both, split test'). Ligado com os dois textos em cartas/carta-a.html e carta-b.html.
+  splitTeste: { ativo:true, variantes:['A','B'] }, // 2026-11-10: Carta A (Segredo) e Carta B (Oferta) pass 2 nos slots, a pedido do Rock. Desligar = false.
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split). Confirmar com Évila o que o Payt grava.
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],

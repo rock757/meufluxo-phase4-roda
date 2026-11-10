@@ -121,7 +121,7 @@ function sticky(){return `<div class="sticky" id="sticky"><div><b>${esc(S.sticky
 /* ---------- teste A/B: texto novo da carta (cartas/carta-a.html / carta-b.html); vazio ou erro = carta atual ---------- */
 let NOVA='';
 function cartaNova(){const parts=NOVA.split('<!--OFERTA-->');const body=`<section id="carta" class="carta-nova"><div class="wrap"><article class="prose">${parts[0]}</article></div></section>`;
- return parts.length>1?body+offerBand()+`<section class="carta-nova"><div class="wrap"><article class="prose">${parts.slice(1).join('')}</article></div></section>`:body+offerBand()}
+ return parts.length>1?body+offerBand()+`<section class="carta-nova"><div class="wrap"><article class="prose">${parts.slice(1).join('')}</article><div class="carta-fim">${summary('cta2')}</div></div></section>`:body+offerBand()}
 function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`+sticky():nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
 function boot(){const ab=window.MF_CARTA;if(!ab||!window.fetch)return render();let done=false;const go=()=>{if(!done){done=true;render()}};setTimeout(go,3000);
  fetch('cartas/carta-'+ab.variant.toLowerCase()+'.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(h=>{const txt=String(h||'').replace(/<!--[\s\S]*?-->/g,'').trim();if(txt&&!done)NOVA=String(h);go()}).catch(go)}
