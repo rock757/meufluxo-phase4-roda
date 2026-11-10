@@ -3,3 +3,5 @@ SHA256SUMS.txt
 carta.master.html
 build-clean.py
 tests/
+README.md
+scratch-test_v4.py

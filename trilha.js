@@ -1,11 +1,11 @@
-// Ordem sugerida = a espiral (CONFIRMADO por Rock, 2026-11-04): a pessoa começa pela necessidade que a trouxe
-// e a espiral segue dali em diante (2→8, dando a volta). Propósito (Nico) é a semente, incluída sempre, mostrada antes do passo 1.
+// Ordem sugerida = a espiral: a pessoa começa pela necessidade que a trouxe
+// e a espiral segue dali em diante (2→8, dando a volta).
 // Ordem 2026-11-05: 1 Propósito · 2 Saúde (movimento) · 3 Alimentação · 4 Memória · 5 Prosperidade (financas) · 6 Relações · 7 Crescimento · 8 Espiritualidade (transcendencia).
 // Os dias relatados na roda NÃO definem a ordem; definem só o retrato. O cliente pode mudar a ordem.
 (function(){
   const CODES=['pr','mo','al','me','fi','re','cr','tr']; // índice = posição na espiral (2026-11-05: Saúde=mo antes de Alimentação=al)
   function order(values,priority){
-    // 2026-11-05: a semente é a própria Roda da Vida (autoavaliação com o Nicolas), já feita; os 8 passos começam pela prioridade e dão a volta.
+    // Os 8 passos começam pela prioridade e dão a volta.
     const p=(priority===null||priority===undefined)?0:priority;
     const seq=[];for(let k=0;k<8;k++)seq.push((p+k)%8);return seq;
   }
