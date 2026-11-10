@@ -6,12 +6,12 @@ window.MF_CONFIG = {
   checkoutUrl: 'https://checkout.payt.com.br/4ced8f35dc1c393cca8c3c80148b86b3',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true SOMENTE após Gabi/Júlia confirmarem texto, programa e autorização (LEIA-ME de 29/10).
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
-  campanha: { nome:'Black November', prazoTexto:'27 de novembro, Black Friday', prazoTextoEn:'November 27, Black Friday', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
+  campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
               lote:{ ativo:false, texto:'primeiro lote' },
-              rodaValor:'',        // vazio até Rock confirmar um preço realmente praticado para a Roda (feedback 05/11: não riscar valor que nunca foi cobrado).   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
+              rodaValor:'R$197',   // Rock 2026-11-09 21:07 BRT: valor de referência do presente = R$197 (exibido em quiz.js). Antes: vazio até Rock confirmar um preço realmente praticado para a Roda (feedback 05/11: não riscar valor que nunca foi cobrado).   // PROPOSTO (Rock 05/11): valor 'normal' da Roda, riscado → GRÁTIS no Black November. Confirmar que esse preço existiu/existe antes de publicar.
               // Números ditos pelo Nicolas nas lives (BF 2025 / Ilimitado 2026): HISTÓRICOS; confirmar antes de publicar.
               numeros:{ alunos:'mais de 50 mil', programas:'mais de 30', especialistas:'mais de 15', equipe:'mais de 20 pessoas', dieta:'mais de 60 mil alunos' } },
-  prazoConfirmado: false, // Sem data de encerramento aprovada; a contagem é apenas um marcador de calendário.
+  prazoConfirmado: true,  // Rock 2026-11-09 21:07 BRT: confirmado, a condição vale até 30 de novembro (prazoTexto). Sem lote/escassez extra.
   jornadaPadrao: true,  // Rock 05/11 15:xx: no lançamento, UMA jornada recomendada igual para todos (ordem 1→8). As variantes por prioridade/gênero/filhos ficam no código, desligadas.
   downsellUrl: '',      // link da Jornada 8 programas (R$697) — válvula de escape no rodapé da carta; vazio = não aparece
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // IDs do Vini/Hergamenes. Vazios = só dataLayer + localStorage + /api/track (no-op até configurar)
@@ -62,7 +62,7 @@ window.MF_CONFIG = {
 };
 
 
-// Marcador de calendário da experiência: Black Friday, depois o fim do mês. Não indica prazo da oferta.
+// Com prazoConfirmado: contagem até o fim da oferta (contagemFimMes). Sem prazo confirmado: só marcador de calendário (Black Friday, depois fim do mês).
 window.MF_COUNTDOWN_LABEL = function(language, now) {
   const campaign = (window.MF_CONFIG && window.MF_CONFIG.campanha) || {};
   const blackFriday = campaign.contagemBlackFriday || '2026-11-27';
@@ -80,6 +80,14 @@ window.MF_COUNTDOWN_LABEL = function(language, now) {
   const untilBlackFriday = dayNumber(blackFriday) - dayNumber(today);
   const untilMonthEnd = dayNumber(monthEnd) - dayNumber(today);
   const isEnglish = language === 'en';
+  // 2026-11-10 (Rock): com o prazo confirmado, a contagem passa a ser até o fim da oferta (30/11), não até a Black Friday.
+  if (window.MF_CONFIG && window.MF_CONFIG.prazoConfirmado) {
+    if (untilMonthEnd < 0) return '';
+    if (untilMonthEnd === 0) return isEnglish ? 'Last day of the offer' : 'Último dia da oferta';
+    return isEnglish
+      ? `${untilMonthEnd} day${untilMonthEnd === 1 ? '' : 's'} left on the offer`
+      : `Falta${untilMonthEnd === 1 ? '' : 'm'} ${untilMonthEnd} dia${untilMonthEnd === 1 ? '' : 's'} para o fim da oferta`;
+  }
 
   if (today < blackFriday) {
     return isEnglish
