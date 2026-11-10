@@ -257,12 +257,14 @@ function vReveal(showOnly){
 const LEAD_CONSENT='v1-2026-11-10';let leadWarned=false,leadSent=false;
 function journeyBlock(){return `<div class="journey"><p class="journey-tease">${esc(S.journeyTease)}</p><label class="lead" for="lead-email">${esc(S.emailLabel)}</label><input id="lead-email" type="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="${esc(S.emailPh)}"><p class="lead-consent">${esc(S.emailConsent)}</p><p class="lead-msg" id="lead-msg" role="status" aria-live="polite"></p><p class="nico-next">${esc(S.nicoNext)}</p></div>`}
 function hiLo(){const k=values.map((v,i)=>({v,i})).filter(x=>typeof x.v==='number');if(!k.length)return{alto:'',baixo:''};const hi=Math.max(...k.map(x=>x.v)),lo=Math.min(...k.map(x=>x.v));const sl=f=>k.filter(f).map(x=>AREAS[x.i].slug).join('+');return{alto:sl(x=>x.v===hi),baixo:sl(x=>x.v===lo)}}
+// mesma precedência do track.js: tags do primeiro toque (30 dias), sobrescritas pelas da visita atual
+function firstTouch(f){const o={};if(f)['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(k=>{if(f[k])o[k]=f[k]});return o}
 function leadOnContinue(e){const f=document.getElementById('lead-email');const m=document.getElementById('lead-msg');if(!f)return true;const em=f.value.trim();if(!em||leadSent)return true;
  const ok=/^[^\s@<>"',;]{1,64}@[A-Za-z0-9.-]{1,190}\.[A-Za-z]{2,24}$/.test(em);
  if(!ok&&!leadWarned){leadWarned=true;e.preventDefault();if(m)m.textContent=S.emailBad;f.focus();return false}
  if(!ok)return true;
  try{if(window.MF_TRACK&&window.MF_TRACK.excluded){leadSent=true;return true}const ids=(window.MF_TRACK&&window.MF_TRACK.ids)||{};const st=stored();
-  const rec=Object.assign({ts:Date.now(),email:em,consent:LEAD_CONSENT,vid:ids.vid||'',sid:ids.sid||'',lang:L,vals:values.map(v=>v==='unknown'?'x':v).join(''),carta:'',path:location.pathname,ref:(ids.first||{}).ref||''},hiLo(),ids.utm||{},st.src?{src:st.src}:{});
+  const rec=Object.assign({ts:Date.now(),email:em,consent:LEAD_CONSENT,vid:ids.vid||'',sid:ids.sid||'',lang:L,vals:values.map(v=>v==='unknown'?'x':v).join(''),carta:'',path:location.pathname,ref:(ids.first||{}).ref||''},hiLo(),firstTouch(ids.first),ids.utm||{},st.src?{src:st.src}:{});
   const body=JSON.stringify(rec);const ep='/api/lead';if(navigator.sendBeacon)navigator.sendBeacon(ep,new Blob([body],{type:'application/json'}));else fetch(ep,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}});
   leadSent=true;if(m)m.textContent=S.emailOk;track('lead_email',{});}catch(err){}
  return true}

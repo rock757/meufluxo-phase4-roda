@@ -30,7 +30,8 @@ async function handler(req, res) {
   const rec = {
     ts: new Date(Number(b.ts) || Date.now()).toISOString(), email, consent: CONSENT,
     vid: S.clean(b.vid, 40), sid: S.clean(b.sid, 40), lang: S.clean(b.lang, 5), vals,
-    alto: S.clean(b.alto, 60), baixo: S.clean(b.baixo, 60), carta: S.clean(b.carta, 2),
+    // empates: áreas unidas por '+', até as 8
+    alto: S.clean(b.alto, 200), baixo: S.clean(b.baixo, 200), carta: S.clean(b.carta, 2),
     utm_source: S.clean(b.utm_source), utm_medium: S.clean(b.utm_medium), utm_campaign: S.clean(b.utm_campaign),
     utm_content: S.clean(b.utm_content), utm_term: S.clean(b.utm_term), src: S.clean(b.src), ref: S.clean(b.ref), path: S.clean(b.path, 120),
   };
