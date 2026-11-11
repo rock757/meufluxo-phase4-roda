@@ -32,7 +32,7 @@ window.MF_CONFIG = {
   oferta: {
     A: { nome: 'MeuFluxo Ilimitado — Versão Black November (5 anos)',
          preco: 'R$997 à vista',
-         precoDe: '',             // preço de referência riscado; vazio = não aparece
+         precoDe: 'R$ 1.997',     // preço de referência riscado no resumo da oferta (Nico 11/11: riscar o valor anterior); vazio = não aparece
          parcela: '12x de R$ 100,10',       // aparece em destaque no resumo da oferta e na barra fixa; vazio = volta o formato antigo (à vista primeiro)
          totalParcelado: 'R$ 1.201,20',     // 12 x 100,10. Conferir com o checkout sempre que a parcela mudar. Nunca dizer 'sem juros'.
          parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
