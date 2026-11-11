@@ -383,3 +383,13 @@ mark.rev-flag{background:#ffe066;padding:0 2px}
 }
 .sticky .btn{white-space:nowrap}.sticky>div{min-width:0}.sticky b{display:block;white-space:nowrap}
 @media(max-width:420px){.sticky .btn{padding:12px 15px;font-size:14.5px}.sticky b{font-size:15px}}
+
+/* v8 · 11/11 Nico review: area→specialist→program map, the 5-year line beside the price, area-card label */
+.cf-map{list-style:none;margin:14px 0 22px;padding:0;display:grid;gap:8px}
+.cf-map li{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:15px;line-height:1.4}
+.cf-map li b{color:var(--violet,#5b3fc4);font-size:14px;letter-spacing:.01em}
+.cf-map li span{color:var(--ink,#1f1838)}
+@media (max-width:520px){.cf-map li{grid-template-columns:1fr;gap:2px}}
+.cf-area .cf-who{display:block;margin:10px 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.summary .ln.term{margin-top:6px;padding:10px 12px;border-radius:10px;background:rgba(91,63,196,.07)}
+.summary .ln.term b{font-size:19px}
