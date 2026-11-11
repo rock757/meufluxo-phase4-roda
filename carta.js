@@ -22,7 +22,7 @@ function waBtn(){const h=waHref();return h?`<p class="wa-cta"><a class="btn ghos
 let prio=AREAS.findIndex(a=>a.slug===Q.get('prioridade')); if(prio<0)prio=null;
 const ctx=STD?{}:{g:Q.get('g')||null,r:Q.get('r')||null};
 function checkoutHref(){if(!MF.checkoutUrl)return'';let u;try{u=new URL(MF.checkoutUrl)}catch(e){return''}
- const p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;if(window.MF_CARTA)p.carta=window.MF_CARTA.variant;
+ let p=Object.assign({},stored());if(prio!==null)p.prioridade=AREAS[prio].slug;if(window.MF_CARTA)p=window.MF_CARTA_PAYT?window.MF_CARTA_PAYT(p):Object.assign(p,{carta:window.MF_CARTA.variant});
  Object.entries(p).forEach(([k,v])=>{if(v&&!u.searchParams.has(k))u.searchParams.set(k,v)});return u.toString()}
 function indexHref(){const p=new URLSearchParams(stored());if(L==='en')p.set('lang','en');const s=p.toString();return 'index.html'+(s?'?'+s:'')}
 const first=()=>prio===null?null:(TR?TR.resolve(prio,ctx):null);
