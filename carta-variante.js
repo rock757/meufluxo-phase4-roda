@@ -6,6 +6,14 @@
    - Expõe window.MF_CARTA = {variant, forced}. track.js anexa a versão a todos os eventos; carta.js leva ?carta= ao checkout. */
 (function(){
 'use strict';
+/* Payt guarda no pedido só src e utm_source/medium/campaign/term/content (help.payt.com.br/article/75); carta=A sozinho não fica na venda.
+   MF_CARTA_PAYT(p) devolve os parâmetros do checkout com a versão da carta também em utm_term e src, sem sobrescrever valores que já vieram
+   no link (ex.: src de um link do ManyChat). Revisão forçada (?carta=) e sessão de teste (mf_test) ganham sufixo para não contar como venda do teste. */
+window.MF_CARTA_PAYT=function(p){p=Object.assign({},p||{});var ab=window.MF_CARTA;if(!ab||!ab.variant)return p;var v=ab.variant;
+ var tr=window.MF_TRACK,suf=(ab.forced?'-rev':'')+(tr&&tr.flags&&tr.flags.test?'-teste':'');
+ p.carta=v;if(!p.utm_term)p.utm_term='carta-'+v+suf;
+ if(!p.src)p.src=(String(p.utm_source||'direto').replace(/[^\w-]/g,'').slice(0,30)||'direto')+'-carta'+v+suf;
+ return p};
 var C=(window.MF_CONFIG||{}).splitTeste||{};
 var V=(C.variantes&&C.variantes.length?C.variantes:['A','B']).map(function(v){return String(v).toUpperCase()});
 var q=new URLSearchParams(location.search);
