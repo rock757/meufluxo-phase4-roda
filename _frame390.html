@@ -1,0 +1,6 @@
+<!doctype html><meta charset="utf-8"><title>390 check</title>
+<body style="margin:0;background:#333;display:flex;gap:12px;padding:8px">
+<iframe id="f" src="diagnostico.html" style="width:390px;height:960px;border:0;background:#fff"></iframe>
+<pre id="o" style="color:#fff;font:14px monospace"></pre>
+<script>const f=document.getElementById('f');function chk(){const d=f.contentDocument.documentElement;document.getElementById('o').textContent='viewport '+d.clientWidth+'\nscrollWidth '+d.scrollWidth+'\n'+(d.scrollWidth>d.clientWidth?'HORIZONTAL SCROLL':'no horizontal scroll')+'\nheight '+d.scrollHeight}
+f.onload=()=>setTimeout(chk,1500);</script>
