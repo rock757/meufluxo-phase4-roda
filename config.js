@@ -5,8 +5,14 @@ window.MF_CONFIG = {
   fechamento: 'A',     // 'A' (Ilimitado 5 anos) | 'B' (Jornada Completa 8 passos) | null = mostra os dois (revisão)
   checkoutUrl: 'https://checkout.payt.com.br/4ced8f35dc1c393cca8c3c80148b86b3',      // URL do checkout APROVADO (Payt). Vazio = nenhum botão de compra aparece.
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true só com texto, programa e autorização confirmados.
+  // Depoimentos DENTRO das cartas A/B (cartas/*.html): cada um tem um número T1…T28. Só aparecem para o público os que estiverem nesta lista,
+  // ex.: ['T1','T5','T13'], ou 'todos'. Lista vazia = nenhum aparece para o público. Na prévia com ?revisao=1 todos aparecem, com etiqueta.
+  depoimentosLiberados: [],
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
+              // 11/11: a oferta deixou de anunciar data ('a qualquer momento essa oferta pode sair do ar'). semData:true tira TODAS as contagens
+              // (carta, roda, resumo da oferta). Para voltar a mostrar a contagem até contagemFimMes, pôr false.
+              semData:true, fraseUrgencia:'A qualquer momento essa oferta pode sair do ar. Quando sair, o preço volta para R$ 1.997.',
               lote:{ ativo:false, texto:'primeiro lote' },
               rodaValor:'R$197',   // valor de referência do presente (exibido em quiz.js)
               // números institucionais
@@ -27,10 +33,12 @@ window.MF_CONFIG = {
     A: { nome: 'MeuFluxo Ilimitado — Versão Black November (5 anos)',
          preco: 'R$997 à vista',
          precoDe: '',             // preço de referência riscado; vazio = não aparece
+         parcela: '12x de R$ 100,10',       // aparece em destaque no resumo da oferta e na barra fixa; vazio = volta o formato antigo (à vista primeiro)
+         totalParcelado: 'R$ 1.201,20',     // 12 x 100,10. Conferir com o checkout sempre que a parcela mudar. Nunca dizer 'sem juros'.
          parcelas: 'ou em até 12x no cartão (valor total das parcelas informado no checkout)',
          acessoPrazo: 'por cinco anos, contados da confirmação do pagamento',
          garantia: 'Garantia de 7 dias: se não fizer sentido para você, peça o reembolso pelo suporte dentro desse prazo e devolvemos o valor integral.',
-         inclusoes: 'todos os programas do MeuFluxo Ilimitado disponíveis hoje na plataforma',
+         inclusoes: 'todos os programas do MeuFluxo Ilimitado que estão na plataforma hoje, e os que forem lançados nos seus cinco anos de acesso',
          suporte: '',               // ex.: 'suporte@meufluxo.com'
          whatsapp: 'https://wa.me/5554997151575', // carta.js adiciona mensagem com ref da carta/origem
          entrega: '' },             // ex.: 'o acesso é liberado em até 24h após a aprovação do pagamento, pelo e-mail da compra'
@@ -64,6 +72,7 @@ window.MF_CONFIG = {
 // Com prazoConfirmado: contagem até o fim da oferta (contagemFimMes). Sem prazo confirmado: só marcador de calendário (Black Friday, depois fim do mês).
 window.MF_COUNTDOWN_LABEL = function(language, now) {
   const campaign = (window.MF_CONFIG && window.MF_CONFIG.campanha) || {};
+  if (campaign.semData) return ''; // sem data anunciada: nenhuma contagem aparece
   const blackFriday = campaign.contagemBlackFriday || '2026-11-27';
   const monthEnd = campaign.contagemFimMes || '2026-11-30';
   const current = now instanceof Date ? now : new Date(now || Date.now());
