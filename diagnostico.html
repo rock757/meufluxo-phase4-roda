@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sua Roda e seu primeiro passo · MeuFluxo</title>
+<!-- PRÉVIA INTERNA (11/11). Página do dia seguinte para quem fez a Roda e não comprou o Ilimitado.
+     Parâmetros: v=8 dígitos 0–7 (x = sem resposta, mesmo formato da planilha), prioridade=slug da área (ou p=1..8),
+     g=m|h (variante de Saúde), r=f (variante de Relações). Sem v = exemplo. Sem prioridade = a pessoa escolhe aqui.
+     Não carrega track.js: a prévia não grava nada nas planilhas. -->
+<style>
+@font-face{font-family:"Google Sans Flex";src:url(img/fonts/google-sans-flex-latin.woff2) format("woff2");font-weight:300 800;font-display:swap}
+:root{--ink:#1f1838;--ink-2:#3b3356;--muted:#6d6577;--wash:#f7f4fc;--paper:#fff;--line:#e7e2ef;
+ --violet:#4b32c7;--violet-2:#7b4de2;--lilac:#c9a4f0;--lilac-2:#dcc6f5;--lilac-3:#f0e8fb;--gold:#d9b86a;--gold-2:#f1dca0;
+ --radius:22px;--shadow:0 24px 60px -30px rgba(75,50,199,.35);--sans:"Google Sans Flex",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wash);color:var(--ink);font:17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(900px 600px at 85% -10%,rgba(201,164,240,.55),transparent 60%),radial-gradient(700px 500px at -10% 40%,rgba(148,102,223,.18),transparent 60%),radial-gradient(600px 400px at 60% 110%,rgba(241,220,160,.35),transparent 60%),var(--wash)}
+img{max-width:100%}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.top img{height:28px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;background:rgba(255,255,255,.75);border:1px solid var(--line);font-size:12px;color:var(--ink-2)}
+.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--violet);font-weight:700}
+h1,h2,h3{margin:0;line-height:1.12;letter-spacing:-.02em;font-weight:600}
+h1{font-size:clamp(30px,6vw,46px);margin:8px 0 14px}
+h2{font-size:clamp(24px,4.6vw,32px);margin:6px 0 12px}
+h3{font-size:19px;letter-spacing:-.01em}
+p{margin:0 0 12px}
+section{margin:0 0 34px}
+.card{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.lead{font-size:19px;color:var(--ink-2)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+/* roda */
+.wheelcard{position:relative;overflow:hidden;padding:10px 6px 14px}
+.wheelcard .glimpse{position:absolute;right:-70px;bottom:-60px;width:300px;opacity:.22;pointer-events:none}
+.wheel{width:100%;height:auto;display:block;position:relative}
+.wheel .grid{fill:none;stroke:rgba(31,24,56,.09)}
+.wheel .grid.outer{stroke:var(--gold);stroke-width:1.5}
+.wheel .spoke{stroke:rgba(31,24,56,.12)}
+.wheel .wedge{opacity:.92;stroke:#fff;stroke-width:1.5;cursor:pointer;transform-box:view-box;transform-origin:240px 240px;transform:scale(0);transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.wheel .wedge.in{transform:scale(1)}
+.wheel .wedge.hi{opacity:1;stroke:var(--violet);stroke-width:2.5}
+.wheel .wedge.dim{opacity:.38}
+.wheel .hit{fill:transparent;cursor:pointer}
+.wheel text{font-family:var(--sans);font-size:15px;font-weight:600;fill:var(--ink-2)}
+.wheel text.val{font-size:13px;fill:#fff;font-weight:700;pointer-events:none}
+.wheel .ctr{fill:#fff;stroke:var(--gold);stroke-width:1.5}
+.wheel .call rect{fill:var(--violet)}
+.wheel .call text{fill:#fff;font-size:15px;font-weight:700}
+.wheel .call text.cap{fill:var(--violet);font-size:12px;letter-spacing:1px;font-weight:700}
+.key{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:4px}
+.key i{display:inline-block;width:22px;height:10px;border-radius:5px;vertical-align:middle;margin-right:6px}
+.key .less{background:linear-gradient(90deg,var(--lilac-3),var(--lilac-2))}.key .more{background:linear-gradient(90deg,var(--lilac),var(--violet-2))}
+.soon{display:flex;gap:10px;align-items:center;margin:14px 2px 0;font-size:14px;color:var(--ink-2)}
+.soon svg{flex:0 0 34px;width:34px;height:34px}
+/* leitura */
+.read{list-style:none;padding:0;margin:0 0 12px}
+.read li{padding:10px 0;border-bottom:1px solid var(--line)}
+.read li:last-child{border-bottom:0}
+.read b{font-weight:700}
+.note{font-size:14px;color:var(--muted);background:var(--lilac-3);border-radius:14px;padding:10px 12px}
+/* primeiro passo */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.chips button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 13px;font-size:14px;font-weight:600;color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.action{border-left:4px solid var(--violet-2);background:#fff;border-radius:14px;padding:14px 16px;margin:12px 0}
+.action .eyebrow{display:block;margin-bottom:4px}
+.who{display:flex;gap:12px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.who img{width:52px;height:52px;border-radius:50%;object-fit:cover;flex:0 0 52px}
+.who small{display:block;color:var(--muted);font-size:13px;line-height:1.35}
+.prog{display:flex;gap:12px;align-items:flex-start;margin-top:12px}
+.prog img{width:84px;aspect-ratio:3/2;object-fit:cover;border-radius:10px;flex:0 0 84px}
+.prog p{font-size:15px;color:var(--ink-2);margin:2px 0 0}
+.change{background:none;border:0;padding:0;color:var(--violet);font-size:14px;font-weight:600;text-decoration:underline}
+/* espiral */
+.sp svg{width:100%;height:auto;display:block}
+.sp path.arc{fill:none;stroke-width:24;stroke-linecap:round;cursor:pointer;transition:opacity .2s}
+.sp path.arc.dim{opacity:.3}
+.lvls{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.lvls button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 11px;font-size:13px;font-weight:600;color:var(--ink)}
+.lvls button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lvlcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.lvlcard .row{display:flex;gap:10px;align-items:center;margin-top:10px}
+.lvlcard .row img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:0 0 40px}
+.lvlcard .row small{display:block;color:var(--muted);font-size:13px}
+/* oferta */
+.offer{border:2px solid var(--violet-2)}
+.steps{list-style:none;padding:0;margin:14px 0}
+.steps li{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.3}
+.steps li:last-child{border-bottom:0}
+.steps img{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:0 0 44px}
+.steps small{display:block;color:var(--muted);font-size:13px}
+.steps .tag{margin-left:auto;flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:var(--violet);border-radius:99px;padding:4px 8px}
+.steps .tag.done{background:var(--gold);color:var(--ink)}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.pillars div{background:var(--lilac-3);border-radius:14px;padding:10px;font-size:13px;line-height:1.35;color:var(--ink-2)}
+.pillars b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.price{text-align:center;margin:16px 0 6px}
+.price .big{font-size:40px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.price small{display:block;color:var(--muted);font-size:14px}
+.btn{display:flex;width:100%;align-items:center;justify-content:center;border:0;border-radius:999px;padding:17px 22px;font-weight:700;font-size:17px;color:#fff;text-decoration:none;background:linear-gradient(135deg,var(--violet),var(--violet-2));box-shadow:0 18px 40px -16px rgba(75,50,199,.7)}
+.btn[aria-disabled=true]{opacity:.55;cursor:not-allowed;box-shadow:none}
+.placeholder{margin-top:8px;text-align:center;font-size:13px;color:#8a5a00;background:#fff6dc;border:1px dashed var(--gold);border-radius:12px;padding:8px}
+.fine{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+footer{padding:10px 0 40px;font-size:12.5px;color:var(--muted);text-align:center}
+@media(max-width:420px){.pillars{grid-template-columns:1fr}.price .big{font-size:36px}}
+@media(prefers-reduced-motion:reduce){.wheel .wedge{transition:none}}
+</style>
+</head>
+<body>
+<div id="app" class="wrap"></div>
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="trilha.js"></script>
+<script>
+(function(){'use strict';
+const MF=window.MF_CONFIG||{}, D=window.MF_DATA, TR=window.MF_TRILHA;
+const {AREAS,LEVELS,SPECS,PROGS,progOf}=D;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const Q=new URLSearchParams(location.search);
+
+/* ---------- Oferta da Jornada (downsell do dia seguinte). Editar aqui. ---------- */
+const JORNADA={
+  nome:'Jornada Completa MeuFluxo',
+  preco:'R$697',
+  formaPagamento:'à vista',
+  parcelas:(MF.oferta&&MF.oferta.B&&MF.oferta.B.parcelas)||'',
+  acesso:'Acesso por 1 ano, contado da confirmação do pagamento.',
+  garantia:(MF.oferta&&MF.oferta.B&&MF.oferta.B.garantia)||'',
+  checkoutUrl:'', // VAZIO até existir o link Payt da Jornada. Nunca usar o checkout do Ilimitado aqui.
+  // A Roda (com o Nicolas) é o passo de Propósito. Os 7 programas são as outras 7 áreas (índices da roda).
+  programas:[1,2,3,4,5,6,7]
+};
+
+/* Uma pequena próxima ação por área (rascunho para aprovação). */
+const ACAO=[
+ 'Separe 5 minutos e anote uma coisa que você gostaria que esta semana tivesse.',
+ 'Escolha um dia desta semana para uma caminhada ou um alongamento de 10 minutos, dentro do que for possível para você.',
+ 'Escolha uma refeição desta semana para preparar e comer com mais calma.',
+ 'Separe 15 minutos para fazer uma coisa de cada vez, com o celular longe.',
+ 'Reserve 5 minutos para olhar com calma para o seu dinheiro, sem se cobrar.',
+ 'Mande uma mensagem para alguém importante para você, só para saber como a pessoa está.',
+ 'No fim de um dia desta semana, anote uma coisa que você fez melhor do que no dia anterior.',
+ 'Reserve 5 minutos de silêncio, reflexão ou oração em um dia desta semana.'
+];
+
+/* ---------- Leitura dos parâmetros ---------- */
+const DEMO=[5,3,2,4,4,6,5,3];
+let demo=false;
+function parseV(s){if(!s||s.length!==8)return null;const o=[];for(const ch of s){if(ch==='x'||ch==='X')o.push('unknown');else if(/[0-7]/.test(ch))o.push(Number(ch));else return null}return o}
+let values=parseV(Q.get('v')||Q.get('vals'));
+if(!values){values=DEMO.slice();demo=true}
+function parseP(){const s=Q.get('prioridade');if(s){const i=AREAS.findIndex(a=>a.slug===s);if(i>=0)return i}
+ const n=Number(Q.get('p'));if(Number.isInteger(n)&&n>=1&&n<=8)return n-1;return null}
+let prio=parseP();
+if(prio===null&&demo&&!Q.has('escolher'))prio=2; // exemplo: Alimentação
+const ctx={g:Q.get('g')==='m'||Q.get('g')==='h'?Q.get('g'):null,r:Q.get('r')==='f'?'f':null};
+const nome=a=>a.n.pt;
+
+/* ---------- Roda ---------- */
+const CX=240,CY=240,R=150,ang=i=>(-90+i*45)*Math.PI/180,P=(i,r)=>[CX+Math.cos(ang(i))*r,CY+Math.sin(ang(i))*r];
+function wheel(){
+ let h=`<svg class="wheel" viewBox="0 18 480 444" role="img" aria-label="Sua Roda da Vida">`;
+ for(let k=1;k<=7;k++)h+=`<polygon class="grid${k===7?' outer':''}" points="${[...Array(8)].map((_,i)=>P(i,R*k/7).join(',')).join(' ')}"/>`;
+ for(let i=0;i<8;i++){const e=P(i,R);h+=`<line class="spoke" x1="${CX}" y1="${CY}" x2="${e[0]}" y2="${e[1]}"/>`}
+ values.forEach((v,i)=>{const a=P(i,R),b=P(i+1,R);h+=`<polygon class="hit" data-i="${i}" points="${CX},${CY} ${a.join(',')} ${b.join(',')}"/>`;
+  if(typeof v!=='number'||v===0)return;const r=R*v/7,c=P(i,r),d=P(i+1,r);
+  h+=`<polygon class="wedge${prio===i?' hi':(prio!==null?' dim':'')}" data-i="${i}" style="fill:${AREAS[i].hex}" points="${CX},${CY} ${c.join(',')} ${d.join(',')}"/>`});
+ values.forEach((v,i)=>{if(typeof v!=='number'||v<2)return;const m=(ang(i)+ang(i+1))/2,r=R*v/7*.62;h+=`<text class="val" x="${CX+Math.cos(m)*r}" y="${CY+Math.sin(m)*r}" text-anchor="middle" dominant-baseline="middle">${v}</text>`});
+ AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2,x=CX+Math.cos(m)*(R+28),y=CY+Math.sin(m)*(R+28),txt=nome(a);
+  if(i===prio){const w=txt.length*9.2+24;const left=Math.max(4,Math.min(476-w,x-w/2));const cap=y<CY?y-26:y+34;
+   h+=`<g class="call"><text class="cap" x="${left+w/2}" y="${cap}" text-anchor="middle">SEU PRIMEIRO PASSO</text><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
+  else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text>`});
+ return h+`<circle class="ctr" cx="${CX}" cy="${CY}" r="8"/></svg>`}
+function spiralGlimpse(){return `<svg class="glimpse" viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>`}
+
+/* ---------- Leitura honesta ---------- */
+function leitura(){
+ const known=values.map((v,i)=>({v,i})).filter(x=>typeof x.v==='number');
+ if(!known.length)return `<p>Você deixou as oito áreas sem resposta. Ainda não há uma comparação para mostrar.</p>`;
+ const hi=Math.max(...known.map(x=>x.v)),lo=Math.min(...known.map(x=>x.v));
+ const lista=n=>{const ns=known.filter(x=>x.v===n).map(x=>nome(AREAS[x.i]));return ns.length>1?ns.slice(0,-1).join(', ')+' e '+ns[ns.length-1]:ns[0]};
+ const dias=n=>n===1?'1 dia':n+' dias';
+ let h='<ul class="read">';
+ if(hi===lo)h+=`<li>Nesta semana, as suas áreas ficaram parecidas: todas com <b>${dias(hi)}</b>.</li>`;
+ else{h+=`<li><b>${hi>=4?'Indo bem':'Onde você marcou mais dias'}:</b> ${esc(lista(hi))} (você marcou ${dias(hi)}).</li><li><b>Com mais espaço para crescer:</b> ${esc(lista(lo))} (você marcou ${dias(lo)}).</li>`;
+  if(known.some(x=>x.v!==hi&&x.v!==lo))h+=`<li>As outras áreas ficaram no meio do caminho.</li>`}
+ h+=`<li>Nenhuma área está “errada”: cada número mostra em quantos dias da semana aquilo aconteceu.</li></ul>`;
+ if(values.includes('unknown'))h+=`<p class="small muted">Áreas sem resposta não entram na comparação.</p>`;
+ return h}
+
+/* ---------- Primeiro passo ---------- */
+function progFor(i){return i===0?{programa:'Sua Roda da Vida',especialista:'Nicolas Toigo'}:TR.resolve(i,ctx)}
+function specOf(name){return SPECS.find(s=>s.name.replace('Dr. ','')===String(name||'').replace('Dr. ',''))}
+function cover(p){const c=progOf(p);return c&&c.cover?c.cover:''}
+function primeiroPasso(){
+ const chips=`<div class="chips" role="group" aria-label="Escolha por onde começar">${AREAS.map((a,i)=>`<button data-p="${i}" aria-pressed="${i===prio}">${esc(nome(a))}</button>`).join('')}</div>`;
+ if(prio===null)return `<span class="eyebrow">Seu primeiro passo</span><h2>Por onde você quer começar?</h2><p>Escolha uma área. Pode ser a que pediu mais atenção na sua Roda, ou simplesmente a que você sente vontade de cuidar agora.</p>${chips}`;
+ const a=AREAS[prio],p=progFor(prio),s=specOf(p.especialista);
+ const one=prio===0?'A autoavaliação que você já fez: oito perguntas, um retrato da sua semana.':(PROGS[p.programa]&&PROGS[p.programa].pt)||((progOf(p.programa)||{}).desc||'');
+ const prog=prio===0
+  ?`<div class="prog"><img src="img/approved/nicolas-toigo.jpg" alt=""><div><b>Sua Roda da Vida, com o Nicolas</b> <span class="small muted">· feita ✓</span><p>${esc(one)} O próximo passo da jornada é ${esc(nome(AREAS[1]))}.</p></div></div>`
+  :`<div class="prog">${cover(p.programa)?`<img src="${cover(p.programa)}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><p>${esc(one)}</p></div></div>`;
+ return `<span class="eyebrow">Seu primeiro passo</span><h2>Começar por ${esc(nome(a))}</h2>
+ <p>Como você escolheu começar por ${esc(nome(a))}, que tal agora experimentar uma pequena próxima ação?</p>
+ <div class="action"><span class="eyebrow">Uma pequena próxima ação</span>${esc(ACAO[prio])}</div>
+ <p>Você nunca vai precisar mudar tudo de uma vez: comece por partes... passo por passo como recomendado e observe como se sente ao longo da próxima semana.</p>
+ <div class="card" style="box-shadow:none;padding:14px">
+  ${s?`<div class="who" style="margin:0;padding:0;border:0"><img src="img/approved/${s.slug}-sq.jpg" alt="${esc(s.name)}"><div><span class="small muted">Quem cuida dessa área no MeuFluxo</span><br><b>${esc(s.name)}</b><small>${esc(s.spec.pt)}</small></div></div>`:''}
+  ${prog}
+ </div>
+ <p class="small muted" style="margin-top:12px">Na Roda, cada área conversa com as outras. Por isso a jornada passa por todas, no seu ritmo. <button class="change" id="trocar">Trocar a área</button></p>
+ <div id="chipsbox" hidden>${chips}</div>`}
+
+/* ---------- Espiral simplificada ---------- */
+const ARCS=[[0,[144,267,21],'M165,288 A21,21 0 0 1 144,267'],[1,[144,233,34],'M144,267 A34,34 0 0 1 178,233'],[2,[178,233,55],'M178,233 A55,55 0 0 1 233,288'],[3,[144,288,89],'M233,288 A89,89 0 0 1 144,377'],[4,[0,233,144],'M144,377 A144,144 0 0 1 0,233'],[5,[0,0,233],'M0,233 A233,233 0 0 1 233,0'],[6,[233,0,377],'M233,0 A377,377 0 0 1 610,377']];
+let lv=null;
+function ghost(cx,cy,r){let h=`<g opacity=".8">`;for(let k=1;k<=7;k+=3)h+=`<polygon points="${[...Array(8)].map((_,i)=>{const a=ang(i);return [cx+Math.cos(a)*r*k/7,cy+Math.sin(a)*r*k/7].join(',')}).join(' ')}" fill="none" stroke="#5a3fb4" stroke-width=".8" opacity=".3"/>`;
+ values.forEach((v,i)=>{if(typeof v!=='number'||v===0)return;const rr=r*v/7,a=ang(i),b=ang(i+1);h+=`<polygon points="${cx},${cy} ${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr} ${cx+Math.cos(b)*rr},${cy+Math.sin(b)*rr}" fill="${AREAS[i].hex}" opacity="${prio===null||i===prio?.85:.4}" stroke="#fff" stroke-width="1"/>`});return h+'</g>'}
+function spiral(){let h=`<svg viewBox="-20 -20 650 417" role="img" aria-label="A espiral da jornada, do centro para fora">`;
+ ARCS.forEach(([k,,d])=>h+=`<path class="arc${lv!==null&&k!==lv?' dim':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
+ h+=`<circle cx="165" cy="267" r="96" fill="#fff" opacity=".55"/>`+ghost(165,267,88);
+ return h+'</svg>'}
+function lvlCard(){if(lv===null)return '';const l=LEVELS[lv];
+ const idx=lv===0?[0]:l.areas;
+ const rows=idx.map(i=>{const p=progFor(i),s=specOf(p.especialista);return `<div class="row">${s?`<img src="img/approved/${s.slug}-sq.jpg" alt="">`:''}<div><b>${esc(nome(AREAS[i]))}: ${esc(i===0?'Sua Roda da Vida (feita ✓)':p.programa)}</b><small>${esc(s?s.name:'')}</small></div></div>`}).join('');
+ return `<div class="lvlcard"><span class="eyebrow">${esc(l.num)}</span><h3>${esc(lv===0?'Sua Roda':l.name.pt)}</h3><p class="small muted" style="margin:2px 0 0">${esc(lv===0?'Onde tudo começa: o retrato que você já fez.':l.sub.pt)}</p>${rows}</div>`}
+function lvOf(i){if(i===0)return 1;return LEVELS.findIndex(l=>l.areas.includes(i))}
+
+/* ---------- Oferta ---------- */
+function ordem(){const start=prio===null||prio===0?1:prio;const seq=[];for(let k=0;k<7;k++)seq.push(1+((start-1+k)%7));return seq.filter(i=>JORNADA.programas.includes(i))}
+function oferta(){
+ const steps=`<li><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><div><b>Sua Roda da Vida</b><small>com o Nicolas Toigo</small></div><span class="tag done">Feita ✓</span></li>`+
+  ordem().map((i,n)=>{const p=progFor(i),c=cover(p.programa);return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${n===0&&prio!==null?`<span class="tag">${prio===0?'Próximo':'1º passo'}</span>`:''}</li>`}).join('');
+ const has=!!JORNADA.checkoutUrl;
+ return `<div class="card offer"><span class="eyebrow">Nossa recomendação para você</span><h2>${esc(JORNADA.nome)}</h2>
+ <p>A sua Roda já foi o primeiro passo. A Jornada reúne mais sete programas, um para cada área da Roda, com os especialistas do MeuFluxo. Você começa pela área que escolheu e segue no seu ritmo.</p>
+ <ul class="steps">${steps}</ul>
+ <div class="pillars"><div><b>O lugar certo</b>Especialistas e alunos na mesma plataforma.</div><div><b>O GPS</b>Um passo de cada vez, sem precisar adivinhar o próximo.</div><div><b>O tempo</b>Um ano inteiro para criar constância.</div></div>
+ <div class="price"><span class="big">${esc(JORNADA.preco)}</span> <span class="muted">${esc(JORNADA.formaPagamento)}</span>${JORNADA.parcelas?`<small>${esc(JORNADA.parcelas)}</small>`:''}<small>${esc(JORNADA.acesso)}</small></div>
+ <a class="btn" ${has?`href="${esc(JORNADA.checkoutUrl)}"`:'role="link" aria-disabled="true"'}>Quero a Jornada Completa</a>
+ ${has?'':'<div class="placeholder">Prévia: o link de compra da Jornada ainda não existe. Este botão não leva a lugar nenhum.</div>'}
+ ${JORNADA.garantia?`<p class="fine">${esc(JORNADA.garantia)}</p>`:''}</div>`}
+
+/* ---------- Página ---------- */
+const app=document.getElementById('app');
+function render(){
+ if(lv===null&&prio!==null)lv=lvOf(prio);
+ app.innerHTML=`<header class="top"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"><span class="pill">${demo?'Prévia · exemplo':'Prévia interna'}</span></header>
+ <section><span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu primeiro passo</h1>
+  <div class="card wheelcard">${spiralGlimpse()}${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
+  <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
+ </section>
+ <section><h2>O que a sua Roda mostra</h2>
+  <p class="lead">Sua Roda reúne suas respostas sobre esta semana e ajuda você a enxergar onde quer colocar mais atenção.</p>
+  ${leitura()}
+  <p class="note">É o retrato de uma semana normal sua, feito com as suas próprias respostas. Não é uma nota sobre você nem uma avaliação clínica. Em outra semana, a Roda pode ficar diferente, e tudo bem.</p>
+ </section>
+ <section id="passo">${primeiroPasso()}</section>
+ <section><span class="eyebrow">Sua jornada</span><h2>Do centro para fora</h2><p>A espiral mostra o caminho completo: começa pela sua Roda e passa por todas as áreas. Toque em um nível para ver quem cuida dele.</p>
+  <div class="card sp"><div id="spsvg">${spiral()}</div>
+   <div class="lvls" id="lvls">${LEVELS.map((l,k)=>`<button data-lv="${k}" aria-pressed="${k===lv}">${k===0?'Centro':l.num+' · '+esc(l.name.pt)}</button>`).join('')}</div>
+   <div id="lvlcard">${lvlCard()}</div></div>
+ </section>
+ <section id="oferta">${oferta()}</section>
+ <footer>A Roda da Vida MeuFluxo é uma autoavaliação. Não substitui o acompanhamento de um profissional.</footer>`;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>app.querySelectorAll('.wedge').forEach(w=>w.classList.add('in'))));
+ bind()}
+function pick(i){prio=i;lv=lvOf(i);render();const el=document.getElementById('passo');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function bind(){
+ app.querySelectorAll('.wheel [data-i]').forEach(w=>w.onclick=()=>pick(Number(w.dataset.i)));
+ app.querySelectorAll('.chips [data-p]').forEach(b=>b.onclick=()=>pick(Number(b.dataset.p)));
+ const tr=document.getElementById('trocar');if(tr)tr.onclick=()=>{document.getElementById('chipsbox').hidden=false;tr.hidden=true};
+ const selLv=k=>{lv=k;document.getElementById('spsvg').innerHTML=spiral();document.getElementById('lvlcard').innerHTML=lvlCard();app.querySelectorAll('#lvls button').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.lv)===k));bindArcs()};
+ const bindArcs=()=>app.querySelectorAll('#spsvg path.arc').forEach(a=>a.onclick=()=>selLv(Number(a.dataset.lv)));
+ app.querySelectorAll('#lvls button').forEach(b=>b.onclick=()=>selLv(Number(b.dataset.lv)));bindArcs()}
+render();
+})();
+</script>
+</body>
+</html>
