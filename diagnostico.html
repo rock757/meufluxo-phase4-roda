@@ -38,7 +38,10 @@ section{margin:0 0 34px}
 .small{font-size:14px}
 /* roda */
 .wheelcard{position:relative;overflow:hidden;padding:10px 6px 14px}
-.wheelcard .glimpse{position:absolute;right:-70px;bottom:-60px;width:300px;opacity:.22;pointer-events:none}
+.wheelcard .glimpse{position:absolute;right:-110px;bottom:-90px;width:300px;opacity:.13;pointer-events:none}
+.firststep{display:flex;justify-content:center;margin:6px 8px 0;position:relative}
+.firststep span{display:inline-flex;gap:6px;align-items:center;background:var(--lilac-3);border:1px solid var(--lilac-2);color:var(--violet);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;letter-spacing:.4px}
+.firststep b{color:var(--ink)}
 .wheel{width:100%;height:auto;display:block;position:relative}
 .wheel .grid{fill:none;stroke:rgba(31,24,56,.09)}
 .wheel .grid.outer{stroke:var(--gold);stroke-width:1.5}
@@ -81,7 +84,8 @@ section{margin:0 0 34px}
 /* espiral */
 .sp svg{width:100%;height:auto;display:block}
 .sp path.arc{fill:none;stroke-width:24;stroke-linecap:round;cursor:pointer;transition:opacity .2s}
-.sp path.arc.dim{opacity:.3}
+.sp path.arc.dim{opacity:.28}
+.sp path.arc.on{stroke-width:32}
 .lvls{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
 .lvls button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 11px;font-size:13px;font-weight:600;color:var(--ink)}
 .lvls button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -174,8 +178,8 @@ function wheel(){
   h+=`<polygon class="wedge${prio===i?' hi':(prio!==null?' dim':'')}" data-i="${i}" style="fill:${AREAS[i].hex}" points="${CX},${CY} ${c.join(',')} ${d.join(',')}"/>`});
  values.forEach((v,i)=>{if(typeof v!=='number'||v<2)return;const m=(ang(i)+ang(i+1))/2,r=R*v/7*.62;h+=`<text class="val" x="${CX+Math.cos(m)*r}" y="${CY+Math.sin(m)*r}" text-anchor="middle" dominant-baseline="middle">${v}</text>`});
  AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2,x=CX+Math.cos(m)*(R+28),y=CY+Math.sin(m)*(R+28),txt=nome(a);
-  if(i===prio){const w=txt.length*9.2+24;const left=Math.max(4,Math.min(476-w,x-w/2));const cap=y<CY?y-26:y+34;
-   h+=`<g class="call"><text class="cap" x="${left+w/2}" y="${cap}" text-anchor="middle">SEU PRIMEIRO PASSO</text><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
+  if(i===prio){const w=txt.length*9.2+24;const left=Math.max(4,Math.min(476-w,x-w/2));
+   h+=`<g class="call"><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
   else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text>`});
  return h+`<circle class="ctr" cx="${CX}" cy="${CY}" r="8"/></svg>`}
 function spiralGlimpse(){return `<svg class="glimpse" viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>`}
@@ -224,8 +228,8 @@ let lv=null;
 function ghost(cx,cy,r){let h=`<g opacity=".8">`;for(let k=1;k<=7;k+=3)h+=`<polygon points="${[...Array(8)].map((_,i)=>{const a=ang(i);return [cx+Math.cos(a)*r*k/7,cy+Math.sin(a)*r*k/7].join(',')}).join(' ')}" fill="none" stroke="#5a3fb4" stroke-width=".8" opacity=".3"/>`;
  values.forEach((v,i)=>{if(typeof v!=='number'||v===0)return;const rr=r*v/7,a=ang(i),b=ang(i+1);h+=`<polygon points="${cx},${cy} ${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr} ${cx+Math.cos(b)*rr},${cy+Math.sin(b)*rr}" fill="${AREAS[i].hex}" opacity="${prio===null||i===prio?.85:.4}" stroke="#fff" stroke-width="1"/>`});return h+'</g>'}
 function spiral(){let h=`<svg viewBox="-20 -20 650 417" role="img" aria-label="A espiral da jornada, do centro para fora">`;
- ARCS.forEach(([k,,d])=>h+=`<path class="arc${lv!==null&&k!==lv?' dim':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
- h+=`<circle cx="165" cy="267" r="96" fill="#fff" opacity=".55"/>`+ghost(165,267,88);
+ h+=`<g opacity=".45">`+ghost(165,267,88)+`</g>`;
+ ARCS.forEach(([k,,d])=>h+=`<path class="arc${lv!==null&&k!==lv?' dim':''}${k===lv?' on':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
  return h+'</svg>'}
 function lvlCard(){if(lv===null)return '';const l=LEVELS[lv];
  const idx=lv===0?[0]:l.areas;
@@ -254,7 +258,7 @@ function render(){
  if(lv===null&&prio!==null)lv=lvOf(prio);
  app.innerHTML=`<header class="top"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"><span class="pill">${demo?'Prévia · exemplo':'Prévia interna'}</span></header>
  <section><span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu primeiro passo</h1>
-  <div class="card wheelcard">${spiralGlimpse()}${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
+  <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na área por onde quer começar</span>':`<span>★ SEU PRIMEIRO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
   <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
  </section>
  <section><h2>O que a sua Roda mostra</h2>
