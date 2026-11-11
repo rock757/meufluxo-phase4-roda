@@ -51,7 +51,7 @@ section{margin:0 0 34px}
 .wheel .wedge.hi{opacity:1;stroke:var(--violet);stroke-width:2.5}
 .wheel .wedge.dim{opacity:.38}
 .wheel .hit{fill:transparent;cursor:pointer}
-.wheel text{font-family:var(--sans);font-size:15px;font-weight:600;fill:var(--ink-2)}
+.wheel text{font-family:var(--sans);font-size:16.5px;font-weight:600;fill:var(--ink-2)}
 .wheel text.val{font-size:13px;fill:#fff;font-weight:700;pointer-events:none}
 .wheel .ctr{fill:#fff;stroke:var(--gold);stroke-width:1.5}
 .wheel .call rect{fill:var(--violet)}
@@ -178,7 +178,7 @@ function wheel(){
   h+=`<polygon class="wedge${prio===i?' hi':(prio!==null?' dim':'')}" data-i="${i}" style="fill:${AREAS[i].hex}" points="${CX},${CY} ${c.join(',')} ${d.join(',')}"/>`});
  values.forEach((v,i)=>{if(typeof v!=='number'||v<2)return;const m=(ang(i)+ang(i+1))/2,r=R*v/7*.62;h+=`<text class="val" x="${CX+Math.cos(m)*r}" y="${CY+Math.sin(m)*r}" text-anchor="middle" dominant-baseline="middle">${v}</text>`});
  AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2,x=CX+Math.cos(m)*(R+28),y=CY+Math.sin(m)*(R+28),txt=nome(a);
-  if(i===prio){const w=txt.length*9.2+24;const left=Math.max(4,Math.min(476-w,x-w/2));
+  if(i===prio){const w=txt.length*10+26;const left=Math.max(4,Math.min(476-w,x-w/2));
    h+=`<g class="call"><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
   else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text>`});
  return h+`<circle class="ctr" cx="${CX}" cy="${CY}" r="8"/></svg>`}
