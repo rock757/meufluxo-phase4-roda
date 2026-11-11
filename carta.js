@@ -158,7 +158,7 @@ function enhance(root){
  if(prio!==null)root.querySelectorAll('.cf-wheel [data-w="'+AREAS[prio].slug+'"],.cf-wheel [data-wl="'+AREAS[prio].slug+'"]').forEach(el=>el.classList.add('on'));
  root.querySelectorAll('[data-buy]').forEach(el=>{const b=buyBox();if(b)el.outerHTML=b;else el.remove()});
 }
-function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`+sticky():nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
+function layout(){return NOVA?nav()+cartaNova()+faq()+`<footer class="wrap">${REV?esc(S.foot):''}</footer>`:nav()+hero()+recognition()+nicoBlock()+collection()+startBlock()+offerBand()+faq()+final()+sticky()}
 function boot(){const ab=window.MF_CARTA;if(!ab||!window.fetch)return render();let done=false;const go=()=>{if(!done){done=true;render()}};setTimeout(go,8000);
  fetch('cartas/carta-'+ab.variant.toLowerCase()+'.html',{cache:'no-cache'}).then(r=>r.ok?r.text():'').then(h=>{const txt=String(h||'').replace(/<!--[\s\S]*?-->/g,'').trim();if(txt&&!done)NOVA=String(h);go()}).catch(go)}
 function render(){document.getElementById('app').innerHTML=layout();if(NOVA)enhance(document.getElementById('app'));if(RVW&&location.hash){const el=document.getElementById(location.hash.slice(1));if(el)setTimeout(()=>el.scrollIntoView({block:'center'}),50)}if(window.MF_RENDER_PENDING){window.MF_RENDER_PENDING=false;setTimeout(()=>window.dispatchEvent(new Event('scroll')),1500)}
@@ -170,7 +170,7 @@ function render(){document.getElementById('app').innerHTML=layout();if(NOVA)enha
  document.querySelectorAll('details[data-track]').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)track('faq_open',{q:d.querySelector('summary').textContent})}));
  const prog=document.getElementById('prog');let offerSeen=false;const onScroll=()=>{const h=document.documentElement;prog.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';const st=document.getElementById('sticky');const off=document.getElementById('oferta-bloco');const r=off.getBoundingClientRect();if(!offerSeen&&r.top<window.innerHeight*.7){offerSeen=true;track('offer_view',{})}if(st&&!st.dataset.off){const show=h.scrollTop>600&&(r.bottom<0||r.top>window.innerHeight);st.classList.toggle('on',show);document.body.classList.toggle('has-sticky',show)}};
  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
- document.querySelector('#sticky .x').onclick=()=>{const st=document.getElementById('sticky');st.dataset.off='1';st.classList.remove('on');document.body.classList.remove('has-sticky')};
+ const sx=document.querySelector('#sticky .x');if(sx)sx.onclick=()=>{const st=document.getElementById('sticky');st.dataset.off='1';st.classList.remove('on');document.body.classList.remove('has-sticky')};
  track('letter_view',{carta_texto:NOVA?'novo':'atual',prioridade:prio!==null?AREAS[prio].slug:'',programa:first()?first().programa:''});
 }
 boot();
