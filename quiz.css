@@ -267,3 +267,13 @@ details.optional[open] summary .btn{display:none}
 .hero #start{white-space:normal;text-align:left;line-height:1.25}
 .hero .copy h1{font-size:clamp(32px,3.9vw,50px);margin-bottom:18px}
 .hero .lead{font-size:clamp(16px,1.35vw,19px)}
+
+/* jornada recomendada + e-mail na tela de resultado */
+.journey{margin:18px 0 20px;padding:18px 18px 6px;border:1px solid rgba(80,60,160,.15);border-radius:16px;background:rgba(255,255,255,.65)}
+.journey-tease{font-size:18px;line-height:1.5;margin:0 0 14px;color:var(--ink)}
+.journey label.lead{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.journey input{width:100%;box-sizing:border-box;font:inherit;font-size:17px;padding:12px 14px;border:1px solid rgba(80,60,160,.3);border-radius:12px;background:#fff}
+.journey input:focus{outline:2px solid var(--violet);outline-offset:1px}
+.lead-consent{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.4}
+.lead-msg{font-size:14px;margin:6px 0 0;min-height:1em;color:var(--violet)}
+.nico-next{font-size:17px;margin:12px 0 10px;font-weight:600}
