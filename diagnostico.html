@@ -7,7 +7,7 @@
 <title>Sua Roda e seu primeiro passo · MeuFluxo</title>
 <!-- PRÉVIA INTERNA (11/11). Página do dia seguinte para quem fez a Roda e não comprou o Ilimitado.
      Parâmetros: v=8 dígitos 0–7 (x = sem resposta, mesmo formato da planilha), prioridade=slug da área (ou p=1..8),
-     g=m|h (variante de Saúde), r=f (variante de Relações). Sem v = exemplo. Sem prioridade = a pessoa escolhe aqui.
+     Sem v = exemplo. Sem prioridade = a pessoa escolhe aqui.
      Não carrega track.js: a prévia não grava nada nas planilhas. -->
 <style>
 @font-face{font-family:"Google Sans Flex";src:url(img/fonts/google-sans-flex-latin.woff2) format("woff2");font-weight:300 800;font-display:swap}
@@ -81,18 +81,6 @@ section{margin:0 0 34px}
 .prog img{width:84px;aspect-ratio:3/2;object-fit:cover;border-radius:10px;flex:0 0 84px}
 .prog p{font-size:15px;color:var(--ink-2);margin:2px 0 0}
 .change{background:none;border:0;padding:0;color:var(--violet);font-size:14px;font-weight:600;text-decoration:underline}
-/* espiral */
-.sp svg{width:100%;height:auto;display:block}
-.sp path.arc{fill:none;stroke-width:24;stroke-linecap:round;cursor:pointer;transition:opacity .2s}
-.sp path.arc.dim{opacity:.28}
-.sp path.arc.on{stroke-width:32}
-.lvls{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.lvls button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 11px;font-size:13px;font-weight:600;color:var(--ink)}
-.lvls button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.lvlcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
-.lvlcard .row{display:flex;gap:10px;align-items:center;margin-top:10px}
-.lvlcard .row img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:0 0 40px}
-.lvlcard .row small{display:block;color:var(--muted);font-size:13px}
 /* oferta */
 .offer{border:2px solid var(--violet-2)}
 .steps{list-style:none;padding:0;margin:14px 0}
@@ -138,19 +126,30 @@ const JORNADA={
   acesso:'Acesso por 1 ano, contado da confirmação do pagamento.',
   garantia:(MF.oferta&&MF.oferta.B&&MF.oferta.B.garantia)||'',
   checkoutUrl:'', // VAZIO até existir o link Payt da Jornada. Nunca usar o checkout do Ilimitado aqui.
-  // A Roda (com o Nicolas) é o passo de Propósito. Os 7 programas são as outras 7 áreas (índices da roda).
-  programas:[1,2,3,4,5,6,7]
+  // MVP (Rocky, 11/11): a Roda fica no lugar do primeiro passo do Nicolas (programa dele ainda em produção),
+  // seguida destes 7 programas, nesta ordem. LISTA PROVISÓRIA: o conteúdo final do pacote ainda será confirmado.
+  // Desperte Seu Destino (Fernando Felix) fica sempre em Espiritualidade, nunca em Propósito. area = índice da roda.
+  provisoria:true,
+  programas:[
+    {area:1,programa:'Costas Sem Dores',especialista:'Peterson Menezes'},
+    {area:2,programa:'Dieta das 3 Fases 2.0',especialista:'Eduardo Claas'},
+    {area:3,programa:'Ultra Inteligência',especialista:'Dr. Marcelo Roxo'},
+    {area:4,programa:'Matriz da Abundância',especialista:'Lucia Lux Tellaris'},
+    {area:5,programa:'4 Códigos do Amor',especialista:'Gabriela Barea'},
+    {area:6,programa:'Restart Mental',especialista:'Nereu Araldi'},
+    {area:7,programa:'Desperte Seu Destino',especialista:'Fernando Felix'}
+  ]
 };
 
 /* Uma pequena próxima ação por área (rascunho para aprovação). */
 const ACAO=[
- 'Separe 5 minutos e anote uma coisa que você gostaria que esta semana tivesse.',
+ 'Separe 5 minutos e anote algo importante para você que gostaria de fazer nesta semana.',
  'Escolha um dia desta semana para uma caminhada ou um alongamento de 10 minutos, dentro do que for possível para você.',
  'Escolha uma refeição desta semana para preparar e comer com mais calma.',
  'Separe 15 minutos para fazer uma coisa de cada vez, com o celular longe.',
  'Reserve 5 minutos para olhar com calma para o seu dinheiro, sem se cobrar.',
  'Mande uma mensagem para alguém importante para você, só para saber como a pessoa está.',
- 'No fim de um dia desta semana, anote uma coisa que você fez melhor do que no dia anterior.',
+ 'No fim de um dia desta semana, anote uma coisa que você aprendeu.',
  'Reserve 5 minutos de silêncio, reflexão ou oração em um dia desta semana.'
 ];
 
@@ -164,7 +163,6 @@ function parseP(){const s=Q.get('prioridade');if(s){const i=AREAS.findIndex(a=>a
  const n=Number(Q.get('p'));if(Number.isInteger(n)&&n>=1&&n<=8)return n-1;return null}
 let prio=parseP();
 if(prio===null&&demo&&!Q.has('escolher'))prio=2; // exemplo: Alimentação
-const ctx={g:Q.get('g')==='m'||Q.get('g')==='h'?Q.get('g'):null,r:Q.get('r')==='f'?'f':null};
 const nome=a=>a.n.pt;
 
 /* ---------- Roda ---------- */
@@ -182,7 +180,7 @@ function wheel(){
    h+=`<g class="call"><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
   else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text>`});
  return h+`<circle class="ctr" cx="${CX}" cy="${CY}" r="8"/></svg>`}
-function spiralGlimpse(){return `<svg class="glimpse" viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>`}
+function spiralGlimpse(){return `<svg class="glimpse" viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>`}
 
 /* ---------- Leitura honesta ---------- */
 function leitura(){
@@ -200,7 +198,7 @@ function leitura(){
  return h}
 
 /* ---------- Primeiro passo ---------- */
-function progFor(i){return i===0?{programa:'Sua Roda da Vida',especialista:'Nicolas Toigo'}:TR.resolve(i,ctx)}
+function progFor(i){return i===0?{programa:'Sua Roda da Vida',especialista:'Nicolas Toigo'}:(JORNADA.programas.find(b=>b.area===i)||{})}
 function specOf(name){return SPECS.find(s=>s.name.replace('Dr. ','')===String(name||'').replace('Dr. ',''))}
 function cover(p){const c=progOf(p);return c&&c.cover?c.cover:''}
 function primeiroPasso(){
@@ -214,7 +212,7 @@ function primeiroPasso(){
  return `<span class="eyebrow">Seu primeiro passo</span><h2>Começar por ${esc(nome(a))}</h2>
  <p>Como você escolheu começar por ${esc(nome(a))}, que tal agora experimentar uma pequena próxima ação?</p>
  <div class="action"><span class="eyebrow">Uma pequena próxima ação</span>${esc(ACAO[prio])}</div>
- <p>Você nunca vai precisar mudar tudo de uma vez: comece por partes... passo por passo como recomendado e observe como se sente ao longo da próxima semana.</p>
+ <p>Você não precisa mudar tudo de uma vez: comece por partes... passo por passo como recomendado e observe como se sente ao longo da próxima semana.</p>
  <div class="card" style="box-shadow:none;padding:14px">
   ${s?`<div class="who" style="margin:0;padding:0;border:0"><img src="img/approved/${s.slug}-sq.jpg" alt="${esc(s.name)}"><div><span class="small muted">Quem cuida dessa área no MeuFluxo</span><br><b>${esc(s.name)}</b><small>${esc(s.spec.pt)}</small></div></div>`:''}
   ${prog}
@@ -222,30 +220,18 @@ function primeiroPasso(){
  <p class="small muted" style="margin-top:12px">Na Roda, cada área conversa com as outras. Por isso a jornada passa por todas, no seu ritmo. <button class="change" id="trocar">Trocar a área</button></p>
  <div id="chipsbox" hidden>${chips}</div>`}
 
-/* ---------- Espiral simplificada ---------- */
-const ARCS=[[0,[144,267,21],'M165,288 A21,21 0 0 1 144,267'],[1,[144,233,34],'M144,267 A34,34 0 0 1 178,233'],[2,[178,233,55],'M178,233 A55,55 0 0 1 233,288'],[3,[144,288,89],'M233,288 A89,89 0 0 1 144,377'],[4,[0,233,144],'M144,377 A144,144 0 0 1 0,233'],[5,[0,0,233],'M0,233 A233,233 0 0 1 233,0'],[6,[233,0,377],'M233,0 A377,377 0 0 1 610,377']];
-let lv=null;
-function ghost(cx,cy,r){let h=`<g opacity=".8">`;for(let k=1;k<=7;k+=3)h+=`<polygon points="${[...Array(8)].map((_,i)=>{const a=ang(i);return [cx+Math.cos(a)*r*k/7,cy+Math.sin(a)*r*k/7].join(',')}).join(' ')}" fill="none" stroke="#5a3fb4" stroke-width=".8" opacity=".3"/>`;
- values.forEach((v,i)=>{if(typeof v!=='number'||v===0)return;const rr=r*v/7,a=ang(i),b=ang(i+1);h+=`<polygon points="${cx},${cy} ${cx+Math.cos(a)*rr},${cy+Math.sin(a)*rr} ${cx+Math.cos(b)*rr},${cy+Math.sin(b)*rr}" fill="${AREAS[i].hex}" opacity="${prio===null||i===prio?.85:.4}" stroke="#fff" stroke-width="1"/>`});return h+'</g>'}
-function spiral(){let h=`<svg viewBox="-20 -20 650 417" role="img" aria-label="A espiral da jornada, do centro para fora">`;
- h+=`<g opacity=".45">`+ghost(165,267,88)+`</g>`;
- ARCS.forEach(([k,,d])=>h+=`<path class="arc${lv!==null&&k!==lv?' dim':''}${k===lv?' on':''}" data-lv="${k}" d="${d}" stroke="${LEVELS[k].deep}"/>`);
- return h+'</svg>'}
-function lvlCard(){if(lv===null)return '';const l=LEVELS[lv];
- const idx=lv===0?[0]:l.areas;
- const rows=idx.map(i=>{const p=progFor(i),s=specOf(p.especialista);return `<div class="row">${s?`<img src="img/approved/${s.slug}-sq.jpg" alt="">`:''}<div><b>${esc(nome(AREAS[i]))}: ${esc(i===0?'Sua Roda da Vida (feita ✓)':p.programa)}</b><small>${esc(s?s.name:'')}</small></div></div>`}).join('');
- return `<div class="lvlcard"><span class="eyebrow">${esc(l.num)}</span><h3>${esc(lv===0?'Sua Roda':l.name.pt)}</h3><p class="small muted" style="margin:2px 0 0">${esc(lv===0?'Onde tudo começa: o retrato que você já fez.':l.sub.pt)}</p>${rows}</div>`}
-function lvOf(i){if(i===0)return 1;return LEVELS.findIndex(l=>l.areas.includes(i))}
+/* ---------- Espiral: só um vislumbre visual (MVP) ---------- */
+const ARCS=[[0,'M165,288 A21,21 0 0 1 144,267'],[1,'M144,267 A34,34 0 0 1 178,233'],[2,'M178,233 A55,55 0 0 1 233,288'],[3,'M233,288 A89,89 0 0 1 144,377'],[4,'M144,377 A144,144 0 0 1 0,233'],[5,'M0,233 A233,233 0 0 1 233,0'],[6,'M233,0 A377,377 0 0 1 610,377']];
 
 /* ---------- Oferta ---------- */
-function ordem(){const start=prio===null||prio===0?1:prio;const seq=[];for(let k=0;k<7;k++)seq.push(1+((start-1+k)%7));return seq.filter(i=>JORNADA.programas.includes(i))}
 function oferta(){
  const steps=`<li><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><div><b>Sua Roda da Vida</b><small>com o Nicolas Toigo</small></div><span class="tag done">Feita ✓</span></li>`+
-  ordem().map((i,n)=>{const p=progFor(i),c=cover(p.programa);return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${n===0&&prio!==null?`<span class="tag">${prio===0?'Próximo':'1º passo'}</span>`:''}</li>`}).join('');
+  JORNADA.programas.map((p,n)=>{const i=p.area,c=cover(p.programa);const tag=prio===null?'':(prio===0&&n===0)?'Próximo':(i===prio?'1º passo':'');return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${tag?`<span class="tag">${tag}</span>`:''}</li>`}).join('');
  const has=!!JORNADA.checkoutUrl;
  return `<div class="card offer"><span class="eyebrow">Nossa recomendação para você</span><h2>${esc(JORNADA.nome)}</h2>
- <p>A sua Roda já foi o primeiro passo. A Jornada reúne mais sete programas, um para cada área da Roda, com os especialistas do MeuFluxo. Você começa pela área que escolheu e segue no seu ritmo.</p>
+ <p>A sua Roda já foi o primeiro passo. A Jornada reúne sete programas para continuar sua jornada, com os especialistas do MeuFluxo. Você começa pela área que escolheu e segue no seu ritmo.</p>
  <ul class="steps">${steps}</ul>
+ ${JORNADA.provisoria?'<div class="placeholder" style="margin:0 0 4px">Prévia: lista de programas provisória. O conteúdo final da Jornada ainda será confirmado.</div>':''}
  <div class="pillars"><div><b>O lugar certo</b>Especialistas e alunos na mesma plataforma.</div><div><b>O GPS</b>Um passo de cada vez, sem precisar adivinhar o próximo.</div><div><b>O tempo</b>Um ano inteiro para criar constância.</div></div>
  <div class="price"><span class="big">${esc(JORNADA.preco)}</span> <span class="muted">${esc(JORNADA.formaPagamento)}</span>${JORNADA.parcelas?`<small>${esc(JORNADA.parcelas)}</small>`:''}<small>${esc(JORNADA.acesso)}</small></div>
  <a class="btn" ${has?`href="${esc(JORNADA.checkoutUrl)}"`:'role="link" aria-disabled="true"'}>Quero a Jornada Completa</a>
@@ -255,35 +241,26 @@ function oferta(){
 /* ---------- Página ---------- */
 const app=document.getElementById('app');
 function render(){
- if(lv===null&&prio!==null)lv=lvOf(prio);
  app.innerHTML=`<header class="top"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"><span class="pill">${demo?'Prévia · exemplo':'Prévia interna'}</span></header>
  <section><span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu primeiro passo</h1>
   <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na área por onde quer começar</span>':`<span>★ SEU PRIMEIRO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
-  <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
+  <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
  </section>
  <section><h2>O que a sua Roda mostra</h2>
   <p class="lead">Sua Roda reúne suas respostas sobre esta semana e ajuda você a enxergar onde quer colocar mais atenção.</p>
   ${leitura()}
-  <p class="note">É o retrato de uma semana normal sua, feito com as suas próprias respostas. Não é uma nota sobre você nem uma avaliação clínica. Em outra semana, a Roda pode ficar diferente, e tudo bem.</p>
+  <p class="note">É o retrato desta semana, feito com as suas próprias respostas. Não é uma nota sobre você nem uma avaliação clínica. Em outra semana, a Roda pode ficar diferente, e tudo bem.</p>
  </section>
  <section id="passo">${primeiroPasso()}</section>
- <section><span class="eyebrow">Sua jornada</span><h2>Do centro para fora</h2><p>A espiral mostra o caminho completo: começa pela sua Roda e passa por todas as áreas. Toque em um nível para ver quem cuida dele.</p>
-  <div class="card sp"><div id="spsvg">${spiral()}</div>
-   <div class="lvls" id="lvls">${LEVELS.map((l,k)=>`<button data-lv="${k}" aria-pressed="${k===lv}">${k===0?'Centro':l.num+' · '+esc(l.name.pt)}</button>`).join('')}</div>
-   <div id="lvlcard">${lvlCard()}</div></div>
- </section>
  <section id="oferta">${oferta()}</section>
  <footer>A Roda da Vida MeuFluxo é uma autoavaliação. Não substitui o acompanhamento de um profissional.</footer>`;
  requestAnimationFrame(()=>requestAnimationFrame(()=>app.querySelectorAll('.wedge').forEach(w=>w.classList.add('in'))));
  bind()}
-function pick(i){prio=i;lv=lvOf(i);render();const el=document.getElementById('passo');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
+function pick(i){prio=i;render();const el=document.getElementById('passo');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function bind(){
  app.querySelectorAll('.wheel [data-i]').forEach(w=>w.onclick=()=>pick(Number(w.dataset.i)));
  app.querySelectorAll('.chips [data-p]').forEach(b=>b.onclick=()=>pick(Number(b.dataset.p)));
- const tr=document.getElementById('trocar');if(tr)tr.onclick=()=>{document.getElementById('chipsbox').hidden=false;tr.hidden=true};
- const selLv=k=>{lv=k;document.getElementById('spsvg').innerHTML=spiral();document.getElementById('lvlcard').innerHTML=lvlCard();app.querySelectorAll('#lvls button').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.lv)===k));bindArcs()};
- const bindArcs=()=>app.querySelectorAll('#spsvg path.arc').forEach(a=>a.onclick=()=>selLv(Number(a.dataset.lv)));
- app.querySelectorAll('#lvls button').forEach(b=>b.onclick=()=>selLv(Number(b.dataset.lv)));bindArcs()}
+ const tr=document.getElementById('trocar');if(tr)tr.onclick=()=>{document.getElementById('chipsbox').hidden=false;tr.hidden=true};}
 render();
 })();
 </script>
