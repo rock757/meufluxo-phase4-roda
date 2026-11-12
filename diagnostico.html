@@ -124,11 +124,11 @@ const Q=new URLSearchParams(location.search);
 const JORNADA={
   nome:'Jornada Completa MeuFluxo',
   preco:'R$697',
-  formaPagamento:'à vista',
-  parcelas:(MF.oferta&&MF.oferta.B&&MF.oferta.B.parcelas)||'',
+  formaPagamento:'à vista no Pix',
+  parcelas:'ou em até 12x de R$ 69,98 no cartão',
   acesso:'Acesso por 1 ano, contado da confirmação do pagamento.',
   garantia:(MF.oferta&&MF.oferta.B&&MF.oferta.B.garantia)||'',
-  checkoutUrl:'', // VAZIO até existir o link Payt da Jornada. Nunca usar o checkout do Ilimitado aqui.
+  checkoutUrl:'https://checkout.payt.com.br/30efde77b1c87378106682bc33db8a37', // Payt da Jornada (R$697), enviado pelo Rocky em 12/11. Nunca usar o checkout do Ilimitado aqui.
   // MVP (Rocky, 11/11): a Roda fica no lugar do primeiro passo do Nicolas (programa dele ainda em produção),
   // seguida destes 7 programas, nesta ordem. LISTA PROVISÓRIA: o conteúdo final do pacote ainda será confirmado.
   // Desperte Seu Destino (Fernando Felix) fica sempre em Espiritualidade, nunca em Propósito. area = índice da roda.
@@ -202,6 +202,11 @@ function leitura(){
  return h}
 
 /* ---------- Primeiro passo ---------- */
+// Leva para a Payt as UTMs do link que a pessoa recebeu e marca a origem (src/utm_term) para o relatório de vendas.
+function jornadaHref(){let u;try{u=new URL(JORNADA.checkoutUrl)}catch(e){return ''}const q=new URLSearchParams(location.search);
+ ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src'].forEach(k=>{const v=q.get(k);if(v&&!u.searchParams.has(k))u.searchParams.set(k,v.slice(0,80))});
+ if(!u.searchParams.has('utm_term'))u.searchParams.set('utm_term','diagnostico');
+ if(!u.searchParams.has('src'))u.searchParams.set('src','diagnostico'+(prio!==null?'-'+AREAS[prio].slug:''));return u.toString()}
 function progFor(i){return i===0?{programa:'Sua Roda da Vida',especialista:'Nicolas Toigo'}:(JORNADA.programas.find(b=>b.area===i)||{})}
 function specOf(name){return SPECS.find(s=>s.name.replace('Dr. ','')===String(name||'').replace('Dr. ',''))}
 function cover(p){const c=progOf(p);return c&&c.cover?c.cover:''}
@@ -231,14 +236,14 @@ const ARCS=[[0,'M165,288 A21,21 0 0 1 144,267'],[1,'M144,267 A34,34 0 0 1 178,23
 function oferta(){
  const steps=`<li><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><div><b>Sua Roda da Vida</b><small>com o Nicolas Toigo</small></div><span class="tag done">Feita ✓</span></li>`+
   JORNADA.programas.map((p,n)=>{const i=p.area,c=cover(p.programa);const tag=i===prio?'Próximo passo':'';return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${tag?`<span class="tag">${tag}</span>`:''}</li>`}).join('');
- const has=!!JORNADA.checkoutUrl;
+ const has=!!JORNADA.checkoutUrl;const href=has?jornadaHref():'';
  return `<div class="card offer"><span class="eyebrow">Nossa recomendação para você</span><h2>${esc(JORNADA.nome)}</h2>
  <p>A sua Roda já foi o primeiro passo. A Jornada reúne sete programas para continuar sua jornada, com os especialistas do MeuFluxo. Você começa pela área que escolheu e segue no seu ritmo.</p>
  <ul class="steps">${steps}</ul>
  ${JORNADA.provisoria?'<div class="placeholder" style="margin:0 0 4px">Prévia: lista de programas provisória. O conteúdo final da Jornada ainda será confirmado.</div>':''}
  <div class="pillars"><div><b>O lugar certo</b>Especialistas e alunos na mesma plataforma.</div><div><b>O GPS</b>Um passo de cada vez, sem precisar adivinhar o próximo.</div><div><b>O tempo</b>Um ano inteiro para criar constância.</div></div>
  <div class="price"><span class="big">${esc(JORNADA.preco)}</span> <span class="muted">${esc(JORNADA.formaPagamento)}</span>${JORNADA.parcelas?`<small>${esc(JORNADA.parcelas)}</small>`:''}<small>${esc(JORNADA.acesso)}</small></div>
- <a class="btn" ${has?`href="${esc(JORNADA.checkoutUrl)}"`:'role="link" aria-disabled="true"'}>Quero a Jornada Completa</a>
+ <a class="btn" ${has?`href="${esc(href)}"`:'role="link" aria-disabled="true"'}>Quero a Jornada Completa</a>
  ${has?'':'<div class="placeholder">Prévia: o link de compra da Jornada ainda não existe. Este botão não leva a lugar nenhum.</div>'}
  ${JORNADA.garantia?`<p class="fine">${esc(JORNADA.garantia)}</p>`:''}</div>`}
 
