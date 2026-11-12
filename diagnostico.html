@@ -248,7 +248,7 @@ function render(){
  app.innerHTML=`<header class="top"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"><span class="pill">${demo?'Prévia · exemplo':'Prévia interna'}</span></header>
  <section><div class="congrats"><span class="eyebrow">Parabéns!</span><p><b>Você já deu o primeiro passo certo.</b> Fazer a sua Roda da Vida é o passo de Propósito, com o Nicolas: parar, olhar para a sua semana e decidir para onde ir. Agora, vamos escolher a próxima área.</p></div>
  <span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu próximo passo</h1>
-  <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na próxima área que você quer cuidar</span>':`<span>★ SEU PRÓXIMO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
+  <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na próxima área que você quer cuidar</span>':`<span>★ SEU PRÓXIMO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Menos presente nesta semana</span><span><i class="more"></i>Mais presente nesta semana</span></div></div>
   <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
  </section>
  <section><h2>O que a sua Roda mostra</h2>
