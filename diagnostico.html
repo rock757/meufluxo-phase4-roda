@@ -195,7 +195,7 @@ function leitura(){
  const dias=n=>n===1?'1 dia':n+' dias';
  let h='<ul class="read">';
  if(hi===lo)h+=`<li>Nesta semana, as suas áreas ficaram parecidas: todas com <b>${dias(hi)}</b>.</li>`;
- else{h+=`<li><b>${hi>=4?'Indo bem':'Onde você marcou mais dias'}:</b> ${esc(lista(hi))} (você marcou ${dias(hi)}).</li><li><b>Com mais espaço para crescer:</b> ${esc(lista(lo))} (você marcou ${dias(lo)}).</li>`;
+ else{h+=`<li><b>${hi>=4?'Mais presente nesta semana':'Onde você marcou mais dias'}:</b> ${esc(lista(hi))} (você marcou ${dias(hi)}).</li><li><b>Com mais espaço para crescer:</b> ${esc(lista(lo))} (você marcou ${dias(lo)}).</li>`;
   if(known.some(x=>x.v!==hi&&x.v!==lo))h+=`<li>As outras áreas ficaram no meio do caminho.</li>`}
  h+=`<li>Nenhuma área está “errada”: cada número mostra em quantos dias da semana aquilo aconteceu.</li></ul>`;
  if(values.includes('unknown'))h+=`<p class="small muted">Áreas sem resposta não entram na comparação.</p>`;
