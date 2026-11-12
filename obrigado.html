@@ -1,12 +1,6 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Bem-vindo à sua jornada · MeuFluxo</title><link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="trilha.js"></script></head><body><header><a href="index.html" class="brand">meu<span>fluxo</span><small>Uma pausa para olhar para você.</small></a><span class="tag">PÁGINA PÓS-COMPRA · RASCUNHO</span></header><main class="reading">
-<div class="review"><strong>Revisão:</strong> destino de sucesso do checkout (Payt → esta página com os mesmos parâmetros <code>?ordem=…&prioridade=…</code>). Só vale se o Payt repassar os parâmetros; confirmar com Évila. Sem parâmetros, mostra a ordem da roda.</div>
-<span class="eyebrow">OBRIGADO</span>
-<h1>Bem-vindo à sua jornada.</h1>
-<p class="lead">Seu pagamento está em processamento ou já foi confirmado. Assim que for aprovado, o acesso chega no e-mail que você usou na compra<span data-field="X.entrega" data-prefix=" — "></span>.</p>
-<h2>A sua sequência sugerida</h2>
-<p class="muted trilha-aviso">Baseada nas respostas da sua Roda da Vida. Comece por onde quiser.</p>
-<div data-trilha></div>
-<p>Guarde esta página ou tire um print. Você também vai receber esta sequência por e-mail.</p>
-<p data-requires="X.suporte">Qualquer dúvida: <span data-field="X.suporte"></span>.</p>
-<p>Até já,<br>Equipe MeuFluxo</p>
-</main><footer>Versão privada para revisão.</footer><script src="carta.js"></script></body></html>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Obrigado · MeuFluxo</title><link rel="stylesheet" href="style.css"><script src="config.js"></script><script src="track.js"></script><script src="trilha.js"></script></head><body>
+<!-- Página pós-compra. Não promete entrega: só mostra prazo/suporte quando estiverem preenchidos em config.js (oferta.A.entrega / suporte).
+     Ainda não está ligada a nada: o destino de sucesso do Payt não foi confirmado. Avisos de revisão: config.revisao=true ou ?revisao=1. -->
+<header><a href="index.html" class="brand">meu<span>fluxo</span><small>Uma pausa para olhar para você.</small></a><span class="tag" id="tag" hidden>PÁGINA PÓS-COMPRA · RASCUNHO</span></header>
+<main class="reading" id="app"></main><footer id="foot"></footer>
+<script src="obrigado.js"></script></body></html>
