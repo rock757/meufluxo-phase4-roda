@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Sua Roda e seu primeiro passo · MeuFluxo</title>
+<title>Sua Roda e o seu próximo passo · MeuFluxo</title>
 <!-- PRÉVIA INTERNA (11/11). Página do dia seguinte para quem fez a Roda e não comprou o Ilimitado.
      Parâmetros: v=8 dígitos 0–7 (x = sem resposta, mesmo formato da planilha), prioridade=slug da área (ou p=1..8),
      Sem v = exemplo. Sem prioridade = a pessoa escolhe aqui.
@@ -39,6 +39,9 @@ section{margin:0 0 34px}
 /* roda */
 .wheelcard{position:relative;overflow:hidden;padding:10px 6px 14px}
 .wheelcard .glimpse{position:absolute;right:-110px;bottom:-90px;width:300px;opacity:.13;pointer-events:none}
+.congrats{background:#fff;border:1px solid var(--gold);border-radius:18px;padding:14px 16px;margin:4px 0 22px;box-shadow:var(--shadow)}
+.congrats p{margin:4px 0 0;font-size:16px;color:var(--ink-2)}
+.congrats b{color:var(--ink)}
 .firststep{display:flex;justify-content:center;margin:6px 8px 0;position:relative}
 .firststep span{display:inline-flex;gap:6px;align-items:center;background:var(--lilac-3);border:1px solid var(--lilac-2);color:var(--violet);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;letter-spacing:.4px}
 .firststep b{color:var(--ink)}
@@ -162,6 +165,7 @@ if(!values){values=DEMO.slice();demo=true}
 function parseP(){const s=Q.get('prioridade');if(s){const i=AREAS.findIndex(a=>a.slug===s);if(i>=0)return i}
  const n=Number(Q.get('p'));if(Number.isInteger(n)&&n>=1&&n<=8)return n-1;return null}
 let prio=parseP();
+if(prio===0)prio=null; // Propósito é a própria Roda (já feita): a pessoa escolhe entre as outras 7 áreas
 if(prio===null&&demo&&!Q.has('escolher'))prio=2; // exemplo: Alimentação
 const nome=a=>a.n.pt;
 
@@ -178,7 +182,7 @@ function wheel(){
  AREAS.forEach((a,i)=>{const m=(ang(i)+ang(i+1))/2,x=CX+Math.cos(m)*(R+28),y=CY+Math.sin(m)*(R+28),txt=nome(a);
   if(i===prio){const w=txt.length*10+26;const left=Math.max(4,Math.min(476-w,x-w/2));
    h+=`<g class="call"><rect x="${left}" y="${y-15}" width="${w}" height="30" rx="15"/><text x="${left+w/2}" y="${y+1}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text></g>`}
-  else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(txt)}</text>`});
+  else h+=`<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle">${esc(i===0?txt+' ✓':txt)}</text>`});
  return h+`<circle class="ctr" cx="${CX}" cy="${CY}" r="8"/></svg>`}
 function spiralGlimpse(){return `<svg class="glimpse" viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="10" stroke-linecap="round"/>`).join('')}</svg>`}
 
@@ -202,14 +206,14 @@ function progFor(i){return i===0?{programa:'Sua Roda da Vida',especialista:'Nico
 function specOf(name){return SPECS.find(s=>s.name.replace('Dr. ','')===String(name||'').replace('Dr. ',''))}
 function cover(p){const c=progOf(p);return c&&c.cover?c.cover:''}
 function primeiroPasso(){
- const chips=`<div class="chips" role="group" aria-label="Escolha por onde começar">${AREAS.map((a,i)=>`<button data-p="${i}" aria-pressed="${i===prio}">${esc(nome(a))}</button>`).join('')}</div>`;
- if(prio===null)return `<span class="eyebrow">Seu primeiro passo</span><h2>Por onde você quer começar?</h2><p>Escolha uma área. Pode ser a que pediu mais atenção na sua Roda, ou simplesmente a que você sente vontade de cuidar agora.</p>${chips}`;
+ const chips=`<div class="chips" role="group" aria-label="Escolha a próxima área">${AREAS.map((a,i)=>i===0?'':`<button data-p="${i}" aria-pressed="${i===prio}">${esc(nome(a))}</button>`).join('')}</div>`;
+ if(prio===null)return `<span class="eyebrow">Seu próximo passo</span><h2>Qual área vem agora?</h2><p>Escolha uma área. Pode ser a que pediu mais atenção na sua Roda, ou simplesmente a que você sente vontade de cuidar agora.</p>${chips}`;
  const a=AREAS[prio],p=progFor(prio),s=specOf(p.especialista);
  const one=prio===0?'A autoavaliação que você já fez: oito perguntas, um retrato da sua semana.':(PROGS[p.programa]&&PROGS[p.programa].pt)||((progOf(p.programa)||{}).desc||'');
  const prog=prio===0
   ?`<div class="prog"><img src="img/approved/nicolas-toigo.jpg" alt=""><div><b>Sua Roda da Vida, com o Nicolas</b> <span class="small muted">· feita ✓</span><p>${esc(one)} O próximo passo da jornada é ${esc(nome(AREAS[1]))}.</p></div></div>`
   :`<div class="prog">${cover(p.programa)?`<img src="${cover(p.programa)}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><p>${esc(one)}</p></div></div>`;
- return `<span class="eyebrow">Seu primeiro passo</span><h2>Começar por ${esc(nome(a))}</h2>
+ return `<span class="eyebrow">Seu próximo passo</span><h2>Agora, ${esc(nome(a))}</h2>
  <p>Como você escolheu começar por ${esc(nome(a))}, que tal agora experimentar uma pequena próxima ação?</p>
  <div class="action"><span class="eyebrow">Uma pequena próxima ação</span>${esc(ACAO[prio])}</div>
  <p>Você não precisa mudar tudo de uma vez: comece por partes... passo por passo como recomendado e observe como se sente ao longo da próxima semana.</p>
@@ -226,7 +230,7 @@ const ARCS=[[0,'M165,288 A21,21 0 0 1 144,267'],[1,'M144,267 A34,34 0 0 1 178,23
 /* ---------- Oferta ---------- */
 function oferta(){
  const steps=`<li><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><div><b>Sua Roda da Vida</b><small>com o Nicolas Toigo</small></div><span class="tag done">Feita ✓</span></li>`+
-  JORNADA.programas.map((p,n)=>{const i=p.area,c=cover(p.programa);const tag=prio===null?'':(prio===0&&n===0)?'Próximo':(i===prio?'1º passo':'');return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${tag?`<span class="tag">${tag}</span>`:''}</li>`}).join('');
+  JORNADA.programas.map((p,n)=>{const i=p.area,c=cover(p.programa);const tag=i===prio?'Próximo passo':'';return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${tag?`<span class="tag">${tag}</span>`:''}</li>`}).join('');
  const has=!!JORNADA.checkoutUrl;
  return `<div class="card offer"><span class="eyebrow">Nossa recomendação para você</span><h2>${esc(JORNADA.nome)}</h2>
  <p>A sua Roda já foi o primeiro passo. A Jornada reúne sete programas para continuar sua jornada, com os especialistas do MeuFluxo. Você começa pela área que escolheu e segue no seu ritmo.</p>
@@ -242,8 +246,9 @@ function oferta(){
 const app=document.getElementById('app');
 function render(){
  app.innerHTML=`<header class="top"><img src="img/meufluxo-logo.svg" alt="MeuFluxo"><span class="pill">${demo?'Prévia · exemplo':'Prévia interna'}</span></header>
- <section><span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu primeiro passo</h1>
-  <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na área por onde quer começar</span>':`<span>★ SEU PRIMEIRO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
+ <section><div class="congrats"><span class="eyebrow">Parabéns!</span><p><b>Você já deu o primeiro passo certo.</b> Fazer a sua Roda da Vida é o passo de Propósito, com o Nicolas: parar, olhar para a sua semana e decidir para onde ir. Agora, vamos escolher a próxima área.</p></div>
+ <span class="eyebrow">Sua Roda da Vida</span><h1>Sua Roda e o seu próximo passo</h1>
+  <div class="card wheelcard">${spiralGlimpse()}<div class="firststep">${prio===null?'<span>Toque na próxima área que você quer cuidar</span>':`<span>★ SEU PRÓXIMO PASSO: <b>${esc(nome(AREAS[prio]))}</b></span>`}</div>${wheel()}<div class="key"><span><i class="less"></i>Dá pra melhorar</span><span><i class="more"></i>Indo bem!</span></div></div>
   <p class="soon"><svg viewBox="0 0 610 377" aria-hidden="true">${ARCS.map(([k,d])=>`<path d="${d}" fill="none" stroke="${LEVELS[k].deep}" stroke-width="34" stroke-linecap="round"/>`).join('')}</svg><span>Além da Roda, uma nova forma de visualizar sua jornada está chegando.</span></p>
  </section>
  <section><h2>O que a sua Roda mostra</h2>
@@ -258,7 +263,7 @@ function render(){
  bind()}
 function pick(i){prio=i;render();const el=document.getElementById('passo');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 function bind(){
- app.querySelectorAll('.wheel [data-i]').forEach(w=>w.onclick=()=>pick(Number(w.dataset.i)));
+ app.querySelectorAll('.wheel [data-i]').forEach(w=>w.onclick=()=>{const i=Number(w.dataset.i);if(i>0)pick(i)});
  app.querySelectorAll('.chips [data-p]').forEach(b=>b.onclick=()=>pick(Number(b.dataset.p)));
  const tr=document.getElementById('trocar');if(tr)tr.onclick=()=>{document.getElementById('chipsbox').hidden=false;tr.hidden=true};}
 render();
