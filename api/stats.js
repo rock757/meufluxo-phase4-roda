@@ -28,6 +28,27 @@ module.exports.reportingWindow = reportingWindow;
 module.exports.startSetting = startSetting;
 module.exports.CAMPAIGN_START = CAMPAIGN_START;
 }
+const PAGO = "(payment_status = 'paid' OR (payment_status = '' AND status = 'paid'))";
+const ESTORNO = "payment_status IN ('refunded','refunded_partial','chargeback','chargeback_presented','peding_refund')";
+const VENDAS_SQL = start => `WITH p AS (SELECT pedido, max(valor) FILTER (WHERE ${PAGO}) AS valor, min(paid_at) FILTER (WHERE ${PAGO}) AS paid_at,
+  max(nullif(carta,'')) AS carta, max(nullif(utm_content,'')) AS utm_content, bool_or(${ESTORNO}) AS estornado
+  FROM compras WHERE pedido IS NOT NULL AND coalesce(tipo,'') <> 'abandoned-cart' GROUP BY pedido HAVING bool_or(${PAGO}))
+  SELECT coalesce(carta,'') AS carta, coalesce(utm_content,'') AS utm_content, estornado, count(*)::int AS n, coalesce(sum(valor),0)::float AS total
+  FROM p${start ? ' WHERE paid_at >= $1::timestamptz' : ''} GROUP BY 1,2,3`;
+// Devolve null se a tabela ainda não tem as colunas do Payt (migração não aplicada), para o painel não mostrar zero falso.
+async function vendasPayt(start) {
+  let rows; try { rows = await DB.sql(VENDAS_SQL(start), start ? [start] : []); } catch (e) { if (/column .* does not exist/i.test(e.message)) return null; throw e; }
+  const v = { pagas: 0, receita: 0, estornadas: 0, testes: 0, porCarta: {}, porEmail: {} };
+  rows.forEach(r => {
+    if (r.estornado) { v.estornadas += r.n; return; }
+    if (/-(rev|teste)/.test(r.carta)) { v.testes += r.n; return; } // compra de revisão/teste da equipe: fora do total
+    v.pagas += r.n; v.receita += r.total;
+    const add = (o, k) => { const x = o[k] = o[k] || { n: 0, total: 0 }; x.n += r.n; x.total += r.total; };
+    if (/^[A-Z]$/.test(r.carta)) add(v.porCarta, r.carta);
+    add(v.porEmail, r.utm_content || '(sem utm_content)');
+  });
+  v.receita = Math.round(v.receita * 100) / 100; return v;
+}
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   // Privado: exige PAINEL_KEY (Vercel env) igual ao parâmetro k. Sem PAINEL_KEY definida, nunca devolve dados reais.
@@ -56,11 +77,10 @@ module.exports.CAMPAIGN_START = CAMPAIGN_START;
       const [rd] = await DB.sql("SELECT count(*)::int AS n FROM roda" + where(''), P);
       // Teste A/B da carta: visitantes únicos por versão nas etapas da carta (visitas forçadas por ?carta= ficam de fora).
       const ab = {}; (await DB.sql("SELECT extra->>'carta' AS c, ev, count(distinct vid)::int AS u FROM eventos" + where(" ev IN ('letter_view','offer_view','checkout_click') AND extra->>'carta' IN ('A','B') AND coalesce(extra->>'carta_forcada','0') <> '1'") + " GROUP BY 1,2", P)).forEach(r => { (ab[r.c] = ab[r.c] || {})[r.ev] = r.u; });
-      // Compras/receita: com janela ativa ficam indisponíveis (null), não zero. O horário gravado pode ser o de recebimento,
-      // não o de aprovação do pagamento; só contar depois de confirmar essa semântica com o Payt.
-      let compras = null, receita = null;
-      if (!win.start) { const [cp] = await DB.sql("SELECT count(*)::int AS n, coalesce(sum(valor),0)::float AS total FROM compras WHERE status='aprovado'"); compras = cp.n; receita = cp.total; }
-      return res.end(JSON.stringify({ configured: true, source: 'neon', window: windowInfo, ab, visitors: tot.visitors, sessions: tot.sessions, pages, sources, events: ev, unique, depth, days, rows: tot.rows, rodas: rd.n, compras, receita, comprasNota: win.start ? 'indisponível na janela: horário de aprovação ainda não verificado' : undefined }));
+      // Vendas do Payt (api/payt.js → compras). Conta pedidos pagos pela hora de APROVAÇÃO (paid_at), dentro da janela;
+      // pedido estornado ou com chargeback sai da conta, e compra feita em sessão de revisão/teste (carta A-rev, B-teste) também.
+      const vendas = await vendasPayt(win.start);
+      return res.end(JSON.stringify({ configured: true, source: 'neon', window: windowInfo, ab, visitors: tot.visitors, sessions: tot.sessions, pages, sources, events: ev, unique, depth, days, rows: tot.rows, rodas: rd.n, compras: vendas ? vendas.pagas : null, receita: vendas ? vendas.receita : null, vendas, comprasNota: vendas ? undefined : 'vendas indisponíveis: tabela compras sem as colunas do Payt (aplicar db/compras_payt.sql)' }));
     } catch (e) { res.statusCode = 500; return res.end(JSON.stringify({ configured: true, error: e.message })); }
   }
   try {
@@ -91,3 +111,4 @@ module.exports.CAMPAIGN_START = CAMPAIGN_START;
 module.exports.reportingWindow = reportingWindow;
 module.exports.startSetting = startSetting;
 module.exports.CAMPAIGN_START = CAMPAIGN_START;
+module.exports.VENDAS_SQL = VENDAS_SQL;

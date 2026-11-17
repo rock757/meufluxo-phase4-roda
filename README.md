@@ -8,3 +8,7 @@ MeuFluxo Phase 4 (Black November): Roda da Vida quiz → written letter → chec
 - No credentials in this repo. No build step; deploy as static files.
 
 Deploy: Vercel project meufluxo-fase-4-roda-da-vida-prototype-v3 (team contato-q620), auto-deploys from main.
+
+## Payt sales (`/api/payt`)
+
+Payt's sale notice (postback "PayT V1") is stored in the `compras` table with its utm tags, `src` and letter (A/B), and the private panel (`painel.html`) counts paid sales by letter and by email. Off until `PAYT_INTEGRATION_KEY` is set in Vercel. One-time setup: run `db/compras_payt.sql` in Neon (`meufluxo_fase4`), register the postback in Payt pointing to `https://carta.meufluxo.com/api/payt`, put Payt's integration key in Vercel as `PAYT_INTEGRATION_KEY`, redeploy. No customer name, email, CPF, phone or address is stored.
