@@ -24,6 +24,8 @@ window.MF_CONFIG = {
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
   // Teste A/B da carta: textos em cartas/carta-a.html e carta-b.html.
   splitTeste: { ativo:true, variantes:['A','B'] }, // desligar = false
+  // 18/11: quiz numa página só (as 8 perguntas juntas e a Roda logo abaixo). false = volta a uma pergunta por tela. ?quiz=passos ou ?quiz=1pag forçam um dos dois numa visita.
+  quizUmaPagina: true,
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split).
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
