@@ -22,7 +22,7 @@ DELETE = {19,20,21,22,23,24,25,26,27,28, 34, 53, 58,59, 68, 73, 76,77, 81,82, 84
           70, 75, 207, 221, 232, 268, 301, 341, 395, 407}
 TEXT = {  # linha (1 = primeira) -> novo texto do <p> (mantém data-n e classe)
  245:'E com o Marcelo a gente tem mais cinco programas, como o Neuroprodutividade e o Reset de Dopamina.',
- 16:'É ter do seu lado quem já sabe o caminho: profissionais que fazem isso todo dia no consultório e te dão um passo a passo que você aplica hoje.',
+ 16:'Está em ter a orientação de profissionais que fazem isso todo dia no consultório: um passo a passo que você aplica hoje.',
  17:'É isso que o MeuFluxo oferece. Então, primeiro, eu vou te mostrar quem são essas pessoas.',
  18:'Depois, por que tudo isso custa menos do que uma consulta com uma delas.',
  47:'São sete anos. E mais de 350 mil membros, no Brasil e no mundo.',
