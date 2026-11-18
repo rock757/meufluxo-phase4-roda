@@ -15,17 +15,25 @@ window.MF_CARTA_PAYT=function(p){p=Object.assign({},p||{});var ab=window.MF_CART
  if(!p.src)p.src=(String(p.utm_source||'direto').replace(/[^\w-]/g,'').slice(0,30)||'direto')+'-carta'+v+suf;
  return p};
 var C=(window.MF_CONFIG||{}).splitTeste||{};
-var V=(C.variantes&&C.variantes.length?C.variantes:['A','B']).map(function(v){return String(v).toUpperCase()});
+var up=function(v){return String(v).toUpperCase()};
+var V=(C.variantes&&C.variantes.length?C.variantes:['A','B']).map(up);
+/* 18/11: versões só por link (ex.: C, a carta cortada). Nunca entram no sorteio. ?versao=X (link de campanha) mostra X como visita real:
+   não é revisão (sem sufixo -rev, conta no painel), grava X para a pessoa voltar na mesma versão e marca carta_link=1 nos eventos.
+   ?carta=X continua sendo a revisão forçada de sempre. */
+var ALL=V.concat((C.soPorLink||[]).map(up).filter(function(v){return V.indexOf(v)<0}));
 var q=new URLSearchParams(location.search);
-var forced=String(q.get('carta')||'').toUpperCase();
+var forced=up(q.get('carta')||'');
+var porLink=up(q.get('versao')||'');
 window.MF_CARTA=null;
-if(V.indexOf(forced)>=0){window.MF_CARTA={variant:forced,forced:true};window.MF_RENDER_PENDING=true;return}
-if(!C.ativo)return;
+if(ALL.indexOf(forced)>=0){window.MF_CARTA={variant:forced,forced:true};window.MF_RENDER_PENDING=true;return}
 function getC(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
 function setC(n,v,sec){document.cookie=n+'='+encodeURIComponent(v)+';path=/;max-age='+sec+';SameSite=Lax'+(location.protocol==='https:'?';Secure':'')}
+if(ALL.indexOf(porLink)>=0){setC('mf_carta',porLink,365*86400);try{localStorage.setItem('mf_carta',porLink)}catch(e){}
+ window.MF_CARTA={variant:porLink,forced:false,link:true};window.MF_RENDER_PENDING=true;return}
+if(!C.ativo)return;
 var saved='';try{saved=localStorage.getItem('mf_carta')||''}catch(e){}
-if(V.indexOf(saved)<0)saved=getC('mf_carta');
-var v=V.indexOf(saved)>=0?saved:null;
+if(ALL.indexOf(saved)<0)saved=getC('mf_carta');
+var v=ALL.indexOf(saved)>=0?saved:null; // quem entrou por link (ex.: C) volta na mesma versão
 if(!v){var r;try{r=crypto.getRandomValues(new Uint32Array(1))[0]/4294967296}catch(e){r=Math.random()}v=V[Math.floor(r*V.length)]}
 setC('mf_carta',v,365*86400);try{localStorage.setItem('mf_carta',v)}catch(e){}
 window.MF_CARTA={variant:v,forced:false};window.MF_RENDER_PENDING=true; // track.js não mede rolagem até carta.js desenhar a carta

@@ -1,9 +1,9 @@
 // node tests/carta-variante.test.cjs — runs carta-variante.js in a fake browser; no network.
 const fs = require('fs'), path = require('path'), vm = require('vm'), assert = require('assert');
 const SRC = fs.readFileSync(path.join(__dirname, '..', 'carta-variante.js'), 'utf8');
-function run({ ativo = true, search = '', cookie = '', ls = {}, rand } = {}) {
+function run({ ativo = true, search = '', cookie = '', ls = {}, rand, soPorLink } = {}) {
   const jar = { s: cookie }; const store = Object.assign({}, ls);
-  const win = { MF_CONFIG: { splitTeste: { ativo, variantes: ['A', 'B'] } } };
+  const win = { MF_CONFIG: { splitTeste: Object.assign({ ativo, variantes: ['A', 'B'] }, soPorLink ? { soPorLink } : {}) } };
   const ctx = { window: win, location: { search, protocol: 'https:' }, URLSearchParams, Math, RegExp, String, decodeURIComponent, encodeURIComponent,
     document: { get cookie() { return jar.s }, set cookie(v) { const kv = v.split(';')[0]; const k = kv.split('=')[0]; jar.s = jar.s.split('; ').filter(x => x && !x.startsWith(k + '=')).concat(kv).join('; ') } },
     localStorage: { getItem: k => store[k] || null, setItem: (k, v) => { store[k] = String(v) } },
@@ -19,4 +19,11 @@ t('on: returning visitor keeps localStorage variant', () => { const r = run({ ra
 t('on: falls back to cookie when localStorage empty', () => { const r = run({ rand: 0.1, cookie: 'mf_vid=x; mf_carta=B' }); assert.equal(r.ab.variant, 'B'); assert.equal(r.ls.mf_carta, 'B'); });
 t('on: forced param wins over stored and does not overwrite it', () => { const r = run({ search: '?carta=A', ls: { mf_carta: 'B' } }); assert.equal(r.ab.variant, 'A'); assert.equal(r.ls.mf_carta, 'B'); });
 t('on: ~50/50 over 4000 new visitors', () => { let a = 0; for (let i = 0; i < 4000; i++) if (run({}).ab.variant === 'A') a++; assert.ok(a > 1850 && a < 2150, 'A=' + a); console.log('     A=' + a + ' B=' + (4000 - a)); });
+t('link-only C: ?versao=C shows C as a real visit (not forced), persisted', () => { const r = run({ search: '?versao=C', soPorLink: ['C'], ls: { mf_carta: 'B' } }); assert.deepEqual(r.ab, { variant: 'C', forced: false, link: true }); assert.equal(r.ls.mf_carta, 'C'); assert.match(r.cookie, /mf_carta=C/); });
+t('link-only C works even with the A/B split off', () => { const r = run({ ativo: false, search: '?versao=c', soPorLink: ['C'] }); assert.equal(r.ab.variant, 'C'); assert.equal(r.ab.forced, false); });
+t('?versao=A pins letter A for an Email link', () => { const r = run({ search: '?versao=A', soPorLink: ['C'] }); assert.deepEqual(r.ab, { variant: 'A', forced: false, link: true }); });
+t('?carta=C is the usual forced review', () => { const r = run({ search: '?carta=C', soPorLink: ['C'] }); assert.deepEqual(r.ab, { variant: 'C', forced: true }); });
+t('C without soPorLink config is ignored', () => { const r = run({ search: '?versao=C', rand: 0.1 }); assert.equal(r.ab.variant, 'A'); assert.equal(r.ab.link, undefined); });
+t('returning C visitor stays on C', () => { const r = run({ soPorLink: ['C'], ls: { mf_carta: 'C' }, rand: 0.9 }); assert.equal(r.ab.variant, 'C'); });
+t('C never enters the random draw', () => { for (let i = 0; i < 2000; i++) assert.notEqual(run({ soPorLink: ['C'] }).ab.variant, 'C'); });
 console.log(`TOTAL ${n} passed`);

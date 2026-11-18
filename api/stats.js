@@ -55,7 +55,7 @@ module.exports.CAMPAIGN_START = CAMPAIGN_START;
       const days = {}; (await DB.sql("SELECT to_char(ts AT TIME ZONE 'America/Sao_Paulo','YYYY-MM-DD') AS d, count(*)::int AS n FROM eventos" + where(" ev='page_view'") + " GROUP BY 1 ORDER BY 1", P)).forEach(r => days[r.d] = r.n);
       const [rd] = await DB.sql("SELECT count(*)::int AS n FROM roda" + where(''), P);
       // Teste A/B da carta: visitantes únicos por versão nas etapas da carta (visitas forçadas por ?carta= ficam de fora).
-      const ab = {}; (await DB.sql("SELECT extra->>'carta' AS c, ev, count(distinct vid)::int AS u FROM eventos" + where(" ev IN ('letter_view','offer_view','checkout_click') AND extra->>'carta' IN ('A','B') AND coalesce(extra->>'carta_forcada','0') <> '1'") + " GROUP BY 1,2", P)).forEach(r => { (ab[r.c] = ab[r.c] || {})[r.ev] = r.u; });
+      const ab = {}; (await DB.sql("SELECT extra->>'carta' AS c, ev, count(distinct vid)::int AS u FROM eventos" + where(" ev IN ('letter_view','offer_view','checkout_click') AND extra->>'carta' IN ('A','B','C') AND coalesce(extra->>'carta_forcada','0') <> '1'") + " GROUP BY 1,2", P)).forEach(r => { (ab[r.c] = ab[r.c] || {})[r.ev] = r.u; });
       // Compras/receita: com janela ativa ficam indisponíveis (null), não zero. O horário gravado pode ser o de recebimento,
       // não o de aprovação do pagamento; só contar depois de confirmar essa semântica com o Payt.
       let compras = null, receita = null;
@@ -80,7 +80,7 @@ module.exports.CAMPAIGN_START = CAMPAIGN_START;
       vis.add(v); ses.add(r[iSid]);
       ev[e] = (ev[e] || 0) + 1; (uniq[e] = uniq[e] || new Set()).add(v);
       if (e === 'page_view') { const p = r[iPage] || '?'; by[p] = (by[p] || 0) + 1; const s = r[iSrc] || '(direto)'; src[s] = (src[s] || 0) + 1; const d = (r[0] || '').slice(0, 10); days[d] = (days[d] || 0) + 1; }
-      if (['letter_view', 'offer_view', 'checkout_click'].includes(e)) { try { const x = JSON.parse(r[iExtra] || '{}'); if ((x.carta === 'A' || x.carta === 'B') && String(x.carta_forcada || '0') !== '1') { const k = x.carta + ':' + e; (abSets[k] = abSets[k] || new Set()).add(v); } } catch (x) {} }
+      if (['letter_view', 'offer_view', 'checkout_click'].includes(e)) { try { const x = JSON.parse(r[iExtra] || '{}'); if (['A', 'B', 'C'].includes(x.carta) && String(x.carta_forcada || '0') !== '1') { const k = x.carta + ':' + e; (abSets[k] = abSets[k] || new Set()).add(v); } } catch (x) {} }
       if (e === 'scroll') { try { const x = JSON.parse(r[iExtra] || '{}'); const k = (r[iPage] || '?') + ':' + x.depth; depth[k] = (depth[k] || 0) + 1; } catch (x) {} }
     });
     const u = {}; Object.keys(uniq).forEach(k => u[k] = uniq[k].size);

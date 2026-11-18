@@ -7,7 +7,7 @@ window.MF_CONFIG = {
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true só com texto, programa e autorização confirmados.
   // Depoimentos DENTRO das cartas A/B (cartas/*.html): cada um tem um número T1…T28. Só aparecem para o público os que estiverem nesta lista,
   // ex.: ['T1','T5','T13'], ou 'todos'. Lista vazia = nenhum aparece para o público. Na prévia com ?revisao=1 todos aparecem, com etiqueta.
-  depoimentosLiberados: ['T3','T17'],
+  depoimentosLiberados: ['T3','T4','T5','T6','T17'], // 18/11: Rock recuperou a aprovação de T4 Sandra, T5 Rosane e T6 Tanila. Para liberar mais, só acrescentar o número aqui.
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
               // 11/11: a oferta deixou de anunciar data ('a qualquer momento essa oferta pode sair do ar'). semData:true tira TODAS as contagens
@@ -23,9 +23,11 @@ window.MF_CONFIG = {
   tracking: { gtm:'', ga4:'', metaPixel:'', endpoint:'/api/track' }, // vazios = só dataLayer + localStorage + /api/track
   dados: { endpoint:'/api/roda' }, // respostas da roda → Google Sheets via função serverless (ver api/roda.js); no-op até configurar
   // Teste A/B da carta: textos em cartas/carta-a.html e carta-b.html.
-  splitTeste: { ativo:true, variantes:['A','B'] }, // desligar = false
-  // 18/11: quiz numa página só (as 8 perguntas juntas e a Roda logo abaixo). false = volta a uma pergunta por tela. ?quiz=passos ou ?quiz=1pag forçam um dos dois numa visita.
-  quizUmaPagina: true,
+  // soPorLink: versões que só abrem por link (carta.html?versao=C), fora do sorteio A/B. C = carta A cortada pela CUB review (18/11).
+  splitTeste: { ativo:true, variantes:['A','B'], soPorLink:['C'] }, // desligar = false
+  // 18/11: quiz numa página só (as 8 perguntas juntas e a Roda logo abaixo). false = uma pergunta por tela (o padrão de /black26 durante o teste).
+  // Links do teste: /black26?quiz=1pag (uma página) e /black26?quiz=passos (uma pergunta por tela). Todo evento do quiz grava formato.
+  quizUmaPagina: false,
   // Parâmetros de origem repassados do link de convite -> roda -> carta -> checkout, sem sobrescrever
   // parâmetros já presentes na URL do checkout (ex.: coupon, split).
   paramsRepassados: ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','xcod','ref','fbclid','gclid'],
