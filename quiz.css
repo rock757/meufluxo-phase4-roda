@@ -277,3 +277,33 @@ details.optional[open] summary .btn{display:none}
 .lead-consent{font-size:13px;color:var(--muted);margin:8px 0 0;line-height:1.4}
 .lead-msg{font-size:14px;margin:6px 0 0;min-height:1em;color:var(--violet)}
 .nico-next{font-size:17px;margin:12px 0 10px;font-weight:600}
+
+/* 18/11: quiz numa página só (quiz.js vAll). As 8 perguntas juntas, toque no número de dias, a Roda aparece logo abaixo. */
+.q1p{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:start;padding:6px 0 10px}
+.q1p-list h1{font-size:clamp(28px,4vw,40px);line-height:1.15;margin:8px 0 10px}
+.q1p-list .lead{margin:0 0 6px}
+.q1p-list .week-prompt{margin:18px 0 12px;font-weight:650}
+.q1p-aside{position:sticky;top:18px;text-align:center}
+.q1p-aside .legend{color:var(--muted);font-size:14px;margin:8px 0 0}
+.q1p-row{border:1px solid var(--line);border-left:6px solid var(--c);border-radius:18px;padding:16px 16px 12px;margin:0 0 14px;background:#fff;transition:box-shadow .2s}
+.q1p-row.nudge{box-shadow:0 0 0 3px var(--c)}
+.q1p-head{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.q1p-head .ico{width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;background:var(--c);color:#fff;font-size:18px}
+.q1p-head small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.q1p-head b{display:block;font-size:19px;line-height:1.3;color:var(--ink)}
+.q1p-days{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.q1p-day{min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--wash);font:inherit;font-weight:700;font-size:18px;color:var(--ink);cursor:pointer;padding:0;transition:background .15s,color .15s,transform .1s}
+.q1p-day:hover{border-color:var(--c)}
+.q1p-day:active{transform:scale(.96)}
+.q1p-day:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.q1p-day[aria-pressed=true]{background:var(--c);border-color:var(--c);color:#fff}
+.q1p-scale{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);margin-top:7px}
+.q1p-go{position:sticky;bottom:0;z-index:5;text-align:center;padding:18px 0 14px;background:linear-gradient(to top,rgba(255,255,255,.97) 72%,rgba(255,255,255,0))}
+.q1p-go .btn{width:100%;max-width:440px;min-height:54px}
+.q1p-go .btn[aria-disabled=true]{opacity:.55;box-shadow:none}
+.q1p-left{margin:8px 0 0;font-size:15px;color:var(--muted);font-weight:600}
+.q1p-res:empty{display:none}
+.q1p-res{padding:26px 0 40px;scroll-margin-top:12px}
+.guided-result .res-title{font-size:clamp(30px,4vw,44px);line-height:1.12;margin:12px 0 25px}
+@media(max-width:900px){.q1p{grid-template-columns:1fr;gap:0}.q1p-aside{display:none}}
+@media(max-width:420px){.q1p-row{padding:14px 12px 10px}.q1p-days{gap:4px}.q1p-day{min-height:44px;font-size:17px;border-radius:10px}.q1p-head b{font-size:18px}}

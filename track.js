@@ -42,7 +42,7 @@ const META={letter_view:'ViewContent',offer_view:'ViewContent',checkout_click:'I
 /* ---- envio ---- */
 function local(rec){try{const a=JSON.parse(localStorage.getItem('mf_events')||'[]');a.push(rec);if(a.length>400)a.splice(0,a.length-400);localStorage.setItem('mf_events',JSON.stringify(a))}catch(e){}}
 function beacon(rec){if(excluded||!CFG.endpoint)return;try{const body=JSON.stringify(rec);if(navigator.sendBeacon)navigator.sendBeacon(CFG.endpoint,new Blob([body],{type:'application/json'}));else fetch(CFG.endpoint,{method:'POST',body,keepalive:true,headers:{'Content-Type':'application/json'}})}catch(e){}}
-const AB=window.MF_CARTA?{carta:window.MF_CARTA.variant,carta_forcada:window.MF_CARTA.forced?1:0}:{};
+const AB=window.MF_CARTA?Object.assign({carta:window.MF_CARTA.variant,carta_forcada:window.MF_CARTA.forced?1:0},window.MF_CARTA.link?{carta_link:1}:{}):{};
 function send(ev,p){p=p||{};const rec=Object.assign({},origin,AB,p,{ev,ts:Date.now(),vid,sid,page,lang,path:location.pathname,test:flags.test,internal:flags.internal});
  try{if(!excluded)window.dataLayer.push(Object.assign({event:'mf_'+ev},rec))}catch(e){}
  try{if(window.gtag&&CFG.ga4)window.gtag('event',ev,Object.assign({page,lang},AB,p))}catch(e){}
