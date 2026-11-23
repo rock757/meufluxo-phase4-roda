@@ -36,6 +36,12 @@ for (const slug of SLUGS) {
   assert.strictEqual(u.searchParams.get('src'), 'diagnostico-' + slug);
   assert.ok(!/Prévia/.test(app.innerHTML), slug + ': no preview banner');
   assert.ok(/R\$ ?697/.test(app.innerHTML), slug + ': R$697 shown');
+  // 23/11: installment leads (big), cash price small under it.
+  const pr = app.innerHTML.match(/<div class="price inst-first">([\s\S]*?)<\/div>/);
+  assert.ok(pr, slug + ': installment-first price block');
+  assert.ok(/<span class="big">R\$ 69,98<\/span>/.test(pr[1]), slug + ': 12x value is the big number');
+  assert.ok(/<small class="cash">ou <b>R\$697<\/b> à vista no Pix<\/small>/.test(pr[1]), slug + ': cash price small, after');
+  assert.ok(pr[1].indexOf('69,98') < pr[1].indexOf('697'), slug + ': 12x before cash');
   const view = events.find(e => e.ev === 'diagnosis_view');
   assert.ok(view && view.prioridade === slug && view.exemplo === 0 && view.respostas === 8, slug + ': diagnosis_view');
   assert.ok(clicks.length >= 1, slug + ': checkout click bound');
