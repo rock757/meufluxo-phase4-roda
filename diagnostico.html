@@ -99,6 +99,8 @@ section{margin:0 0 34px}
 .price{text-align:center;margin:16px 0 6px}
 .price .big{font-size:40px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
 .price small{display:block;color:var(--muted);font-size:14px}
+.price .x{display:block;font-size:17px;font-weight:700;color:var(--violet);margin-bottom:2px}
+.price small.cash{font-size:15px;margin-top:6px}.price small.cash b{font-weight:700;color:var(--ink-2)}
 .btn{display:flex;width:100%;align-items:center;justify-content:center;border:0;border-radius:999px;padding:17px 22px;font-weight:700;font-size:17px;color:#fff;text-decoration:none;background:linear-gradient(135deg,var(--violet),var(--violet-2));box-shadow:0 18px 40px -16px rgba(75,50,199,.7)}
 .btn[aria-disabled=true]{opacity:.55;cursor:not-allowed;box-shadow:none}
 .placeholder{margin-top:8px;text-align:center;font-size:13px;color:#8a5a00;background:#fff6dc;border:1px dashed var(--gold);border-radius:12px;padding:8px}
@@ -126,7 +128,10 @@ const JORNADA={
   nome:'Jornada Completa MeuFluxo',
   preco:'R$697',
   formaPagamento:'à vista no Pix',
-  parcelas:'ou em até 12x de R$ 69,98 no cartão',
+  // 23/11 (Rocky): a parcela vem grande e o preço à vista pequeno embaixo. Vazio = volta o formato antigo (à vista grande).
+  parcela:'12x de R$ 69,98', // confere com o checkout do Payt (Rocky, 23/11)
+  parcelaForma:'no cartão',
+  parcelas:'ou em até 12x de R$ 69,98 no cartão', // usado só no formato antigo (sem parcela)
   acesso:'Acesso por 1 ano, contado da confirmação do pagamento.',
   garantia:(MF.oferta&&MF.oferta.B&&MF.oferta.B.garantia)||'',
   checkoutUrl:'https://checkout.payt.com.br/71855d504ddcfe0afa4d9f64987d9e31', // Payt da Jornada (R$697), layout padrão da Júlia; troca aprovada pelo Rocky em 13/11. Nunca usar o checkout do Ilimitado aqui.
@@ -234,6 +239,10 @@ function primeiroPasso(){
 const ARCS=[[0,'M165,288 A21,21 0 0 1 144,267'],[1,'M144,267 A34,34 0 0 1 178,233'],[2,'M178,233 A55,55 0 0 1 233,288'],[3,'M233,288 A89,89 0 0 1 144,377'],[4,'M144,377 A144,144 0 0 1 0,233'],[5,'M0,233 A233,233 0 0 1 233,0'],[6,'M233,0 A377,377 0 0 1 610,377']];
 
 /* ---------- Oferta ---------- */
+/* Preço: parcela em destaque, à vista pequeno embaixo (Rocky, 23/11). Sem JORNADA.parcela = formato antigo. */
+function priceBlock(){const m=String(JORNADA.parcela||'').match(/^(\d+x de)\s+(.+)$/);
+ if(!m)return `<div class="price"><span class="big">${esc(JORNADA.preco)}</span> <span class="muted">${esc(JORNADA.formaPagamento)}</span>${JORNADA.parcelas?`<small>${esc(JORNADA.parcelas)}</small>`:''}<small>${esc(JORNADA.acesso)}</small></div>`;
+ return `<div class="price inst-first"><span class="x">${esc(m[1])}</span><span class="big">${esc(m[2])}</span> <span class="muted">${esc(JORNADA.parcelaForma||'')}</span><small class="cash">ou <b>${esc(JORNADA.preco)}</b> ${esc(JORNADA.formaPagamento)}</small><small>${esc(JORNADA.acesso)}</small></div>`}
 function oferta(){
  const steps=`<li><img src="img/approved/nicolas-toigo-sq.jpg" alt=""><div><b>Sua Roda da Vida</b><small>com o Nicolas Toigo</small></div><span class="tag done">Feita ✓</span></li>`+
   JORNADA.programas.map((p,n)=>{const i=p.area,c=cover(p.programa);const tag=i===prio?'Próximo passo':'';return `<li>${c?`<img src="${c}" alt="" loading="lazy">`:''}<div><b>${esc(p.programa)}</b><small>${esc(nome(AREAS[i]))} · com ${esc(p.especialista)}</small></div>${tag?`<span class="tag">${tag}</span>`:''}</li>`}).join('');
@@ -243,7 +252,7 @@ function oferta(){
  <ul class="steps">${steps}</ul>
  ${JORNADA.provisoria?'<div class="placeholder" style="margin:0 0 4px">Prévia: lista de programas provisória. O conteúdo final da Jornada ainda será confirmado.</div>':''}
  <div class="pillars"><div><b>O lugar certo</b>Especialistas e alunos na mesma plataforma.</div><div><b>O GPS</b>Um passo de cada vez, sem precisar adivinhar o próximo.</div><div><b>O tempo</b>Um ano inteiro para criar constância.</div></div>
- <div class="price"><span class="big">${esc(JORNADA.preco)}</span> <span class="muted">${esc(JORNADA.formaPagamento)}</span>${JORNADA.parcelas?`<small>${esc(JORNADA.parcelas)}</small>`:''}<small>${esc(JORNADA.acesso)}</small></div>
+ ${priceBlock()}
  <a class="btn" ${has?`href="${esc(href)}" data-track="checkout_click"`:'role="link" aria-disabled="true"'}>Quero a Jornada Completa</a>
  ${has?'':'<div class="placeholder">Prévia: o link de compra da Jornada ainda não existe. Este botão não leva a lugar nenhum.</div>'}
  ${JORNADA.garantia?`<p class="fine">${esc(JORNADA.garantia)}</p>`:''}</div>`}
