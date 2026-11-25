@@ -25,7 +25,8 @@ function run(search = '') {
   const areaButton = el('button', { area: '2' });         // fallback picker: <button data-area="2">
   const checkout = el('a', { track: 'checkout_click' });
   const ctaTop = el('a', { track: 'cta_offer_top' });
-  const pool = [areaBlock, areaButton, checkout, ctaTop];
+  const jumpTop = el('a', { track: 'jump_offer', pos: 'topo' });
+  const pool = [areaBlock, areaButton, checkout, ctaTop, jumpTop];
   const byId = { app: el('div'), prog: el('div'), 'oferta-bloco': el('div') };
   const store = {};
   const ctx = {
@@ -39,7 +40,7 @@ function run(search = '') {
   };
   ctx.window = ctx; vm.createContext(ctx);
   for (const k of ['config', 'data', 'trilha', 'carta']) vm.runInContext(SRC[k], ctx, { filename: k + '.js' });
-  return { tracked, areaBlock, areaButton, checkout, ctaTop };
+  return { tracked, areaBlock, areaButton, checkout, ctaTop, jumpTop };
 }
 const clicks = (r, ev) => r.tracked.filter(t => t[0] === ev);
 let n = 0; const t = (name, f) => { f(); n++; console.log('PASS', name); };
@@ -63,5 +64,10 @@ t('picker buttons still set the area', () => {
 t('prioridade from the URL is passed on checkout_click', () => {
   const r = run('?prioridade=financas'); r.checkout.fire('click');
   assert.equal(clicks(r, 'checkout_click')[0][1].prioridade, 'financas');
+});
+t('jump-to-offer button records jump_offer with its position', () => {
+  const r = run('?prioridade=financas'); r.jumpTop.fire('click');
+  const j = clicks(r, 'jump_offer'); assert.equal(j.length, 1); assert.equal(j[0][1].pos, 'topo'); assert.equal(j[0][1].prioridade, 'financas');
+  r.checkout.fire('click'); assert.equal(clicks(r, 'checkout_click')[0][1].pos, undefined, 'pos must not leak into other events');
 });
 console.log(`TOTAL ${n} passed`);
