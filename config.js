@@ -7,7 +7,7 @@ window.MF_CONFIG = {
   depoimentosAprovados: false, // false = a seção de depoimentos mostra o aviso 'Em verificação'. true só com texto, programa e autorização confirmados.
   // Depoimentos DENTRO das cartas A/B (cartas/*.html): cada um tem um número T1…T28. Só aparecem para o público os que estiverem nesta lista,
   // ex.: ['T1','T5','T13'], ou 'todos'. Lista vazia = nenhum aparece para o público. Na prévia com ?revisao=1 todos aparecem, com etiqueta.
-  depoimentosLiberados: ['T3','T4','T5','T6','T17'], // 18/11: Rock recuperou a aprovação de T4 Sandra, T5 Rosane e T6 Tanila. Para liberar mais, só acrescentar o número aqui.
+  depoimentosLiberados: 'todos', // 18/11: Rock recuperou a aprovação de T4 Sandra, T5 Rosane e T6 Tanila. Para liberar mais, só acrescentar o número aqui.
   // Calendário da experiência, não um prazo de compra: Black Friday e depois o fim de novembro (BRT). lote.ativo=false até existir um lote real.
   campanha: { nome:'Black November', prazoTexto:'30 de novembro', prazoTextoEn:'November 30', contagemBlackFriday:'2026-11-27', contagemFimMes:'2026-11-30',
               // 11/11: a oferta deixou de anunciar data ('a qualquer momento essa oferta pode sair do ar'). semData:true tira TODAS as contagens
